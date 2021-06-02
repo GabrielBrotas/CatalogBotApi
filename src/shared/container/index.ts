@@ -8,8 +8,8 @@ import { ClientsRepository } from '../../modules/clients/repositories/implementa
 import { IClientsRepository } from '../../modules/clients/repositories/IClientsRepository';
 import { IOrdersRepository } from '../../modules/orders/repositories/IOrdersRepository';
 import { OrdersRepository } from '../../modules/orders/repositories/implementations/OrdersRepository';
-import { ICategoriesRepository } from '../../modules/products/repositories/ICategoriesRepository';
-import { CategoriesRepository } from '../../modules/products/repositories/implementations/CategoriesRepository';
+import { ICategoriesRepository } from '../../modules/categories/repositories/ICategoriesRepository';
+import { CategoriesRepository } from '../../modules/categories/repositories/implementations/CategoriesRepository';
 
 container.registerSingleton<ICompaniesRepository>(
   'CompaniesRepository',

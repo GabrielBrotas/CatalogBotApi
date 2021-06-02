@@ -10,15 +10,13 @@ import { EditProductController } from '../useCases/editProduct/EditProductContro
 import { UpdateProductImageController } from '../useCases/updateProductImage/UpdateProductImageController';
 import { ListProductsController } from '../useCases/listProducts/ListProductsController';
 import { DeleteProductController } from '../useCases/deleteProduct/DeleteProductController';
-import { CREATE_CATEGORY_VALIDATION, CREATE_PRODUCT_VALIDATION, DELETE_PRODUCT_VALIDATION, UPDATE_PRODUCT_VALIDATION } from './validations.schema';
-import { CreateCategoryController } from '../useCases/createCategory/CreateCategoryController';
+import { CREATE_PRODUCT_VALIDATION, DELETE_PRODUCT_VALIDATION, UPDATE_PRODUCT_VALIDATION } from './validations.schema';
 
 const productsRouter = Router();
 const upload = multer(uploadConfig.upload('productsImgs'));
 
 const listProductsController = new ListProductsController();
 const createProductController = new CreateProductController();
-const createCategoryController = new CreateCategoryController();
 const deleteProductController = new DeleteProductController();
 const editProductController = new EditProductController();
 const updateProductImageController = new UpdateProductImageController();
@@ -29,13 +27,6 @@ productsRouter.post(
   celebrate(CREATE_PRODUCT_VALIDATION),
   ensureAuthenticated,
   createProductController.handle,
-);
-
-productsRouter.post(
-  '/category',
-  celebrate(CREATE_CATEGORY_VALIDATION),
-  ensureAuthenticated,
-  createCategoryController.handle,
 );
 
 productsRouter.delete(

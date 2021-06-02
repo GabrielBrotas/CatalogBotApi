@@ -2,12 +2,14 @@ import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
 import { SECRET_KEY } from '../../config/constants';
 import { AppError } from '../errors/AppError';
+import { Logger } from './logger';
 
 interface ITokenPayload {
   iat: number;
   exp: number;
   sub: string;
 }
+const logger = new Logger('ENSURE AUTH');
 
 export default function ensureAuthenticated(
   request: Request,
@@ -19,9 +21,10 @@ export default function ensureAuthenticated(
   const authHeader = request.headers.authorization;
 
   if (!authHeader) {
+    logger.error('JWT token is missing');
     throw new AppError('JWT token is missing', 401);
   }
-
+  
   // Bearer asdhksau, pegar apenas o token e ignorar o Bearer
   const [, token] = authHeader.split(' ');
 
@@ -38,6 +41,7 @@ export default function ensureAuthenticated(
 
     return next();
   } catch (err) {
+    logger.error('Invalid JWT token', err);
     throw new AppError('Invalid JWT token', 401);
   }
 }

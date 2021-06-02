@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { Logger } from '../../../../shared/middlewares/logger';
 import { AuthenticateUseCase } from './AuthenticateUseCase';
 
+const logger = new Logger('AUTHENTICATE COMPANY');
 class AuthenticateController {
   async handle(req: Request, res: Response): Promise<Response> {
     const { email, password } = req.body;
@@ -15,7 +17,8 @@ class AuthenticateController {
 
       return res.status(201).json(authInfo);
     } catch (err) {
-      return res.status(400).send(err.message);
+      logger.error(err.message)
+      return res.status(400).send(err);
     }
   }
 }

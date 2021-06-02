@@ -31,12 +31,6 @@ export const CREATE_PRODUCT_VALIDATION = {
   [Segments.BODY]: PRODUCT_VALIDATION,
 };
 
-export const CREATE_CATEGORY_VALIDATION = {
-  [Segments.BODY]: {
-    name: Joi.string().required(),
-  },
-};
-
 export const DELETE_PRODUCT_VALIDATION = {
   [Segments.PARAMS]: {
     pId: Joi.string().required(),

@@ -2,6 +2,9 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import { UpdateCompanyUseCase } from './UpdateCompanyUseCase';
 
+import { Logger } from '../../../../shared/middlewares/logger';
+
+const logger = new Logger('UPDATE COMPANY');
 class UpdateCompanyController {
   async handle(req: Request, res: Response): Promise<Response> {
     try {
@@ -19,6 +22,7 @@ class UpdateCompanyController {
 
       return res.status(201).json(company);
     } catch (err) {
+      logger.error(err.message)
       return res.status(400).send(err.message);
     }
   }

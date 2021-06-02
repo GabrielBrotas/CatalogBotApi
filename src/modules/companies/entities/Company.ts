@@ -5,10 +5,10 @@ import {
   ObjectIdColumn,
   Column,
 } from 'typeorm';
+import { APP_API_URL } from '../../../config/constants';
 
 export type WorkTime = {
   day: number;
-  weekDay: string;
   from: string;
   to: string;
 };
@@ -44,6 +44,7 @@ class Company {
 
   @UpdateDateColumn()
   updated_at: Date;
+
 }
 
 export { Company };

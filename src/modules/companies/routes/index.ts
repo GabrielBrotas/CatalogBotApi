@@ -43,7 +43,7 @@ companiesRouter.get(
 
 companiesRouter.get('/', ensureAuthenticated, getMyCompanyController.handle);
 
-companiesRouter.patch(
+companiesRouter.put(
   '/',
   ensureAuthenticated,
   celebrate(UPDATE_COMPANY_VALIDATION),

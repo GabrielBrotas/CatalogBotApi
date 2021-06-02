@@ -1,7 +1,10 @@
 import { injectable, inject } from 'tsyringe';
 import { hash } from 'bcrypt';
 import { AppError } from '../../../../shared/errors/AppError';
-import { ICompaniesRepository, ICreateCompanyDTO } from '../../repositories/ICompaniesRepository';
+import {
+  ICompaniesRepository,
+  ICreateCompanyDTO,
+} from '../../repositories/ICompaniesRepository';
 
 @injectable()
 class CreateCompanyUseCase {
@@ -11,17 +14,17 @@ class CreateCompanyUseCase {
     private companiesRepository: ICompaniesRepository,
   ) {}
 
-  async execute({
-    email,
-    password,
-  }: ICreateCompanyDTO): Promise<void> {
-    const emailAlreadyExists = await this.companiesRepository.findByEmail(email);
+  async execute({ email, password, name }: ICreateCompanyDTO): Promise<void> {
+    const emailAlreadyExists = await this.companiesRepository.findByEmail(
+      email,
+    );
 
     if (emailAlreadyExists) throw new AppError('Email already in use');
 
     const passwordHash = await hash(password, 8);
 
     await this.companiesRepository.create({
+      name,
       email,
       password: passwordHash,
     });

@@ -4,7 +4,6 @@ import {
   IUpdateCompanyDTO,
 } from '../../repositories/ICompaniesRepository';
 import { Company } from '../../entities/Company';
-
 @injectable()
 class UpdateCompanyUseCase {
   constructor(

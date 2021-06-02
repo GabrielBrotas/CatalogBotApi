@@ -2,6 +2,7 @@ import { Joi, Segments } from 'celebrate';
 
 export const CREATE_COMPANY_VALIDATION = {
   [Segments.BODY]: {
+    name: Joi.string().required(),
     email: Joi.string().required(),
     password: Joi.string().required(),
   },
@@ -28,9 +29,8 @@ export const UPDATE_COMPANY_VALIDATION = {
     workTime: Joi.array().items(
       Joi.object().keys({
         day: Joi.number().required(),
-        weekDay: Joi.string().required(),
-        from: Joi.number().required(),
-        to: Joi.number().required(),
+        from: Joi.string().required(),
+        to: Joi.string().required(),
       }),
     ),
   }),

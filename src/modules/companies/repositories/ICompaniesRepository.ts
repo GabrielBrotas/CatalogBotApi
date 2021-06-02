@@ -1,6 +1,7 @@
 import { Company, WorkTime } from '../entities/Company';
 
 interface ICreateCompanyDTO {
+  name: string;
   email: string;
   password: string;
 }
