@@ -1,4 +1,4 @@
-import { Product, ProductOption } from '../entities/Product';
+import {  IProduct, ProductOption } from '../schemas/Product';
 
 export interface ICreateProductDTO {
   name: string;
@@ -24,13 +24,13 @@ export interface IUpdateProductImageDTO {
 }
 
 export interface IProductsRepository {
-  list(): Promise<Product[]>;
-  create(data: ICreateProductDTO): Promise<Product>;
+  list(): Promise<IProduct[]>;
+  create(data: ICreateProductDTO): Promise<void>;
   delete(pid: string): Promise<void>;
-  findById(_id: string): Promise<Product>;
-  updateById(data: IUpdateProductDTO): Promise<Product>;
+  findById(_id: string): Promise<IProduct>;
+  updateById(data: IUpdateProductDTO): Promise<IProduct>;
   updateProductImage({
     _id,
     imageUrl,
-  }: IUpdateProductImageDTO): Promise<Product>;
+  }: IUpdateProductImageDTO): Promise<IProduct>;
 }

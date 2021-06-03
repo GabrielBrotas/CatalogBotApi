@@ -2,8 +2,8 @@ import { injectable, inject } from 'tsyringe';
 import {
   ICompaniesRepository,
 } from '../../repositories/ICompaniesRepository';
-import { Company } from '../../entities/Company';
 import { AppError } from '../../../../shared/errors/AppError';
+import { ICompany } from '../../schemas/Company';
 
 @injectable()
 class GetMyCompanyUseCase {
@@ -12,12 +12,11 @@ class GetMyCompanyUseCase {
     private companiesRepository: ICompaniesRepository,
   ) {}
 
-  async execute(_id: string): Promise<Company> {
+  async execute(_id: string): Promise<ICompany> {
     const company = await this.companiesRepository.findById(_id);
 
     if (!company) throw new AppError('company not found', 404);
 
-    delete company.password;
     return company;
   }
 }

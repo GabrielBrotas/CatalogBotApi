@@ -6,7 +6,7 @@ import cors from 'cors';
 
 import uploadConfig from './config/upload';
 
-import './shared/typeorm';
+import './shared/database';
 import './shared/container';
 
 import { AppError } from './shared/errors/AppError';

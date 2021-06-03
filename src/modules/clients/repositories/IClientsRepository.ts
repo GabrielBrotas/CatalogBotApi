@@ -1,4 +1,4 @@
-import { Address, Client } from '../entities/Client';
+import { Address, Client } from '../schemas/Client';
 
 export interface ICreateClientDTO {
   name: string;

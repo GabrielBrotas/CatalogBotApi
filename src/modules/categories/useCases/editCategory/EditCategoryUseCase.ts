@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 import { AppError } from '../../../../shared/errors/AppError';
-import { Category } from '../../entities/Category';
+import { ICategory } from '../../schemas/Category';
 import { ICategoriesRepository } from '../../repositories/ICategoriesRepository';
 
 interface IRequest {
@@ -16,14 +16,11 @@ class EditCategoryUseCase {
     private categoriesRepository: ICategoriesRepository,
   ) {}
 
-  async execute({
-    categoryId,
-    companyId,
-    name,
-  }: IRequest): Promise<Category> {
+  async execute({ categoryId, companyId, name }: IRequest): Promise<ICategory> {
     const category = await this.categoriesRepository.findById(categoryId);
-
-    if (category?.companyId !== companyId)
+    
+    if(!category) throw new AppError('Category not found', 404);
+    if (String(category?.companyId) !== String(companyId))
       throw new AppError('Not authorized to edit this category', 403);
 
     const categortUpdated = await this.categoriesRepository.update({

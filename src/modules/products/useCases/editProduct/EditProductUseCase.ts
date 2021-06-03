@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 import { AppError } from '../../../../shared/errors/AppError';
-import { Product, ProductOption } from '../../entities/Product';
+import { IProduct, Product, ProductOption } from '../../schemas/Product';
 import { IProductsRepository } from '../../repositories/IProductsRepository';
 
 interface IRequest {
@@ -28,7 +28,7 @@ class EditProductUseCase {
     options,
     companyId,
     categoryId
-  }: IRequest): Promise<Product> {
+  }: IRequest): Promise<IProduct> {
     const product = await this.productsRepository.findById(productId);
 
     if (product.companyId !== companyId)

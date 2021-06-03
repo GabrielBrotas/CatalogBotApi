@@ -1,6 +1,5 @@
 import { inject, injectable } from 'tsyringe';
 
-import { Category } from '../../entities/Category';
 import { ICategoriesRepository } from '../../repositories/ICategoriesRepository';
 
 interface IRequest {
@@ -18,13 +17,13 @@ class CreateCategoryUseCase {
   async execute({
     name,
     companyId,
-  }: IRequest): Promise<Category> {
-    const newCategory = await this.categoriesRepository.create({
+  }: IRequest): Promise<void> {
+    await this.categoriesRepository.create({
       name,
       companyId,
     });
 
-    return newCategory;
+    return;
   }
 }
 

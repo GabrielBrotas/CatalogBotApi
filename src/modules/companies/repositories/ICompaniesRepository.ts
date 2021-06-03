@@ -1,4 +1,4 @@
-import { Company, WorkTime } from '../entities/Company';
+import { ICompany, WorkTime } from '../schemas/Company';
 
 interface ICreateCompanyDTO {
   name: string;
@@ -8,10 +8,10 @@ interface ICreateCompanyDTO {
 
 interface IUpdateCompanyDTO {
   _id: string;
-  name?: string;
-  workTime?: WorkTime[];
+  name: string;
+  workTime: WorkTime[];
   shortDescription?: string;
-  benefits?: string;
+  benefits: string[];
 }
 
 interface IUpdateCompanyImageDTO {
@@ -21,13 +21,13 @@ interface IUpdateCompanyImageDTO {
 
 interface ICompaniesRepository {
   create(data: ICreateCompanyDTO): Promise<void>;
-  findByEmail(email: string): Promise<Company | undefined>;
-  findById(id: string): Promise<Company | undefined>;
-  updateCompany(data: IUpdateCompanyDTO): Promise<Company>;
+  findByEmail(email: string): Promise<ICompany | null>;
+  findById(id: string): Promise<ICompany | null>;
+  updateCompany(data: IUpdateCompanyDTO): Promise<ICompany>;
   updateCompanyImage({
     _id,
     imageUrl,
-  }: IUpdateCompanyImageDTO): Promise<Company>;
+  }: IUpdateCompanyImageDTO): Promise<ICompany>;
 }
 
 export {

@@ -1,4 +1,4 @@
-import { Category } from '../entities/Category';
+import { ICategory } from '../schemas/Category';
 
 export interface ICreateCategoryDTO {
   name: string;
@@ -11,9 +11,9 @@ export interface IEditCategoryDTO {
 }
 
 export interface ICategoriesRepository {
-  listMy(_id: string): Promise<Category[]>;
-  findById(_id: string): Promise<Category | undefined>;
+  listMy(_id: string): Promise<ICategory[]>;
+  findById(_id: string): Promise<ICategory | null>;
   deleteOne(_id: string): Promise<void>;
-  create({ name, companyId }: ICreateCategoryDTO): Promise<Category>;
-  update({ name, categoryId }: IEditCategoryDTO): Promise<Category>;
+  create({ name, companyId }: ICreateCategoryDTO): Promise<void>;
+  update({ name, categoryId }: IEditCategoryDTO): Promise<ICategory>;
 }

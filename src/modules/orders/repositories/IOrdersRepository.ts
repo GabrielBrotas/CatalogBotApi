@@ -1,4 +1,4 @@
-import { Address } from "../../clients/entities/Client";
+import { Address } from "../../clients/schemas/Client";
 import { Order, OrderProduct, PaymentMethods } from "../entities/Order";
 
 export interface ICreateOrderDTO {

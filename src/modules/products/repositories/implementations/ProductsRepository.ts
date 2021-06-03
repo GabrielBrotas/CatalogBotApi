@@ -1,6 +1,5 @@
-import { getMongoRepository, MongoRepository } from 'typeorm';
 import { AppError } from '../../../../shared/errors/AppError';
-import { Product } from '../../entities/Product';
+import { Product, IProduct } from '../../schemas/Product';
 import {
   ICreateProductDTO,
   IProductsRepository,
@@ -9,13 +8,13 @@ import {
 } from '../IProductsRepository';
 
 export class ProductsRepository implements IProductsRepository {
-  private repository: MongoRepository<Product>;
+  private repository;
 
   constructor() {
-    this.repository = getMongoRepository(Product);
+    this.repository = Product;
   }
 
-  async list(): Promise<Product[]> {
+  async list(): Promise<IProduct[]> {
     const products = await this.repository.find();
     return products;
   }
@@ -26,29 +25,26 @@ export class ProductsRepository implements IProductsRepository {
     description,
     options,
     companyId,
-    categoryId
-  }: ICreateProductDTO): Promise<Product> {
-    const product = this.repository.create({
+    categoryId,
+  }: ICreateProductDTO): Promise<void> {
+    await this.repository.create({
       name,
       price,
       description,
       options,
       companyId,
-      categoryId
+      categoryId,
     });
-
-    await this.repository.save(product);
-
-    return product;
-  }
-
-  async delete(_id: string): Promise<void> {
-    await this.repository.delete(_id);
     return;
   }
 
-  async findById(_id: string): Promise<Product> {
-    const product = await this.repository.findOne(_id);
+  async delete(_id: string): Promise<void> {
+    await this.repository.deleteOne({ _id });
+    return;
+  }
+
+  async findById(_id: string): Promise<IProduct> {
+    const product = await this.repository.findOne({ _id });
 
     if (!product) throw new AppError('Product not found', 404);
 
@@ -61,9 +57,9 @@ export class ProductsRepository implements IProductsRepository {
     name,
     options,
     price,
-    categoryId
-  }: IUpdateProductDTO): Promise<Product> {
-    const product = await this.repository.findOne(_id);
+    categoryId,
+  }: IUpdateProductDTO): Promise<IProduct> {
+    const product = await this.repository.findOne({ _id });
 
     if (!product) throw new AppError('Product not found', 404);
 
@@ -78,7 +74,7 @@ export class ProductsRepository implements IProductsRepository {
       product.options = options;
     }
 
-    await this.repository.save(product);
+    await product.save();
 
     return product;
   }
@@ -86,14 +82,14 @@ export class ProductsRepository implements IProductsRepository {
   async updateProductImage({
     _id,
     imageUrl,
-  }: IUpdateProductImageDTO): Promise<Product> {
-    const product = await this.repository.findOne(_id);
+  }: IUpdateProductImageDTO): Promise<IProduct> {
+    const product = await this.repository.findOne({ _id });
 
-    if (!product) throw new AppError('Company not found', 404);
+    if (!product) throw new AppError('Product not found', 404);
 
     product.imageUrl = imageUrl;
 
-    await this.repository.save(product);
+    await product.save();
 
     return product;
   }

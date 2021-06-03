@@ -27,6 +27,13 @@ const PRODUCT_VALIDATION = {
     .optional(),
 };
 
+export const GET_PRODUCT_VALIDATION = {
+  [Segments.PARAMS]: {
+    pId: Joi.string().required(),
+  },
+};
+
+
 export const CREATE_PRODUCT_VALIDATION = {
   [Segments.BODY]: PRODUCT_VALIDATION,
 };

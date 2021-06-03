@@ -1,6 +1,6 @@
 import { getMongoRepository, MongoRepository } from 'typeorm';
 import { AppError } from '../../../../shared/errors/AppError';
-import { Client } from '../../entities/Client';
+import { Client } from '../../schemas/Client';
 import {
   IClientsRepository,
   ICreateClientDTO,
@@ -50,7 +50,7 @@ export class ClientsRepository implements IClientsRepository {
     cellphone,
   }: IFindClientByEmailOrCellphoneDTO): Promise<Client | undefined> {
     if (!email && !cellphone) return undefined;
-    
+
     if (email) {
       const client = await this.repository.findOne({ email });
       return client;

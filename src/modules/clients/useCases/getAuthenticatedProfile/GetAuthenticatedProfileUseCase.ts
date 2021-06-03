@@ -1,7 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 
 import { AppError } from '../../../../shared/errors/AppError';
-import { Client } from '../../entities/Client';
+import { Client } from '../../schemas/Client';
 import { IClientsRepository } from '../../repositories/IClientsRepository';
 
 @injectable()

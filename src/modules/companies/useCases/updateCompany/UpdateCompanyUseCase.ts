@@ -3,7 +3,8 @@ import {
   ICompaniesRepository,
   IUpdateCompanyDTO,
 } from '../../repositories/ICompaniesRepository';
-import { Company } from '../../entities/Company';
+import { ICompany } from '../../schemas/Company';
+
 @injectable()
 class UpdateCompanyUseCase {
   constructor(
@@ -17,7 +18,7 @@ class UpdateCompanyUseCase {
     name,
     shortDescription,
     workTime,
-  }: IUpdateCompanyDTO): Promise<Company> {
+  }: IUpdateCompanyDTO): Promise<ICompany> {
     const company = await this.companiesRepository.updateCompany({
       _id,
       benefits,

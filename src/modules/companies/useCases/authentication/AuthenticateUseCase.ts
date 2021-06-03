@@ -5,7 +5,7 @@ import { sign } from 'jsonwebtoken';
 import { EXPIRES_IN_TOKEN, SECRET_KEY } from '../../../../config/constants';
 import { AppError } from '../../../../shared/errors/AppError';
 import { ICompaniesRepository } from '../../repositories/ICompaniesRepository';
-import { Company } from '../../entities/Company';
+import { ICompany } from '../../schemas/Company';
 
 interface IRequest {
   email: string;
@@ -13,7 +13,7 @@ interface IRequest {
 }
 
 interface IResponse {
-  company: Omit<Company, 'password'>;
+  company: Omit<ICompany, 'password'>;
   token: string;
 }
 
@@ -38,13 +38,23 @@ class AuthenticateUseCase {
     if (!passwordMatch) {
       throw new AppError('Invalid Email/Password combination.', 401);
     }
-
     const token = sign({}, SECRET_KEY, {
       subject: String(company._id), // id do usuario
       expiresIn: EXPIRES_IN_TOKEN, // tempo de duração do token
     });
 
-    return { company, token };
+    return {
+      company: {
+        _id: company._id,
+        email: company.email,
+        name: company.name,
+        workTime: company.workTime,
+        shortDescription: company.shortDescription,
+        benefits: company.benefits,
+        created_at: company.created_at,
+      },
+      token,
+    };
   }
 }
 

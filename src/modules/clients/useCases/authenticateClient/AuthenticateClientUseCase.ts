@@ -5,7 +5,7 @@ import { sign } from 'jsonwebtoken';
 import { EXPIRES_IN_TOKEN, SECRET_KEY } from '../../../../config/constants';
 import { AppError } from '../../../../shared/errors/AppError';
 import { IClientsRepository } from '../../repositories/IClientsRepository';
-import { Client } from '../../entities/Client';
+import { Client } from '../../schemas/Client';
 
 interface IRequest {
   email?: string;

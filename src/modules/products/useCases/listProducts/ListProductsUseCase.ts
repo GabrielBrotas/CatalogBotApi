@@ -1,5 +1,5 @@
 import { inject, injectable } from 'tsyringe';
-import { Product } from '../../entities/Product';
+import { IProduct } from '../../schemas/Product';
 import { IProductsRepository } from '../../repositories/IProductsRepository';
 
 @injectable()
@@ -8,8 +8,8 @@ class ListProductsUseCase {
     @inject('ProductsRepository')
     private productsRepository: IProductsRepository,
   ) {}
-  
-  async execute(): Promise<Product[]> {
+
+  async execute(): Promise<IProduct[]> {
     const products = await this.productsRepository.list();
 
     return products

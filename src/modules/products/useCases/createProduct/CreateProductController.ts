@@ -20,7 +20,7 @@ class CreateProductController {
         categoryId
       });
 
-      return res.status(201).json(newProduct);
+      return res.status(201).send();
     } catch (err) {
       return res.status(400).send(err.message);
     }

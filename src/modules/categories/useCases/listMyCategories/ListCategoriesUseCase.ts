@@ -1,5 +1,5 @@
 import { inject, injectable } from 'tsyringe';
-import { Category } from '../../entities/Category';
+import { ICategory } from '../../schemas/Category';
 import { ICategoriesRepository } from '../../repositories/ICategoriesRepository';
 
 @injectable()
@@ -9,7 +9,7 @@ class ListCategoriesUseCase {
     private categoriesRepository: ICategoriesRepository,
   ) {}
 
-  async execute(_id: string): Promise<Category[]> {
+  async execute(_id: string): Promise<ICategory[]> {
     const myCategories = await this.categoriesRepository.listMy(_id);
     return myCategories;
   }
