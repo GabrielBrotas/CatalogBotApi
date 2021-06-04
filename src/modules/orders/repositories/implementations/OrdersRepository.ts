@@ -1,18 +1,18 @@
-import { getMongoRepository, MongoRepository } from 'typeorm';
 import { AppError } from '../../../../shared/errors/AppError';
-import { Order } from '../../entities/Order';
+import { IOrder, Order } from '../../entities/Order';
 import { ICreateOrderDTO, IOrdersRepository } from '../IOrdersRepository';
 
 export class OrdersRepository implements IOrdersRepository {
-  private repository: MongoRepository<Order>;
+  private repository;
 
   constructor() {
-    this.repository = getMongoRepository(Order);
+    this.repository = Order;
   }
 
-  async findById(_id: string): Promise<Order | undefined> {
-    const order = await this.repository.findOne(_id);
-    return order
+  async findById(_id: string): Promise<IOrder | null> {
+    const order = await this.repository.findOne({ _id });
+    if (!order) return null;
+    return order;
   }
 
   async create({
@@ -22,8 +22,9 @@ export class OrdersRepository implements IOrdersRepository {
     deliveryAddress,
     orderProducts,
     totalPrice,
-  }: ICreateOrderDTO): Promise<Order> {
-    const order = this.repository.create({
+    paymentMethod,
+  }: ICreateOrderDTO): Promise<void> {
+    await this.repository.create({
       clientId,
       comment,
       companyId,
@@ -31,27 +32,26 @@ export class OrdersRepository implements IOrdersRepository {
       orderProducts,
       totalPrice,
       status: 'pending',
+      paymentMethod,
     });
 
-    await this.repository.save(order);
-
-    return order;
+    return;
   }
 
-  async listByCompanyId(companyId: string): Promise<Order[]> {
-    const orders = await this.repository.find({ companyId: companyId });
+  async listByCompanyId(companyId: string): Promise<IOrder[]> {
+    const orders = await this.repository.find({ companyId: companyId }).exec();
     return orders;
   }
 
-  async cancelById(orderId: string): Promise<Order> {
+  async cancelById(orderId: string): Promise<IOrder> {
     try {
-      const order = await this.repository.findOne(orderId);
+      const order = await this.repository.findOne({ _id: orderId});
 
       if (!order) throw new AppError('Order not found', 404);
 
       order.status = 'canceled';
 
-      await this.repository.save(order);
+      await order.save();
       return order;
     } catch (err) {
       throw new AppError(err, 500);

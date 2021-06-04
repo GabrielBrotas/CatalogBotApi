@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 import { AppError } from '../../../../shared/errors/AppError';
-import { IProduct, Product, ProductOption } from '../../schemas/Product';
+import { IProduct, IProductOption } from '../../schemas/Product';
 import { IProductsRepository } from '../../repositories/IProductsRepository';
 
 interface IRequest {
@@ -9,8 +9,8 @@ interface IRequest {
   name: string;
   price: number;
   description?: string;
-  options?: ProductOption[];
-  categoryId: string
+  options?: IProductOption[];
+  categoryId: string;
 }
 
 @injectable()
@@ -27,11 +27,10 @@ class EditProductUseCase {
     price,
     options,
     companyId,
-    categoryId
+    categoryId,
   }: IRequest): Promise<IProduct> {
     const product = await this.productsRepository.findById(productId);
-
-    if (product.companyId !== companyId)
+    if (String(product.company._id) !== String(companyId))
       throw new AppError('Not authorized to edit this product', 403);
 
     const productUpdated = await this.productsRepository.updateById({

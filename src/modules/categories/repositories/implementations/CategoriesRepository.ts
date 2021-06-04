@@ -14,14 +14,14 @@ export class CategoriesRepository implements ICategoriesRepository {
   }
 
   async create({ name, companyId }: ICreateCategoryDTO): Promise<void> {
-    const category = this.repository.create({
+    await this.repository.create({
       name,
-      companyId,
+      company: companyId,
     });
   }
 
   async update({ name, categoryId }: IEditCategoryDTO): Promise<ICategory> {
-    const category = await this.repository.findOne({ _id: categoryId});
+    const category = await this.repository.findOne({ _id: categoryId });
 
     if (!category) throw new AppError('Category not found', 404);
     if (name === '' || name === null)
@@ -35,13 +35,15 @@ export class CategoriesRepository implements ICategoriesRepository {
   }
 
   async listMy(_id: string): Promise<ICategory[]> {
-    const categories = await this.repository.find({ companyId: _id });
+    const categories = await this.repository
+      .find({ company: _id })
+      .sort({ created_at: -1 });
     return categories;
   }
 
   async findById(_id: string): Promise<ICategory | null> {
     const category = await this.repository.findOne({ _id });
-    if (!category) return null
+    if (!category) return null;
     return category;
   }
 

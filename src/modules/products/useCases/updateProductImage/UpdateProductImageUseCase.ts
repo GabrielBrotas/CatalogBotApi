@@ -20,10 +20,11 @@ class UpdateProductImageUseCase {
     const product = await this.productsRepository.findById(_id);
 
     if (!product) throw new AppError('product not found', 404);
-    if (product.companyId !== companyId) throw new AppError('not authorized', 403);
+    if (String(product.company._id) !== String(companyId))
+      throw new AppError('not authorized', 403);
 
     if (product && product.imageUrl) {
-      await deleteFile(`./tmp/productsImgs/${product.imageUrl}`);
+      await deleteFile(`./tmp/${product.imageUrl}`);
     }
 
     product.imageUrl = imageUrl;

@@ -1,5 +1,5 @@
 import { inject, injectable } from 'tsyringe';
-import { IProduct, ProductOption } from '../../schemas/Product';
+import { IProduct, IProductOption } from '../../schemas/Product';
 import { IProductsRepository } from '../../repositories/IProductsRepository';
 
 interface IRequest {
@@ -8,7 +8,7 @@ interface IRequest {
   price: number;
   categoryId: string
   description?: string;
-  options?: ProductOption[];
+  options?: IProductOption[];
 }
 
 @injectable()
@@ -25,8 +25,8 @@ class CreateProductUseCase {
     options,
     companyId,
     categoryId
-  }: IRequest): Promise<void> {
-    await this.productsRepository.create({
+  }: IRequest): Promise<IProduct> {
+    const newProduct = await this.productsRepository.create({
       name,
       description,
       price,
@@ -35,7 +35,7 @@ class CreateProductUseCase {
       categoryId
     });
 
-    return;
+    return newProduct;
   }
 }
 

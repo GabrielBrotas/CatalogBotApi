@@ -18,9 +18,9 @@ class EditCategoryUseCase {
 
   async execute({ categoryId, companyId, name }: IRequest): Promise<ICategory> {
     const category = await this.categoriesRepository.findById(categoryId);
-    
-    if(!category) throw new AppError('Category not found', 404);
-    if (String(category?.companyId) !== String(companyId))
+  
+    if (!category) throw new AppError('Category not found', 404);
+    if (String(category?.company) !== String(companyId))
       throw new AppError('Not authorized to edit this category', 403);
 
     const categortUpdated = await this.categoriesRepository.update({

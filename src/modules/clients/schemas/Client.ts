@@ -1,38 +1,38 @@
-
 import mongoose, { Schema } from 'mongoose';
 
+export type IAddress = {
+  state: string;
+  city: string;
+  street: string;
+  neighborhood?: string;
+  number?: string;
+  cep: string;
+};
 export interface IClient {
   name: string;
   email: string;
   password: string;
   cellphone: string;
-  defaultAddress?: {
-    state: string;
-    city: string;
-    street: string;
-    neighborhood?: string;
-    number?: string;
-    cep: string;
-  };
+  defaultAddress?: IAddress;
   created_at: Date;
 }
 
 const ClientSchema = new Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   email: {
     type: String,
-    required: true
+    required: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   cellphone: {
     type: String,
-    required: true
+    required: true,
   },
   defaultAddress: {
     state: {
@@ -57,8 +57,7 @@ const ClientSchema = new Schema({
   created_at: {
     type: Date,
     default: Date.now(),
-  }
-})
+  },
+});
 
-export default mongoose.model<IClient>("Client", ClientSchema)
-
+export const Client = mongoose.model<IClient>('Client', ClientSchema);

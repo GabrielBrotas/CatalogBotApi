@@ -19,13 +19,13 @@ class DeleteProductUseCase {
     const product = await this.productsRepository.findById(productId);
 
     if (!product) throw new AppError('product not found', 404);
-    if (product.companyId !== companyId)
+    if (String(product.company._id) !== String(companyId))
       throw new AppError('not authorized', 403);
 
     if (product && product.imageUrl) {
-      await deleteFile(`./tmp/productsImgs/${product.imageUrl}`);
+      await deleteFile(`./tmp/${product.imageUrl}`);
     }
-    
+
     await this.productsRepository.delete(product._id);
     return;
   }

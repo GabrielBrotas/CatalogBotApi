@@ -14,7 +14,7 @@ import { UpdateImageController } from '../useCases/updateImage/UpdateImageContro
 import { AUTHENTICATE_COMPANY_VALIDATION, CREATE_COMPANY_VALIDATION, GET_COMPANY_VALIDATION, UPDATE_COMPANY_VALIDATION } from './validations.schema';
 
 const companiesRouter = Router();
-const upload = multer(uploadConfig.upload('companiesImgs'));
+const upload = multer(uploadConfig.upload(''));
 
 const createCompanyController = new CreateCompanyController();
 const authenticateController = new AuthenticateController();

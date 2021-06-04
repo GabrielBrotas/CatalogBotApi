@@ -1,11 +1,11 @@
-import { Address, Client } from '../schemas/Client';
+import { IAddress, IClient } from '../schemas/Client';
 
 export interface ICreateClientDTO {
   name: string;
   email: string;
   password: string;
   cellphone?: string;
-  defaultAddress?: Address;
+  defaultAddress?: IAddress;
 }
 
 export interface IFindClientByEmailOrCellphoneDTO {
@@ -15,10 +15,10 @@ export interface IFindClientByEmailOrCellphoneDTO {
 
 export interface IClientsRepository {
   create(data: ICreateClientDTO): Promise<void>;
-  findById(_id: string): Promise<Client>;
-  findByEmail(email: string): Promise<Client | undefined>;
+  findById(_id: string): Promise<IClient>;
+  findByEmail(email: string): Promise<IClient | null>;
   findByEmailOrCellphone({
     email,
     cellphone,
-  }: IFindClientByEmailOrCellphoneDTO): Promise<Client | undefined>;
+  }: IFindClientByEmailOrCellphoneDTO): Promise<IClient | null>;
 }

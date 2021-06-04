@@ -14,7 +14,7 @@ import { GetProductController } from '../useCases/getProduct/GetProductControlle
 import { CREATE_PRODUCT_VALIDATION, DELETE_PRODUCT_VALIDATION, GET_PRODUCT_VALIDATION, UPDATE_PRODUCT_VALIDATION } from './validations.schema';
 
 const productsRouter = Router();
-const upload = multer(uploadConfig.upload('productsImgs'));
+const upload = multer(uploadConfig.upload(''));
 
 const listProductsController = new ListProductsController();
 const createProductController = new CreateProductController();

@@ -1,115 +1,127 @@
-// import { Schema } from 'mongoose';
-// import {
-//   Entity,
-//   CreateDateColumn,
-//   UpdateDateColumn,
-//   ObjectIdColumn,
-//   Column,
-// } from 'typeorm';
-// import { Address } from '../../clients/entities/Client';
-// import { OptionAdditional, Product } from '../../products/entities/Product';
+import mongoose, { Schema } from 'mongoose';
+import { IAddress } from '../../clients/schemas/Client';
 
-// export type PickedOptions = {
-//   productOptionName: string;
-//   optionAdditional: OptionAdditional;
-//   quantity: number;
-// }
+type OrderOptionsAdditionals = {
+  name: string;
+  price: number;
+  amount: number
+}
 
-// export type OrderProduct = {
-//   product: Product
-//   amount: string;
-//   pickedOptions: PickedOptions[]
-// }
-
-// export type OrderStatus =
-//   | 'pending'
-//   | 'confimed'
-//   | 'sent'
-//   | 'received'
-//   | 'canceled';
-
-// export type PaymentMethods =
-//   | 'boleto'
-//   | 'creditCard'
-//   | 'debit'
-//   | 'pix'
-//   | 'money';
-
-// @Entity('orders')
-// class Order {
-//   @ObjectIdColumn()
-//   _id: string;
-
-//   @Column()
-//   clientId: string;
-
-//   @Column()
-//   companyId: string;
-
-//   @Column()
-//   orderProducts: OrderProduct[];
-
-//   @Column()
-//   totalPrice: number;
-
-//   @Column()
-//   comment?: string;
-
-//   @Column()
-//   paymentMethod: PaymentMethods;
-
-//   @Column()
-//   deliveryAddress: Address;
-
-//   @Column()
-//   status: OrderStatus;
-
-//   @CreateDateColumn()
-//   created_at: Date;
-
-//   @UpdateDateColumn()
-//   updated_at: Date;
-// }
-
-// export { Order };
+export type PickedOptions = {
+  productOptionName: string;
+  optionAdditionals: OrderOptionsAdditionals[];
+};
 
 
-// const CompanySchema = new Schema({
-//   clientId: {
-//     type: String,
-//     required: true
-//   },
-//   companyId: {
-//     type: String,
-//     required: true
-//   },
-//   orderProducts: {
-//     product: Product
-//     amount: string;
-//     pickedOptions: PickedOptions[]
-//   }
-//   totalPrice: {
-//     type: String,
-//     required: true
-//   },
-//   comment?: {
-//     type: String,
-//     required: true
-//   },
-//   paymentMethod: {
-//     type: String,
-//     required: true
-//   },
-//   deliveryAddress: {
-//     type: String,
-//     required: true
-//   },
-//   status: {
-//     type: String,
-//     required: true
-//   },
-//   created_at: {
-//     type: Date,
-//     default: Date.now(),
-//   }
-// })
+export type IOrderProduct = {
+  productId: string;
+  amount: string;
+  pickedOptions: PickedOptions[];
+};
+
+export type IOrderStatus =
+  | 'pending'
+  | 'confimed'
+  | 'sent'
+  | 'received'
+  | 'canceled';
+
+export type IPaymentMethods =
+  | 'boleto'
+  | 'creditCard'
+  | 'debit'
+  | 'pix'
+  | 'money';
+
+export interface IOrder {
+  _id: string;
+  clientId: string;
+  companyId: string;
+  orderProducts: IOrderProduct[];
+  totalPrice: string;
+  comment?: string;
+  paymentMethod: IPaymentMethods;
+  deliveryAddress: IAddress;
+  status: IOrderStatus;
+  created_at: Date;
+}
+
+const OrderSchema = new Schema({
+  clientId: {
+    type: String,
+    required: true,
+  },
+  companyId: {
+    type: String,
+    required: true,
+  },
+  orderProducts: [
+    {
+      productId: String,
+      amount: Number,
+      pickedOptions: [
+        {
+          productOptionName: String,
+          optionAdditionals: [
+            {
+              name: {
+                type: String,
+                required: true,
+              },
+              price: {
+                type: String,
+                required: true,
+              },
+              amount: {
+                type: Number,
+                required: true,
+              },
+            },
+          ]
+        },
+      ],
+    },
+  ],
+  totalPrice: {
+    type: Number,
+    required: true,
+  },
+  comment: {
+    type: String,
+    required: false,
+  },
+  paymentMethod: {
+    type: String,
+    required: true,
+  },
+  deliveryAddress: {
+    state: {
+      type: String,
+    },
+    city: {
+      type: String,
+    },
+    street: {
+      type: String,
+    },
+    neighborhood: {
+      type: String,
+    },
+    number: {
+      type: Number,
+    },
+    cep: {
+      type: String,
+    },
+  },
+  status: {
+    type: String,
+    required: true,
+  },
+  created_at: {
+    type: Date,
+    default: Date.now(),
+  },
+});
+
+export const Order = mongoose.model<IOrder>('Order', OrderSchema);

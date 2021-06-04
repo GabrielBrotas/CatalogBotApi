@@ -1,19 +1,20 @@
-import { Address } from "../../clients/schemas/Client";
-import { Order, OrderProduct, PaymentMethods } from "../entities/Order";
+
+import { IAddress } from "../../clients/schemas/Client";
+import { IOrder, IOrderProduct, IPaymentMethods, Order, } from "../entities/Order";
 
 export interface ICreateOrderDTO {
   clientId: string;
   companyId: string;
-  orderProducts: OrderProduct[];
+  orderProducts: IOrderProduct[];
   totalPrice: number;
   comment?: string;
-  deliveryAddress: Address;
-  paymentMethod: PaymentMethods;
+  deliveryAddress: IAddress;
+  paymentMethod: IPaymentMethods;
 }
 
 export interface IOrdersRepository {
-  findById(_id: string): Promise<Order | undefined>;
-  create(data: ICreateOrderDTO): Promise<Order>;
-  listByCompanyId(companyId: string): Promise<Order[]>;
-  cancelById(orderId: string): Promise<Order>;
+  findById(_id: string): Promise<IOrder | null>;
+  create(data: ICreateOrderDTO): Promise<void>;
+  listByCompanyId(companyId: string): Promise<IOrder[]>;
+  cancelById(orderId: string): Promise<IOrder>;
 }

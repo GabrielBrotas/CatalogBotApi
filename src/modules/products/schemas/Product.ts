@@ -1,17 +1,17 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { ICompany } from '../../companies/schemas/Company';
 
-export type OptionAdditional = {
-  _id: string;
+export type IOptionAdditional = {
   name: string;
   price: number;
 };
 
-export type ProductOption = {
+export type IProductOption = {
   name: string;
   isRequired: boolean;
   maxQuantity: number;
   minQuantity: number;
-  additionals: OptionAdditional[];
+  additionals: IOptionAdditional[];
 };
 
 export interface IProduct {
@@ -19,10 +19,10 @@ export interface IProduct {
   name: string;
   price: number;
   description?: string;
-  companyId: string;
-  categoryId: string;
+  company: ICompany;
+  category: string;
   imageUrl?: string;
-  options: ProductOption[];
+  options: IProductOption[];
   created_at: Date;
 }
 
@@ -39,13 +39,13 @@ const ProductSchema = new Schema({
     type: String,
     required: false,
   },
-  categoryId: {
-    type: String,
-    required: true,
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
   },
-  companyId: {
-    type: String,
-    required: true,
+  company: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Company',
   },
   imageUrl: String,
   options: [
@@ -82,7 +82,7 @@ const ProductSchema = new Schema({
   ],
   created_at: {
     type: Date,
-    default: Date.now(),
+    default: new Date(),
   },
 });
 

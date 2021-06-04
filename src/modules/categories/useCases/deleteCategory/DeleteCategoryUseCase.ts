@@ -18,7 +18,7 @@ class DeleteCategoryUseCase {
     const category = await this.categoriesRepository.findById(categoryId);
 
     if (!category) throw new AppError('category not found', 404);
-    if (category.companyId !== companyId)
+    if (String(category.company) !== String(companyId))
       throw new AppError('not authorized', 403);
 
     await this.categoriesRepository.deleteOne(category._id);

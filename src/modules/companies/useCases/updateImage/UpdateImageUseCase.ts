@@ -21,7 +21,7 @@ class UpdateImageUseCase {
     if (!company) throw new AppError('user not found', 404);
 
     if (company && company.mainImageUrl) {
-      await deleteFile(`./tmp/companiesImgs/${company.mainImageUrl}`);
+      await deleteFile(`./tmp/${company.mainImageUrl}`);
     }
 
     company.mainImageUrl = imageUrl;

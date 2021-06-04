@@ -1,6 +1,5 @@
-import { getMongoRepository, MongoRepository } from 'typeorm';
 import { AppError } from '../../../../shared/errors/AppError';
-import { Client } from '../../schemas/Client';
+import { Client, IClient } from '../../schemas/Client';
 import {
   IClientsRepository,
   ICreateClientDTO,
@@ -8,10 +7,10 @@ import {
 } from '../IClientsRepository';
 
 export class ClientsRepository implements IClientsRepository {
-  private repository: MongoRepository<Client>;
+  private repository;
 
   constructor() {
-    this.repository = getMongoRepository(Client);
+    this.repository = Client;
   }
 
   async create({
@@ -21,26 +20,24 @@ export class ClientsRepository implements IClientsRepository {
     cellphone,
     defaultAddress,
   }: ICreateClientDTO): Promise<void> {
-    const client = this.repository.create({
+    await this.repository.create({
       email,
       password,
       name,
       cellphone,
       defaultAddress,
     });
-
-    await this.repository.save(client);
   }
 
-  async findById(_id: string): Promise<Client> {
-    const client = await this.repository.findOne(_id);
+  async findById(_id: string): Promise<IClient> {
+    const client = await this.repository.findOne({ _id });
 
     if (!client) throw new AppError('User not found', 404);
 
     return client;
   }
 
-  async findByEmail(email: string): Promise<Client | undefined> {
+  async findByEmail(email: string): Promise<IClient | null> {
     const client = await this.repository.findOne({ email });
     return client;
   }
@@ -48,17 +45,20 @@ export class ClientsRepository implements IClientsRepository {
   async findByEmailOrCellphone({
     email,
     cellphone,
-  }: IFindClientByEmailOrCellphoneDTO): Promise<Client | undefined> {
-    if (!email && !cellphone) return undefined;
+  }: IFindClientByEmailOrCellphoneDTO): Promise<IClient | null> {
+    if (!email && !cellphone) return null;
 
     if (email) {
       const client = await this.repository.findOne({ email });
+      if (!client) return null;
       return client;
     }
 
     if (cellphone) {
       const client = await this.repository.findOne({ cellphone });
+      if (!client) return null;
       return client;
     }
+    return null;
   }
 }

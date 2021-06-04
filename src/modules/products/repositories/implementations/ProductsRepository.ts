@@ -1,3 +1,4 @@
+import { APP_API_URL } from '../../../../config/constants';
 import { AppError } from '../../../../shared/errors/AppError';
 import { Product, IProduct } from '../../schemas/Product';
 import {
@@ -15,7 +16,11 @@ export class ProductsRepository implements IProductsRepository {
   }
 
   async list(): Promise<IProduct[]> {
-    const products = await this.repository.find();
+    const products = await this.repository
+      .find()
+      .populate(['category', 'company'])
+      .sort({ created_at: -1 })
+      .exec();
     return products;
   }
 
@@ -26,16 +31,16 @@ export class ProductsRepository implements IProductsRepository {
     options,
     companyId,
     categoryId,
-  }: ICreateProductDTO): Promise<void> {
-    await this.repository.create({
+  }: ICreateProductDTO): Promise<IProduct> {
+    const product = await this.repository.create({
       name,
       price,
       description,
       options,
-      companyId,
-      categoryId,
+      company: companyId,
+      category: categoryId,
     });
-    return;
+    return product;
   }
 
   async delete(_id: string): Promise<void> {
@@ -44,7 +49,9 @@ export class ProductsRepository implements IProductsRepository {
   }
 
   async findById(_id: string): Promise<IProduct> {
-    const product = await this.repository.findOne({ _id });
+    const product = await this.repository
+      .findOne({ _id })
+      .populate(['category', 'company']);
 
     if (!product) throw new AppError('Product not found', 404);
 
@@ -65,7 +72,7 @@ export class ProductsRepository implements IProductsRepository {
 
     product.name = name;
     product.price = price;
-    product.categoryId = categoryId;
+    product.category = categoryId;
 
     if (description) {
       product.description = description;
@@ -87,7 +94,7 @@ export class ProductsRepository implements IProductsRepository {
 
     if (!product) throw new AppError('Product not found', 404);
 
-    product.imageUrl = imageUrl;
+    product.imageUrl = `${APP_API_URL}/files/${imageUrl}`;
 
     await product.save();
 

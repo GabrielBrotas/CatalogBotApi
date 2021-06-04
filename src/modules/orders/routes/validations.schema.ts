@@ -16,48 +16,25 @@ export const CREATE_ORDER_VALIDATION = {
     orderProducts: Joi.array()
       .items(
         Joi.object().keys({
-          product: Joi.object()
-            .keys({
-              _id: Joi.string().required(),
-              name: Joi.string().required(),
-              price: Joi.number().required(),
-              description: Joi.string().optional(),
-              companyId: Joi.string().required(),
-              options: Joi.array()
-                .items(
-                  Joi.object().keys({
-                    name: Joi.string().required(),
-                    isRequired: Joi.boolean().required(),
-                    maxQuantity: Joi.number().required(),
-                    minQuantity: Joi.number().required(),
-                    additionals: Joi.array()
-                      .items(
-                        Joi.object()
-                          .keys({
-                            name: Joi.string().required(),
-                            price: Joi.number().required(),
-                          })
-                          .required(),
-                      )
-                      .required(),
-                  }),
-                )
-                .optional(),
-            })
-            .required(),
+          productId: Joi.string().required(),
+          companyId: Joi.string().required(),
           amount: Joi.number().required(),
-          options: Joi.object()
-            .keys({
-              productOptionName: Joi.string().required(),
-              optionAdditional: Joi.object()
-                .keys({
-                  name: Joi.string().required(),
-                  price: Joi.number().required(),
-                })
-                .required(),
-              quantity: Joi.number().required(),
-            })
-            .optional(),
+          pickedOptions: Joi.array().items(
+            Joi.object()
+              .keys({
+                productOptionName: Joi.string().required(),
+                optionAdditionals: Joi.array().items(
+                  Joi.object()
+                    .keys({
+                      name: Joi.string().required(),
+                      price: Joi.number().required(),
+                      amount: Joi.number().required(),
+                    })
+                    .required(),
+                ),
+              })
+              .optional(),
+          ),
         }),
       )
       .required(),

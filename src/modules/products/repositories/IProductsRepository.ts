@@ -1,10 +1,10 @@
-import {  IProduct, ProductOption } from '../schemas/Product';
+import {  IProduct, IProductOption } from '../schemas/Product';
 
 export interface ICreateProductDTO {
   name: string;
   price: number;
   description?: string;
-  options?: ProductOption[];
+  options?: IProductOption[];
   companyId: string;
   categoryId: string;
 }
@@ -15,7 +15,7 @@ export interface IUpdateProductDTO {
   price: number;
   categoryId: string;
   description?: string;
-  options?: ProductOption[];
+  options?: IProductOption[];
 }
 
 export interface IUpdateProductImageDTO {
@@ -25,7 +25,7 @@ export interface IUpdateProductImageDTO {
 
 export interface IProductsRepository {
   list(): Promise<IProduct[]>;
-  create(data: ICreateProductDTO): Promise<void>;
+  create(data: ICreateProductDTO): Promise<IProduct>;
   delete(pid: string): Promise<void>;
   findById(_id: string): Promise<IProduct>;
   updateById(data: IUpdateProductDTO): Promise<IProduct>;

@@ -27,41 +27,19 @@ export class CompaniesRepository implements ICompaniesRepository {
     const company = await this.repository.findOne({ email }).exec();
 
     if (company?.mainImageUrl) {
-      company.mainImageUrl = `${APP_API_URL}/files/companiesImgs${company?.mainImageUrl}`;
+      company.mainImageUrl = `${APP_API_URL}/files/${company?.mainImageUrl}`;
     }
     if (!company) return null;
 
-    return {
-      _id: company._id,
-      email: company.email,
-      name: company.name,
-      mainImageUrl: company.mainImageUrl,
-      workTime: company.workTime,
-      shortDescription: company.shortDescription,
-      benefits: company.benefits,
-      created_at: company.created_at,
-    };
+    return company;
   }
 
   async findById(_id: string): Promise<ICompany | null> {
     const company = await this.repository.findOne({ _id }).exec();
 
-    if (company?.mainImageUrl) {
-      company.mainImageUrl = `${APP_API_URL}/files/companiesImgs/${company?.mainImageUrl}`;
-    }
-
     if (!company) return null;
 
-    return {
-      _id: company._id,
-      email: company.email,
-      name: company.name,
-      mainImageUrl: company.mainImageUrl,
-      workTime: company.workTime,
-      shortDescription: company.shortDescription,
-      benefits: company.benefits,
-      created_at: company.created_at,
-    };
+    return company;
   }
 
   async updateCompany({
@@ -82,16 +60,7 @@ export class CompaniesRepository implements ICompaniesRepository {
 
     await company.save();
 
-    return {
-      _id: company._id,
-      email: company.email,
-      name: company.name,
-      mainImageUrl: company.mainImageUrl,
-      workTime: company.workTime,
-      shortDescription: company.shortDescription,
-      benefits: company.benefits,
-      created_at: company.created_at,
-    };
+    return company;
   }
 
   async updateCompanyImage({
@@ -102,7 +71,7 @@ export class CompaniesRepository implements ICompaniesRepository {
 
     if (!company) throw new AppError('Company not found', 404);
 
-    company.mainImageUrl = imageUrl;
+    company.mainImageUrl = `${APP_API_URL}/files/${imageUrl}`;
 
     await company.save();
 

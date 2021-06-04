@@ -4,7 +4,7 @@ const PRODUCT_VALIDATION = {
   name: Joi.string().required(),
   price: Joi.number().required(),
   categoryId: Joi.string().required(),
-  description: Joi.string().optional(),
+  description: Joi.any(),
   options: Joi.array()
     .items(
       Joi.object().keys({
@@ -32,7 +32,6 @@ export const GET_PRODUCT_VALIDATION = {
     pId: Joi.string().required(),
   },
 };
-
 
 export const CREATE_PRODUCT_VALIDATION = {
   [Segments.BODY]: PRODUCT_VALIDATION,
