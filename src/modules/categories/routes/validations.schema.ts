@@ -18,6 +18,16 @@ export const GET_CATEGORY_VALIDATION = {
   },
 };
 
+export const LIST_CATEGORIES_VALIDATION = {
+  [Segments.PARAMS]: {
+    companyId: Joi.string().required(),
+  },
+  [Segments.QUERY]: {
+    page: Joi.string().optional(),
+    limit: Joi.string().optional(),
+  },
+};
+
 export const UPDATE_CATEGORY_VALIDATION = {
   [Segments.PARAMS]: {
     cId: Joi.string().required(),

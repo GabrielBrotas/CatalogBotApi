@@ -1,4 +1,4 @@
-import {  IProduct, IProductOption } from '../schemas/Product';
+import { IProduct, IProductOption } from '../schemas/Product';
 
 export interface ICreateProductDTO {
   name: string;
@@ -23,8 +23,27 @@ export interface IUpdateProductImageDTO {
   imageUrl: string;
 }
 
+export interface ListProps {
+  page: number;
+  limit: number;
+  company: string
+}
+
+export type ListProductsResultProps = {
+  next?: {
+    page: number;
+    limit: number;
+  };
+  previous?: {
+    page: number;
+    limit: number;
+  };
+  total: number;
+  results: IProduct[];
+};
+
 export interface IProductsRepository {
-  list(): Promise<IProduct[]>;
+  list({ page, limit }: ListProps): Promise<ListProductsResultProps>;
   create(data: ICreateProductDTO): Promise<IProduct>;
   delete(pid: string): Promise<void>;
   findById(_id: string): Promise<IProduct>;

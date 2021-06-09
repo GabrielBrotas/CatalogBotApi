@@ -7,10 +7,11 @@ import {
   CREATE_CATEGORY_VALIDATION,
   DELETE_CATEGORY_VALIDATION,
   GET_CATEGORY_VALIDATION,
+  LIST_CATEGORIES_VALIDATION,
   UPDATE_CATEGORY_VALIDATION,
 } from './validations.schema';
 import { CreateCategoryController } from '../useCases/createCategory/CreateCategoryController';
-import { ListMyCategoriesController } from '../useCases/listMyCategories/ListCategoriesController';
+import { ListCategoriesController } from '../useCases/listCategories/ListCategoriesController';
 import { DeleteCategoryController } from '../useCases/deleteCategory/DeleteCategoryController';
 import { EditCategoryController } from '../useCases/editCategory/EditProductController';
 import { GetCategoryController } from '../useCases/getCategory/GetCategoryController';
@@ -18,19 +19,19 @@ import { GetCategoryController } from '../useCases/getCategory/GetCategoryContro
 const categoriesRouter = Router();
 
 const createCategoryController = new CreateCategoryController();
-const listMyCategoriesController = new ListMyCategoriesController();
+const listCategoriesController = new ListCategoriesController();
 const celeteCategoryController = new DeleteCategoryController();
 const editCategoryController = new EditCategoryController();
 const getCategoryController = new GetCategoryController();
 
 categoriesRouter.get(
-  '/',
-  ensureAuthenticated,
-  listMyCategoriesController.handle,
+  '/:companyId',
+  celebrate(LIST_CATEGORIES_VALIDATION),
+  listCategoriesController.handle,
 );
 
 categoriesRouter.get(
-  '/:cId',
+  '/category/:cId',
   celebrate(GET_CATEGORY_VALIDATION),
   ensureAuthenticated,
   getCategoryController.handle,

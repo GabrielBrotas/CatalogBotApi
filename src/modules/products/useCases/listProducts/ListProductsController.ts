@@ -4,8 +4,15 @@ import { ListProductsUseCase } from './ListProductsUseCase';
 
 class ListProductsController {
   async handle(req: Request, res: Response): Promise<Response> {
-    const listProductsUseCase = container.resolve(ListProductsUseCase)
-    const products = await listProductsUseCase.execute();
+    const { limit = 10, page = 1 } = req.query;
+    const { companyId } = req.params;
+
+    const listProductsUseCase = container.resolve(ListProductsUseCase);
+    const products = await listProductsUseCase.execute({
+      limit: Number(limit),
+      page: Number(page),
+      companyId,
+    });
     return res.status(200).json(products);
   }
 }

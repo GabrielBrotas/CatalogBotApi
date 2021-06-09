@@ -15,6 +15,7 @@ class CreateCompanyUseCase {
   ) {}
 
   async execute({ email, password, name }: ICreateCompanyDTO): Promise<void> {
+
     const emailAlreadyExists = await this.companiesRepository.findByEmail(
       email,
     );

@@ -33,6 +33,16 @@ export const GET_PRODUCT_VALIDATION = {
   },
 };
 
+export const LIST_PRODUCT_VALIDATION = {
+  [Segments.PARAMS]: {
+    companyId: Joi.string().required(),
+  },
+  [Segments.QUERY]: {
+    page: Joi.string().optional(),
+    limit: Joi.string().optional(),
+  },
+};
+
 export const CREATE_PRODUCT_VALIDATION = {
   [Segments.BODY]: PRODUCT_VALIDATION,
 };

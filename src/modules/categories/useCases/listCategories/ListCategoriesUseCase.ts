@@ -2,6 +2,12 @@ import { inject, injectable } from 'tsyringe';
 import { ICategory } from '../../schemas/Category';
 import { ICategoriesRepository } from '../../repositories/ICategoriesRepository';
 
+interface ListCategorieProps {
+  page: number;
+  limit: number;
+  _id: string;
+}
+
 @injectable()
 class ListCategoriesUseCase {
   constructor(
@@ -9,8 +15,16 @@ class ListCategoriesUseCase {
     private categoriesRepository: ICategoriesRepository,
   ) {}
 
-  async execute(_id: string): Promise<ICategory[]> {
-    const myCategories = await this.categoriesRepository.listMy(_id);
+  async execute({
+    _id,
+    limit,
+    page,
+  }: ListCategorieProps): Promise<ICategory[]> {
+    const myCategories = await this.categoriesRepository.listMy({
+      _id,
+      limit,
+      page,
+    });
     return myCategories;
   }
 }

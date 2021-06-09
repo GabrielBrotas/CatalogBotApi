@@ -26,9 +26,6 @@ export class CompaniesRepository implements ICompaniesRepository {
   async findByEmail(email: string): Promise<ICompany | null> {
     const company = await this.repository.findOne({ email }).exec();
 
-    if (company?.mainImageUrl) {
-      company.mainImageUrl = `${APP_API_URL}/files/${company?.mainImageUrl}`;
-    }
     if (!company) return null;
 
     return company;
@@ -36,7 +33,6 @@ export class CompaniesRepository implements ICompaniesRepository {
 
   async findById(_id: string): Promise<ICompany | null> {
     const company = await this.repository.findOne({ _id }).exec();
-
     if (!company) return null;
 
     return company;

@@ -4,6 +4,8 @@ import {
   ICategoriesRepository,
   ICreateCategoryDTO,
   IEditCategoryDTO,
+  ListCategoriesResultProps,
+  ListMyProps,
 } from '../ICategoriesRepository';
 
 export class CategoriesRepository implements ICategoriesRepository {
@@ -34,11 +36,40 @@ export class CategoriesRepository implements ICategoriesRepository {
     return category;
   }
 
-  async listMy(_id: string): Promise<ICategory[]> {
-    const categories = await this.repository
+  async listMy({ _id, limit, page }: ListMyProps): Promise<ICategory[]> {
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const totalDocuments = await this.repository
+      .countDocuments({ company: _id })
+      .exec();
+
+    const results: ListCategoriesResultProps = {
+      results: [],
+      total: totalDocuments,
+    };
+
+    if (endIndex < totalDocuments) {
+      results.next = {
+        page: page + 1,
+        limit: limit,
+      };
+    }
+
+    if (startIndex > 0) {
+      results.previous = {
+        page: page - 1,
+        limit: limit,
+      };
+    }
+
+    results.results = await this.repository
       .find({ company: _id })
-      .sort({ created_at: -1 });
-    return categories;
+      .skip(startIndex)
+      .limit(limit)
+      .sort({ created_at: -1 })
+      .exec();
+
+    return results;
   }
 
   async findById(_id: string): Promise<ICategory | null> {

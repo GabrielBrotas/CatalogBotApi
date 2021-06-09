@@ -49,6 +49,7 @@ companiesRouter.put(
   celebrate(UPDATE_COMPANY_VALIDATION),
   updateCompanyController.handle,
 );
+
 companiesRouter.patch(
   '/me/image',
   ensureAuthenticated,

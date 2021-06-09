@@ -11,7 +11,13 @@ import { UpdateProductImageController } from '../useCases/updateProductImage/Upd
 import { ListProductsController } from '../useCases/listProducts/ListProductsController';
 import { DeleteProductController } from '../useCases/deleteProduct/DeleteProductController';
 import { GetProductController } from '../useCases/getProduct/GetProductController';
-import { CREATE_PRODUCT_VALIDATION, DELETE_PRODUCT_VALIDATION, GET_PRODUCT_VALIDATION, UPDATE_PRODUCT_VALIDATION } from './validations.schema';
+import {
+  CREATE_PRODUCT_VALIDATION,
+  DELETE_PRODUCT_VALIDATION,
+  GET_PRODUCT_VALIDATION,
+  LIST_PRODUCT_VALIDATION,
+  UPDATE_PRODUCT_VALIDATION,
+} from './validations.schema';
 
 const productsRouter = Router();
 const upload = multer(uploadConfig.upload(''));
@@ -23,7 +29,11 @@ const editProductController = new EditProductController();
 const updateProductImageController = new UpdateProductImageController();
 const getProductController = new GetProductController();
 
-productsRouter.get('/', listProductsController.handle);
+productsRouter.get(
+  '/:companyId',
+  celebrate(LIST_PRODUCT_VALIDATION),
+  listProductsController.handle,
+);
 productsRouter.post(
   '/',
   celebrate(CREATE_PRODUCT_VALIDATION),
@@ -32,7 +42,7 @@ productsRouter.post(
 );
 
 productsRouter.get(
-  '/:pId',
+  '/product/:pId',
   celebrate(GET_PRODUCT_VALIDATION),
   getProductController.handle,
 );

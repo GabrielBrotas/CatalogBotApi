@@ -6,6 +6,8 @@ import {
   IProductsRepository,
   IUpdateProductDTO,
   IUpdateProductImageDTO,
+  ListProps,
+  ListProductsResultProps,
 } from '../IProductsRepository';
 
 export class ProductsRepository implements IProductsRepository {
@@ -15,13 +17,44 @@ export class ProductsRepository implements IProductsRepository {
     this.repository = Product;
   }
 
-  async list(): Promise<IProduct[]> {
-    const products = await this.repository
-      .find()
+  async list({
+    page,
+    limit,
+    company,
+  }: ListProps): Promise<ListProductsResultProps> {
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const totalDocuments = await this.repository
+      .countDocuments({ company })
+      .exec();
+    const results: ListProductsResultProps = {
+      results: [],
+      total: totalDocuments,
+    };
+
+    if (endIndex < totalDocuments) {
+      results.next = {
+        page: page + 1,
+        limit: limit,
+      };
+    }
+
+    if (startIndex > 0) {
+      results.previous = {
+        page: page - 1,
+        limit: limit,
+      };
+    }
+
+    results.results = await this.repository
+      .find({ company })
       .populate(['category', 'company'])
+      .skip(startIndex)
+      .limit(limit)
       .sort({ created_at: -1 })
       .exec();
-    return products;
+
+    return results;
   }
 
   async create({

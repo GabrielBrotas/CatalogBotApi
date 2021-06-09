@@ -1,7 +1,14 @@
 import { inject, injectable } from 'tsyringe';
-import { IProduct } from '../../schemas/Product';
-import { IProductsRepository } from '../../repositories/IProductsRepository';
+import {
+  IProductsRepository,
+  ListProductsResultProps,
+} from '../../repositories/IProductsRepository';
 
+interface ListProductsProps {
+  page: number;
+  limit: number;
+  companyId: string;
+}
 @injectable()
 class ListProductsUseCase {
   constructor(
@@ -9,10 +16,18 @@ class ListProductsUseCase {
     private productsRepository: IProductsRepository,
   ) {}
 
-  async execute(): Promise<IProduct[]> {
-    const products = await this.productsRepository.list();
+  async execute({
+    page,
+    limit,
+    companyId,
+  }: ListProductsProps): Promise<ListProductsResultProps> {
+    const products = await this.productsRepository.list({
+      page,
+      limit,
+      company: companyId,
+    });
 
-    return products
+    return products;
   }
 }
 
