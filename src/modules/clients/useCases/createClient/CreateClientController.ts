@@ -7,7 +7,7 @@ import { CreateClientUseCase } from './CreateClientUseCase';
 const logger = new Logger('CREATE CLIENT');
 class CreateClientController {
   async handle(req: Request, res: Response): Promise<Response> {
-    const { email, password, name, cellphone, defaultAddress } = req.body;
+    const { email, password, name, cellphone } = req.body;
     try {
       const createClientUseCase = container.resolve(CreateClientUseCase);
 
@@ -16,7 +16,6 @@ class CreateClientController {
         password,
         name,
         cellphone,
-        defaultAddress,
       });
 
       return res.status(201).send();

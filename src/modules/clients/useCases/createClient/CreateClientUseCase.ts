@@ -2,7 +2,10 @@ import { injectable, inject } from 'tsyringe';
 import { hash } from 'bcrypt';
 import { AppError } from '../../../../shared/errors/AppError';
 
-import { IClientsRepository, ICreateClientDTO } from '../../repositories/IClientsRepository';
+import {
+  IClientsRepository,
+  ICreateClientDTO,
+} from '../../repositories/IClientsRepository';
 
 @injectable()
 class CreateClientUseCase {
@@ -17,7 +20,6 @@ class CreateClientUseCase {
     password,
     name,
     cellphone,
-    defaultAddress,
   }: ICreateClientDTO): Promise<void> {
     const emailAlreadyExists = await this.clientsRepository.findByEmail(email);
 
@@ -30,7 +32,6 @@ class CreateClientUseCase {
       password: passwordHash,
       name,
       cellphone,
-      defaultAddress,
     });
   }
 }

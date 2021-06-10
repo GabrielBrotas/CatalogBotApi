@@ -20,6 +20,7 @@ export class CompaniesRepository implements ICompaniesRepository {
       email,
       password,
       name,
+      roles: ['company'],
     });
   }
 

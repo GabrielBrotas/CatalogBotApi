@@ -14,12 +14,12 @@ class CreateCompanyController {
       await createCompanyUseCase.execute({
         email,
         password,
-        name
+        name,
       });
 
       return res.status(201).send();
     } catch (err) {
-      logger.error(err.message)
+      logger.error(err.message);
       return res.status(400).send(err);
     }
   }

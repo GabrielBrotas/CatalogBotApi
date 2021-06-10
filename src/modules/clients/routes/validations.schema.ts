@@ -21,7 +21,7 @@ export const CREATE_CLIENT_VALIDATION = {
 
 export const AUTHENTICATE_CLIENT_VALIDATION = {
   [Segments.BODY]: Joi.object().keys({
-    email: Joi.string().required(),
+    user: Joi.string().required(),
     password: Joi.string().required(),
   }),
 };

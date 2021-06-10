@@ -1,7 +1,5 @@
 import { injectable, inject } from 'tsyringe';
-import {
-  ICompaniesRepository,
-} from '../../repositories/ICompaniesRepository';
+import { ICompaniesRepository } from '../../repositories/ICompaniesRepository';
 import { AppError } from '../../../../shared/errors/AppError';
 import { ICompany } from '../../schemas/Company';
 

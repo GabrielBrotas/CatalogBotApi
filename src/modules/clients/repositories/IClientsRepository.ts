@@ -1,16 +1,14 @@
-import { IAddress, IClient } from '../schemas/Client';
+import {  IClient } from '../schemas/Client';
 
 export interface ICreateClientDTO {
   name: string;
   email: string;
   password: string;
-  cellphone?: string;
-  defaultAddress?: IAddress;
+  cellphone: string;
 }
 
 export interface IFindClientByEmailOrCellphoneDTO {
-  email?: string;
-  cellphone?: string;
+  user: string;
 }
 
 export interface IClientsRepository {
@@ -18,7 +16,6 @@ export interface IClientsRepository {
   findById(_id: string): Promise<IClient>;
   findByEmail(email: string): Promise<IClient | null>;
   findByEmailOrCellphone({
-    email,
-    cellphone,
+    user,
   }: IFindClientByEmailOrCellphoneDTO): Promise<IClient | null>;
 }

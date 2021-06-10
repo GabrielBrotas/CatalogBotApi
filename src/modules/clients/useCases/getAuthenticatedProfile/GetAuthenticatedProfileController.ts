@@ -13,9 +13,9 @@ class GetAuthenticatedProfileController {
         GetAuthenticatedProfileUseCase,
       );
 
-      const company = await getAuthenticatedProfileUseCase.execute(_id);
+      const client = await getAuthenticatedProfileUseCase.execute(_id);
 
-      return res.status(201).json(company);
+      return res.status(201).json(client);
     } catch (err) {
       return res.status(400).send(err.message);
     }

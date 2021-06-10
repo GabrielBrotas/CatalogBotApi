@@ -18,14 +18,13 @@ export class ClientsRepository implements IClientsRepository {
     password,
     name,
     cellphone,
-    defaultAddress,
   }: ICreateClientDTO): Promise<void> {
     await this.repository.create({
       email,
       password,
       name,
       cellphone,
-      defaultAddress,
+      roles: ['client'],
     });
   }
 
@@ -43,22 +42,16 @@ export class ClientsRepository implements IClientsRepository {
   }
 
   async findByEmailOrCellphone({
-    email,
-    cellphone,
+    user,
   }: IFindClientByEmailOrCellphoneDTO): Promise<IClient | null> {
-    if (!email && !cellphone) return null;
+    let client = null;
 
-    if (email) {
-      const client = await this.repository.findOne({ email });
-      if (!client) return null;
-      return client;
-    }
+    client = await this.repository.findOne({ email: user });
+    if (client) return client;
 
-    if (cellphone) {
-      const client = await this.repository.findOne({ cellphone });
-      if (!client) return null;
-      return client;
-    }
-    return null;
+    client = await this.repository.findOne({ cellphone: user });
+
+    if (!client) return null;
+    return client;
   }
 }

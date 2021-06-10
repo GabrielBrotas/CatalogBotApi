@@ -5,16 +5,15 @@ import { sign } from 'jsonwebtoken';
 import { EXPIRES_IN_TOKEN, SECRET_KEY } from '../../../../config/constants';
 import { AppError } from '../../../../shared/errors/AppError';
 import { IClientsRepository } from '../../repositories/IClientsRepository';
-import { Client } from '../../schemas/Client';
+import { IClient } from '../../schemas/Client';
 
 interface IRequest {
-  email?: string;
-  cellphone?: string;
+  user: string;
   password: string;
 }
 
 interface IResponse {
-  client: Omit<Client, 'password'>;
+  client: Omit<IClient, 'password'>;
   token: string;
 }
 
@@ -25,10 +24,9 @@ class AuthenticateClientUseCase {
     private clientsRepository: IClientsRepository,
   ) {}
 
-  async execute({ email, cellphone, password }: IRequest): Promise<IResponse> {
+  async execute({ user, password }: IRequest): Promise<IResponse> {
     const client = await this.clientsRepository.findByEmailOrCellphone({
-      email,
-      cellphone,
+      user,
     });
 
     if (!client) {

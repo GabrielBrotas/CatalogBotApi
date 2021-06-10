@@ -11,7 +11,12 @@ import { GetCompanyController } from '../useCases/getCompany/GetCompanyControlle
 import { GetMyCompanyController } from '../useCases/getMyCompany/GetMyCompanyController';
 import { UpdateCompanyController } from '../useCases/updateCompany/UpdateCompanyController';
 import { UpdateImageController } from '../useCases/updateImage/UpdateImageController';
-import { AUTHENTICATE_COMPANY_VALIDATION, CREATE_COMPANY_VALIDATION, GET_COMPANY_VALIDATION, UPDATE_COMPANY_VALIDATION } from './validations.schema';
+import {
+  AUTHENTICATE_COMPANY_VALIDATION,
+  CREATE_COMPANY_VALIDATION,
+  GET_COMPANY_VALIDATION,
+  UPDATE_COMPANY_VALIDATION,
+} from './validations.schema';
 
 const companiesRouter = Router();
 const upload = multer(uploadConfig.upload(''));

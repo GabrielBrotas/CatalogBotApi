@@ -6,15 +6,14 @@ import { AuthenticateClientUseCase } from './AuthenticateClientUseCase';
 const logger = new Logger('AUTHENTICATE CLIENT');
 class AuthenticateClientController {
   async handle(req: Request, res: Response): Promise<Response> {
-    const { email, cellphone, password } = req.body;
+    const { user, password } = req.body;
     try {
       const authenticateClientUseCase = container.resolve(
         AuthenticateClientUseCase,
       );
 
       const authInfo = await authenticateClientUseCase.execute({
-        email,
-        cellphone,
+        user,
         password,
       });
 

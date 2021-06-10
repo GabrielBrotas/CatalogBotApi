@@ -15,6 +15,7 @@ export interface ICompany {
   workTime?: WorkTime[];
   shortDescription?: string;
   benefits: string[];
+  roles: ['company'];
   created_at: Date;
 }
 
@@ -49,6 +50,7 @@ const CompanySchema = new Schema({
   ],
   shortDescription: String,
   benefits: [String],
+  roles: [String],
   created_at: {
     type: Date,
     default: Date.now(),

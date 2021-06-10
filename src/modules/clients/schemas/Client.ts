@@ -9,9 +9,10 @@ export type IAddress = {
   cep: string;
 };
 export interface IClient {
+  _id: string;
   name: string;
   email: string;
-  password: string;
+  password?: string;
   cellphone: string;
   defaultAddress?: IAddress;
   created_at: Date;

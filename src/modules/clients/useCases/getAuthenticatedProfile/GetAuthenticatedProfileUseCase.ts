@@ -1,7 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 
 import { AppError } from '../../../../shared/errors/AppError';
-import { Client } from '../../schemas/Client';
+import { IClient } from '../../schemas/Client';
 import { IClientsRepository } from '../../repositories/IClientsRepository';
 
 @injectable()
@@ -11,7 +11,7 @@ class GetAuthenticatedProfileUseCase {
     private clientsRepository: IClientsRepository,
   ) {}
 
-  async execute(_id: string): Promise<Client> {
+  async execute(_id: string): Promise<IClient> {
     const client = await this.clientsRepository.findById(_id);
 
     if (!client) throw new AppError('client not found', 404);
