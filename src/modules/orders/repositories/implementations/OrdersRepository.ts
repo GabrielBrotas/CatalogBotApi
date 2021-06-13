@@ -18,15 +18,13 @@ export class OrdersRepository implements IOrdersRepository {
   async create({
     clientId,
     companyId,
-    comment,
     deliveryAddress,
     orderProducts,
     totalPrice,
     paymentMethod,
-  }: ICreateOrderDTO): Promise<void> {
-    await this.repository.create({
+  }: ICreateOrderDTO): Promise<IOrder> {
+    const order = await this.repository.create({
       clientId,
-      comment,
       companyId,
       deliveryAddress,
       orderProducts,
@@ -35,7 +33,7 @@ export class OrdersRepository implements IOrdersRepository {
       paymentMethod,
     });
 
-    return;
+    return order;
   }
 
   async listByCompanyId(companyId: string): Promise<IOrder[]> {

@@ -4,7 +4,7 @@ import { CreateOrderUseCase } from './CreateOrderUseCase';
 
 class CreateOrderController {
   async handle(req: Request, res: Response): Promise<Response> {
-    const { comment, deliveryAddress, orderProducts, totalPrice, paymentMethod } = req.body;
+    const { deliveryAddress, orderProducts, totalPrice, paymentMethod } = req.body;
     const { cId } = req.params;
     const { _id } = req.user;
 
@@ -14,7 +14,6 @@ class CreateOrderController {
       const newOrder = await createOrderUseCase.execute({
         clientId: _id,
         companyId: cId,
-        comment,
         deliveryAddress,
         orderProducts,
         totalPrice,

@@ -10,6 +10,8 @@ import { IOrdersRepository } from '../../modules/orders/repositories/IOrdersRepo
 import { OrdersRepository } from '../../modules/orders/repositories/implementations/OrdersRepository';
 import { ICategoriesRepository } from '../../modules/categories/repositories/ICategoriesRepository';
 import { CategoriesRepository } from '../../modules/categories/repositories/implementations/CategoriesRepository';
+import { ICartsRepository } from '../../modules/orders/repositories/ICartRepository';
+import { CartsRepository } from '../../modules/orders/repositories/implementations/CartsRepository';
 
 container.registerSingleton<ICompaniesRepository>(
   'CompaniesRepository',
@@ -34,4 +36,9 @@ container.registerSingleton<IClientsRepository>(
 container.registerSingleton<IOrdersRepository>(
   'OrdersRepository',
   OrdersRepository,
+);
+
+container.registerSingleton<ICartsRepository>(
+  'CartsRepository',
+  CartsRepository,
 );

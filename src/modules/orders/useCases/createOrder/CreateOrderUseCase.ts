@@ -1,7 +1,8 @@
 import { injectable, inject } from 'tsyringe';
 import { AppError } from '../../../../shared/errors/AppError';
 import { ICompaniesRepository } from '../../../companies/repositories/ICompaniesRepository';
-import { Order } from '../../entities/Order';
+import { IProductsRepository } from '../../../products/repositories/IProductsRepository';
+import { IOrder } from '../../entities/Order';
 import {
   ICreateOrderDTO,
   IOrdersRepository,
@@ -16,6 +17,9 @@ class CreateOrderUseCase {
 
     @inject('CompaniesRepository')
     private companiesRepository: ICompaniesRepository,
+
+    @inject('ProductsRepository')
+    private productsRepository: IProductsRepository,
   ) {}
 
   async execute({
@@ -26,11 +30,23 @@ class CreateOrderUseCase {
     orderProducts,
     totalPrice,
     paymentMethod,
-  }: ICreateOrderDTO): Promise<Order> {
+  }: ICreateOrderDTO): Promise<IOrder> {
     try {
       const company = await this.companiesRepository.findById(companyId);
 
       if (!company) throw new AppError('company not found', 404);
+      const productsId = orderProducts.map(
+        orderProduct => orderProduct.productId,
+      );
+
+      const { results } = await this.productsRepository.list({
+        company: companyId,
+        limit: 999,
+        page: 1,
+        productsId,
+      });
+
+      if (results.length <= 0) throw new AppError('Invalid product', 500);
 
       const newOrder = await this.ordersRepository.create({
         clientId,
@@ -42,7 +58,7 @@ class CreateOrderUseCase {
         paymentMethod,
       });
 
-      return newOrder;
+      return newOrder
     } catch (err) {
       throw new AppError(err, 500);
     }

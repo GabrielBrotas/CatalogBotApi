@@ -26,7 +26,8 @@ export interface IUpdateProductImageDTO {
 export interface ListProps {
   page: number;
   limit: number;
-  company: string
+  company: string;
+  productsId?: string[];
 }
 
 export type ListProductsResultProps = {

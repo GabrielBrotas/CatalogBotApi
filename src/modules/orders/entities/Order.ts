@@ -4,19 +4,20 @@ import { IAddress } from '../../clients/schemas/Client';
 type OrderOptionsAdditionals = {
   name: string;
   price: number;
-  amount: number
-}
+  amount: number;
+};
 
 export type PickedOptions = {
   productOptionName: string;
   optionAdditionals: OrderOptionsAdditionals[];
 };
 
-
 export type IOrderProduct = {
+  _id?: string
   productId: string;
   amount: string;
   pickedOptions: PickedOptions[];
+  comment?: string;
 };
 
 export type IOrderStatus =
@@ -39,7 +40,6 @@ export interface IOrder {
   companyId: string;
   orderProducts: IOrderProduct[];
   totalPrice: string;
-  comment?: string;
   paymentMethod: IPaymentMethods;
   deliveryAddress: IAddress;
   status: IOrderStatus;
@@ -59,6 +59,10 @@ const OrderSchema = new Schema({
     {
       productId: String,
       amount: Number,
+      comment: {
+        type: String,
+        required: false,
+      },
       pickedOptions: [
         {
           productOptionName: String,
@@ -77,7 +81,7 @@ const OrderSchema = new Schema({
                 required: true,
               },
             },
-          ]
+          ],
         },
       ],
     },
@@ -85,10 +89,6 @@ const OrderSchema = new Schema({
   totalPrice: {
     type: Number,
     required: true,
-  },
-  comment: {
-    type: String,
-    required: false,
   },
   paymentMethod: {
     type: String,

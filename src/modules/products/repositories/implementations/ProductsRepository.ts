@@ -21,6 +21,7 @@ export class ProductsRepository implements IProductsRepository {
     page,
     limit,
     company,
+    productsId,
   }: ListProps): Promise<ListProductsResultProps> {
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
@@ -47,7 +48,7 @@ export class ProductsRepository implements IProductsRepository {
     }
 
     results.results = await this.repository
-      .find({ company })
+      .find({ company, ...(productsId && { _id: { $in: productsId } }) })
       .populate(['category', 'company'])
       .skip(startIndex)
       .limit(limit)

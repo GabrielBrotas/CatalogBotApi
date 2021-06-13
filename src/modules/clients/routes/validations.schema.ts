@@ -8,12 +8,12 @@ export const CREATE_CLIENT_VALIDATION = {
     cellphone: Joi.string().optional(),
     defaultAddress: Joi.object()
       .keys({
-        state: Joi.string().required(),
-        city: Joi.string().required(),
-        street: Joi.string().required(),
-        neighborhood: Joi.string().required(),
-        number: Joi.string().required(),
-        cep: Joi.string().required(),
+        state: Joi.string().allow(null, '').optional(),
+        city: Joi.string().allow(null, '').optional(),
+        street: Joi.string().allow(null, '').optional(),
+        neighborhood: Joi.string().allow(null, '').optional(),
+        number: Joi.string().allow(null, '').optional(),
+        cep: Joi.string().allow(null, '').optional(),
       })
       .optional(),
   },
