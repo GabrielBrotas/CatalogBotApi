@@ -7,7 +7,6 @@ import {
 } from '../../repositories/ICartRepository';
 
 import { IProductsRepository } from '../../../products/repositories/IProductsRepository';
-import { IOrdersRepository } from '../../repositories/IOrdersRepository';
 import { ICompaniesRepository } from '../../../companies/repositories/ICompaniesRepository';
 
 @injectable()
@@ -34,7 +33,7 @@ class AddProductToCartUseCase {
       if (!company) throw new AppError('company not found', 404);
 
       const product = await this.productsRepository.findById(
-        orderProduct.productId,
+        orderProduct.product,
       );
 
       if (!product) throw new AppError('Invalid product', 500);

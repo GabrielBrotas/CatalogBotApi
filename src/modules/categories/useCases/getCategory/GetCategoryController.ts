@@ -8,10 +8,10 @@ const logger = new Logger('GET COMPANY');
 class GetCategoryController {
   async handle(req: Request, res: Response): Promise<Response> {
     try {
-      const { cId } = req.params;
+      const { categoryId } = req.params;
       const getCategoryUseCase = container.resolve(GetCategoryUseCase);
 
-      const category = await getCategoryUseCase.execute(cId);
+      const category = await getCategoryUseCase.execute(categoryId);
 
       return res.status(201).json(category);
     } catch (err) {

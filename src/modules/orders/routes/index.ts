@@ -2,23 +2,25 @@ import { Router } from 'express';
 import { celebrate, Joi, Segments } from 'celebrate';
 
 import ensureAuthenticated from '../../../shared/middlewares/ensureAuthenticated';
-import { DeleteOrderController } from '../useCases/cancelOrder/DeleteOrderController';
-import { ListCompanyOrdersController } from '../useCases/companyOrders/ListCompanyOrdersController';
 import { CreateOrderController } from '../useCases/createOrder/CreateOrderController';
-import { AddProductToCartController } from '../useCases/addProductToCart/AddProductToCartController';
 import { RemoveProductFromCartController } from '../useCases/removeProductFromCart/RemoveProductFromCartController';
-import { ClearCartController } from '../useCases/clearCart/clearCartController';
 import { UpdateProductCartController } from '../useCases/updateProductsCart/UpdateProductCartController';
-import { ListCartController } from '../useCases/listCart/ListCartController';
-
+import { ListCartController } from '../useCases/getCart/ListCartController';
+import { ListCompanyOrdersController } from '../useCases/listCompanyOrders/ListCompanyOrdersController';
+import { DeleteOrderController } from '../useCases/cancelOrder/DeleteOrderController';
+import { AddProductToCartController } from '../useCases/addProductToCart/AddProductToCartController';
+import { ClearCartController } from '../useCases/clearCart/clearCartController';
 import {
-  CREATE_ORDER_VALIDATION,
-  GET_CART_VALIDATION,
   ADD_PRODUCT_TO_CART_VALIDATION,
-  UPDATE_CART_VALIDATION,
+  CREATE_ORDER_VALIDATION,
   DELETE_CART_VALIDATION,
   DELETE_PRODUCT_FROM_CART_VALIDATION,
+  GET_CART_VALIDATION,
+  GET_ORDERS_VALIDATION,
+  GET_ORDER_VALIDATION,
+  UPDATE_CART_VALIDATION,
 } from './validations.schema';
+import { GetOrderController } from '../useCases/getOrder/GetOrderController';
 
 const createOrderController = new CreateOrderController();
 const listCompanyOrdersController = new ListCompanyOrdersController();
@@ -28,8 +30,18 @@ const removeProductFromCartController = new RemoveProductFromCartController();
 const clearCartController = new ClearCartController();
 const updateProductCartController = new UpdateProductCartController();
 const listCartController = new ListCartController();
+const getOrderController = new GetOrderController();
 
 const ordersRouter = Router();
+
+ordersRouter.get('/', ensureAuthenticated, celebrate(GET_ORDERS_VALIDATION), listCompanyOrdersController.handle);
+
+ordersRouter.get(
+  '/:orderId',
+  ensureAuthenticated,
+  celebrate(GET_ORDER_VALIDATION),
+  getOrderController.handle,
+);
 
 ordersRouter.post(
   '/company/:cId',
@@ -37,7 +49,6 @@ ordersRouter.post(
   ensureAuthenticated,
   createOrderController.handle,
 );
-ordersRouter.get('/', ensureAuthenticated, listCompanyOrdersController.handle);
 ordersRouter.patch('/:oId', ensureAuthenticated, deleteOrderController.handle);
 
 ordersRouter.get(
@@ -48,12 +59,11 @@ ordersRouter.get(
 );
 
 ordersRouter.post(
-  '/cart/:cId',
+  '/cart/company/:companyId',
   ensureAuthenticated,
   celebrate(ADD_PRODUCT_TO_CART_VALIDATION),
   addProductToCartController.handle,
 );
-
 
 ordersRouter.put(
   '/cart/:cartId',

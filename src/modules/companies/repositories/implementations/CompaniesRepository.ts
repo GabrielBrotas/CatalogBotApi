@@ -21,6 +21,7 @@ export class CompaniesRepository implements ICompaniesRepository {
       password,
       name,
       roles: ['company'],
+      acceptedPaymentMethods: ['Dinheiro'],
     });
   }
 
@@ -45,6 +46,7 @@ export class CompaniesRepository implements ICompaniesRepository {
     name,
     shortDescription,
     workTime,
+    acceptedPaymentMethods,
   }: IUpdateCompanyDTO): Promise<ICompany> {
     const company = await this.repository.findOne({ _id }).exec();
 
@@ -54,6 +56,7 @@ export class CompaniesRepository implements ICompaniesRepository {
     company.name = name;
     company.shortDescription = shortDescription;
     company.workTime = workTime;
+    company.acceptedPaymentMethods = acceptedPaymentMethods;
 
     await company.save();
 

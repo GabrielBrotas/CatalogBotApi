@@ -1,3 +1,4 @@
+import { IPagination } from '../../../utils/pagination';
 import { IProduct, IProductOption } from '../schemas/Product';
 
 export interface ICreateProductDTO {
@@ -30,21 +31,8 @@ export interface ListProps {
   productsId?: string[];
 }
 
-export type ListProductsResultProps = {
-  next?: {
-    page: number;
-    limit: number;
-  };
-  previous?: {
-    page: number;
-    limit: number;
-  };
-  total: number;
-  results: IProduct[];
-};
-
 export interface IProductsRepository {
-  list({ page, limit }: ListProps): Promise<ListProductsResultProps>;
+  list({ page, limit }: ListProps): Promise<IPagination>;
   create(data: ICreateProductDTO): Promise<IProduct>;
   delete(pid: string): Promise<void>;
   findById(_id: string): Promise<IProduct>;

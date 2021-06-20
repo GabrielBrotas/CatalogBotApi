@@ -1,9 +1,17 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 export type WorkTime = {
   day: number;
   from: string;
   to: string;
+};
+
+export type CompanyPaymentMethods = {
+  boleto: boolean;
+  creditCard: boolean;
+  pix: boolean;
+  money: boolean;
+  debit: boolean;
 };
 
 export interface ICompany {
@@ -15,7 +23,8 @@ export interface ICompany {
   workTime?: WorkTime[];
   shortDescription?: string;
   benefits: string[];
-  roles: ['company'];
+  acceptedPaymentMethods: CompanyPaymentMethods;
+  roles: string[];
   created_at: Date;
 }
 
@@ -50,6 +59,13 @@ const CompanySchema = new Schema({
   ],
   shortDescription: String,
   benefits: [String],
+  acceptedPaymentMethods: {
+    boleto: Boolean,
+    creditCard: Boolean,
+    pix: Boolean,
+    money: Boolean,
+    debit: Boolean,
+  },
   roles: [String],
   created_at: {
     type: Date,

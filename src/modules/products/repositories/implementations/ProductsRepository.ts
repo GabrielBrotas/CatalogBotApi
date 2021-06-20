@@ -1,5 +1,6 @@
 import { APP_API_URL } from '../../../../config/constants';
 import { AppError } from '../../../../shared/errors/AppError';
+import { IPagination, paginateModel } from '../../../../utils/pagination';
 import { Product, IProduct } from '../../schemas/Product';
 import {
   ICreateProductDTO,
@@ -7,7 +8,6 @@ import {
   IUpdateProductDTO,
   IUpdateProductImageDTO,
   ListProps,
-  ListProductsResultProps,
 } from '../IProductsRepository';
 
 export class ProductsRepository implements IProductsRepository {
@@ -22,30 +22,10 @@ export class ProductsRepository implements IProductsRepository {
     limit,
     company,
     productsId,
-  }: ListProps): Promise<ListProductsResultProps> {
+  }: ListProps): Promise<IPagination> {
     const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
-    const totalDocuments = await this.repository
-      .countDocuments({ company })
-      .exec();
-    const results: ListProductsResultProps = {
-      results: [],
-      total: totalDocuments,
-    };
 
-    if (endIndex < totalDocuments) {
-      results.next = {
-        page: page + 1,
-        limit: limit,
-      };
-    }
-
-    if (startIndex > 0) {
-      results.previous = {
-        page: page - 1,
-        limit: limit,
-      };
-    }
+    const results = await paginateModel({page, limit, repository: this.repository, countField: {company: company}})
 
     results.results = await this.repository
       .find({ company, ...(productsId && { _id: { $in: productsId } }) })

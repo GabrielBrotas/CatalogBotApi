@@ -9,7 +9,7 @@ class UpdateCompanyController {
   async handle(req: Request, res: Response): Promise<Response> {
     try {
       const { _id } = req.user;
-      const { benefits, name, shortDescription, workTime } = req.body;
+      const { benefits, name, shortDescription, workTime, acceptedPaymentMethods } = req.body;
       const updateCompanyUseCase = container.resolve(UpdateCompanyUseCase);
 
       const company = await updateCompanyUseCase.execute({
@@ -17,6 +17,7 @@ class UpdateCompanyController {
         benefits,
         name,
         shortDescription,
+        acceptedPaymentMethods,
         workTime,
       });
 

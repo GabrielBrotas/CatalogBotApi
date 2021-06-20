@@ -1,8 +1,0 @@
-{
-  "type": "mongodb",
-  "host": "localhost",
-  "port": 27017,
-  "database": "catalogbot",
-  "useUnifiedTopology": true,
-  "entities": ["./src/modules/**/entities/*.ts"]
-}

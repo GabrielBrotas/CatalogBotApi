@@ -8,13 +8,13 @@ export const CREATE_CATEGORY_VALIDATION = {
 
 export const DELETE_CATEGORY_VALIDATION = {
   [Segments.PARAMS]: {
-    cId: Joi.string().required(),
+    categoryId: Joi.string().required(),
   },
 };
 
 export const GET_CATEGORY_VALIDATION = {
   [Segments.PARAMS]: {
-    cId: Joi.string().required(),
+    categoryId: Joi.string().required(),
   },
 };
 
@@ -30,7 +30,7 @@ export const LIST_CATEGORIES_VALIDATION = {
 
 export const UPDATE_CATEGORY_VALIDATION = {
   [Segments.PARAMS]: {
-    cId: Joi.string().required(),
+    categoryId: Joi.string().required(),
   },
   [Segments.BODY]: {
     name: Joi.string().required(),

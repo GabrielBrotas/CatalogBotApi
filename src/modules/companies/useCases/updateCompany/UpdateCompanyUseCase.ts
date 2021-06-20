@@ -18,6 +18,7 @@ class UpdateCompanyUseCase {
     name,
     shortDescription,
     workTime,
+    acceptedPaymentMethods,
   }: IUpdateCompanyDTO): Promise<ICompany> {
     const company = await this.companiesRepository.updateCompany({
       _id,
@@ -25,6 +26,7 @@ class UpdateCompanyUseCase {
       name,
       shortDescription,
       workTime,
+      acceptedPaymentMethods,
     });
 
     delete company.password;

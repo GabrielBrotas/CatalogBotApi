@@ -1,4 +1,4 @@
-import { ICart } from '../entities/Cart';
+import { ICart, ICartProduct } from '../entities/Cart';
 import { IOrderProduct } from '../entities/Order';
 
 export interface FindOneDTO {
@@ -13,12 +13,12 @@ export interface FindByIdDTO {
 export interface InsertOneDTO {
   clientId: string;
   companyId: string;
-  orderProduct: IOrderProduct;
+  orderProduct: ICartProduct;
 }
 
 export interface UpdateDTO {
   cartId: string;
-  orderProducts: IOrderProduct[];
+  orderProducts: ICartProduct[];
 }
 
 export interface DeleteManyDTO {

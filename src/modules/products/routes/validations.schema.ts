@@ -8,6 +8,7 @@ const PRODUCT_VALIDATION = {
   options: Joi.array()
     .items(
       Joi.object().keys({
+        _id: Joi.string().allow(null, '').optional(),
         name: Joi.string().required(),
         isRequired: Joi.boolean().required(),
         maxQuantity: Joi.number().required(),
@@ -16,6 +17,7 @@ const PRODUCT_VALIDATION = {
           .items(
             Joi.object()
               .keys({
+                _id: Joi.string().allow(null, '').optional(),
                 name: Joi.string().required(),
                 price: Joi.number().required(),
               })

@@ -2,9 +2,14 @@ import { Joi, Segments } from 'celebrate';
 
 const orderProductSchema = Joi.object().keys({
   _id: Joi.string().optional(),
-  productId: Joi.string().required(),
+  product: Joi.object().keys({
+    _id: Joi.string().required(),
+    name: Joi.string().required(),
+    price: Joi.number().required(),
+    imageUrl: Joi.string().allow(null, '').optional(),
+  }),
   amount: Joi.number().required(),
-  comment: Joi.string().optional(),
+  comment: Joi.string().allow(null, '').optional(),
   pickedOptions: Joi.array().items(
     Joi.object()
       .keys({
@@ -41,12 +46,50 @@ export const CREATE_ORDER_VALIDATION = {
   },
 };
 
+export const GET_ORDER_VALIDATION = {
+  [Segments.PARAMS]: {
+    orderId: Joi.string().required(),
+  },
+};
+
+export const GET_ORDERS_VALIDATION = {
+  [Segments.QUERY]: {
+    page: Joi.string().required(),
+    limit: Joi.string().required(),
+  },
+};
+
+const cartProductSchema = Joi.object().keys({
+  _id: Joi.string().optional(),
+  product: Joi.string().required(),
+  amount: Joi.number().required(),
+  comment: Joi.string().allow(null, '').optional(),
+  pickedOptions: Joi.array().items(
+    Joi.object()
+      .keys({
+        _id: Joi.string().optional(),
+        productOptionName: Joi.string().required(),
+        optionAdditionals: Joi.array().items(
+          Joi.object()
+            .keys({
+              _id: Joi.string().optional(),
+              name: Joi.string().required(),
+              price: Joi.number().required(),
+              amount: Joi.number().required(),
+            })
+            .required(),
+        ),
+      })
+      .optional(),
+  ),
+});
+
 export const ADD_PRODUCT_TO_CART_VALIDATION = {
   [Segments.PARAMS]: {
-    cId: Joi.string().required(),
+    companyId: Joi.string().required(),
   },
   [Segments.BODY]: {
-    orderProduct: orderProductSchema,
+    orderProduct: cartProductSchema,
   },
 };
 
@@ -61,7 +104,7 @@ export const UPDATE_CART_VALIDATION = {
     cartId: Joi.string().required(),
   },
   [Segments.BODY]: {
-    orderProducts: Joi.array().items(orderProductSchema),
+    orderProducts: Joi.array().items(cartProductSchema),
   },
 };
 

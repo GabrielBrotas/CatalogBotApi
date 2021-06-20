@@ -1,8 +1,8 @@
+import { IOrder } from './../../entities/Order';
 import { injectable, inject } from 'tsyringe';
 import { AppError } from '../../../../shared/errors/AppError';
 import { ICompaniesRepository } from '../../../companies/repositories/ICompaniesRepository';
 import { IProductsRepository } from '../../../products/repositories/IProductsRepository';
-import { IOrder } from '../../entities/Order';
 import {
   ICreateOrderDTO,
   IOrdersRepository,
@@ -24,7 +24,6 @@ class CreateOrderUseCase {
 
   async execute({
     clientId,
-    comment,
     companyId,
     deliveryAddress,
     orderProducts,
@@ -36,7 +35,7 @@ class CreateOrderUseCase {
 
       if (!company) throw new AppError('company not found', 404);
       const productsId = orderProducts.map(
-        orderProduct => orderProduct.productId,
+        orderProduct => orderProduct.product._id,
       );
 
       const { results } = await this.productsRepository.list({
@@ -50,7 +49,6 @@ class CreateOrderUseCase {
 
       const newOrder = await this.ordersRepository.create({
         clientId,
-        comment,
         companyId,
         deliveryAddress,
         orderProducts,
@@ -58,7 +56,7 @@ class CreateOrderUseCase {
         paymentMethod,
       });
 
-      return newOrder
+      return newOrder;
     } catch (err) {
       throw new AppError(err, 500);
     }

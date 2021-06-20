@@ -5,14 +5,14 @@ import { AddProductToCartUseCase } from './AddProductToCartUseCase';
 class AddProductToCartController {
   async handle(req: Request, res: Response): Promise<Response> {
     const { orderProduct } = req.body;
-    const { cId } = req.params;
+    const { companyId } = req.params;
     const { _id } = req.user;
     try {
       const addProductToCart = container.resolve(AddProductToCartUseCase);
 
       const newOrder = await addProductToCart.execute({
         clientId: _id,
-        companyId: cId,
+        companyId,
         orderProduct,
       });
 

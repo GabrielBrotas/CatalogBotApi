@@ -6,7 +6,7 @@ import { EditCategoryUseCase } from './EditCategoryUseCase';
 class EditCategoryController {
   async handle(req: Request, res: Response): Promise<Response> {
     const { name } = req.body;
-    const { cId } = req.params;
+    const { categoryId } = req.params;
     const { _id } = req.user;
 
     try {
@@ -14,7 +14,7 @@ class EditCategoryController {
 
       const category = await editCategoryUseCase.execute({
         companyId: _id,
-        categoryId: cId,
+        categoryId: categoryId,
         name,
       });
 

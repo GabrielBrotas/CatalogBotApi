@@ -1,4 +1,5 @@
 import { AppError } from '../../../../shared/errors/AppError';
+import { paginateModel } from '../../../../utils/pagination';
 import { Category, ICategory } from '../../schemas/Category';
 import {
   ICategoriesRepository,
@@ -38,29 +39,8 @@ export class CategoriesRepository implements ICategoriesRepository {
 
   async listMy({ _id, limit, page }: ListMyProps): Promise<ICategory[]> {
     const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
-    const totalDocuments = await this.repository
-      .countDocuments({ company: _id })
-      .exec();
 
-    const results: ListCategoriesResultProps = {
-      results: [],
-      total: totalDocuments,
-    };
-
-    if (endIndex < totalDocuments) {
-      results.next = {
-        page: page + 1,
-        limit: limit,
-      };
-    }
-
-    if (startIndex > 0) {
-      results.previous = {
-        page: page - 1,
-        limit: limit,
-      };
-    }
+    const results = await paginateModel({page, limit, repository: this.repository, countField: {company: _id}})
 
     results.results = await this.repository
       .find({ company: _id })

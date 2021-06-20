@@ -16,11 +16,11 @@ class ListCartUseCase {
     private cartsRepository: ICartsRepository,
   ) {}
 
-  async execute({ clientId, companyId }: IRequest): Promise<ICart> {
+  async execute({ clientId, companyId }: IRequest): Promise<ICart | null> {
     try {
       const cart = await this.cartsRepository.findOne({ clientId, companyId });
 
-      if (!cart) throw new AppError('cart not found', 404);
+      if (!cart) return null;
 
       return cart;
     } catch (err) {

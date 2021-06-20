@@ -1,6 +1,6 @@
-
-import { IAddress } from "../../clients/schemas/Client";
-import { IOrder, IOrderProduct, IPaymentMethods } from "../entities/Order";
+import { IPagination } from './../../../utils/pagination';
+import { IPaymentMethods, IOrder, IOrderProduct, IOrderPopulated } from './../entities/Order';
+import { IAddress } from './../../clients/schemas/Client';
 
 export interface ICreateOrderDTO {
   clientId: string;
@@ -11,9 +11,15 @@ export interface ICreateOrderDTO {
   paymentMethod: IPaymentMethods;
 }
 
+export interface IListByCompanyId {
+  _id: string;
+  page: number;
+  limit: number;
+}
+
 export interface IOrdersRepository {
-  findById(_id: string): Promise<IOrder | null>;
+  findById(_id: string): Promise<IOrderPopulated | null>;
   create(data: ICreateOrderDTO): Promise<IOrder>;
-  listByCompanyId(companyId: string): Promise<IOrder[]>;
+  listByCompanyId({_id, limit, page}: IListByCompanyId): Promise<IPagination>;
   cancelById(orderId: string): Promise<IOrder>;
 }

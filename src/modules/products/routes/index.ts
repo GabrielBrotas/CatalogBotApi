@@ -30,10 +30,11 @@ const updateProductImageController = new UpdateProductImageController();
 const getProductController = new GetProductController();
 
 productsRouter.get(
-  '/:companyId',
+  '/company/:companyId',
   celebrate(LIST_PRODUCT_VALIDATION),
   listProductsController.handle,
 );
+
 productsRouter.post(
   '/',
   celebrate(CREATE_PRODUCT_VALIDATION),
@@ -42,7 +43,7 @@ productsRouter.post(
 );
 
 productsRouter.get(
-  '/product/:pId',
+  '/:pId',
   celebrate(GET_PRODUCT_VALIDATION),
   getProductController.handle,
 );

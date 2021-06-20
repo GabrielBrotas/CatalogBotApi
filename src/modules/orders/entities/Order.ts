@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { IAddress } from '../../clients/schemas/Client';
+import { IAddress, IClient } from '../../clients/schemas/Client';
 
 type OrderOptionsAdditionals = {
   name: string;
@@ -13,8 +13,13 @@ export type PickedOptions = {
 };
 
 export type IOrderProduct = {
-  _id?: string
-  productId: string;
+  _id?: string;
+  product: {
+    _id: string;
+    name: string;
+    price: number;
+    imageUrl: string;
+  };
   amount: string;
   pickedOptions: PickedOptions[];
   comment?: string;
@@ -36,8 +41,20 @@ export type IPaymentMethods =
 
 export interface IOrder {
   _id: string;
-  clientId: string;
-  companyId: string;
+  client: string;
+  company: string;
+  orderProducts: IOrderProduct[];
+  totalPrice: string;
+  paymentMethod: IPaymentMethods;
+  deliveryAddress: IAddress;
+  status: IOrderStatus;
+  created_at: Date;
+}
+
+export type IOrderPopulated = {
+  _id: string;
+  client: IClient;
+  company: string;
   orderProducts: IOrderProduct[];
   totalPrice: string;
   paymentMethod: IPaymentMethods;
@@ -47,17 +64,33 @@ export interface IOrder {
 }
 
 const OrderSchema = new Schema({
-  clientId: {
-    type: String,
+  client: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Client',
     required: true,
   },
-  companyId: {
-    type: String,
+  company: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Company',
     required: true,
   },
   orderProducts: [
     {
-      productId: String,
+      product: {
+        _id: {
+          type: String,
+          required: true,
+        },
+        name: {
+          type: String,
+          required: true,
+        },
+        imageUrl: String,
+        price: {
+          type: Number,
+          required: true,
+        },
+      },
       amount: Number,
       comment: {
         type: String,
@@ -97,21 +130,27 @@ const OrderSchema = new Schema({
   deliveryAddress: {
     state: {
       type: String,
+      required: true,
     },
     city: {
       type: String,
+      required: true,
     },
     street: {
       type: String,
+      required: true,
     },
     neighborhood: {
       type: String,
+      required: true,
     },
     number: {
       type: Number,
+      required: true,
     },
     cep: {
       type: String,
+      required: true,
     },
   },
   status: {

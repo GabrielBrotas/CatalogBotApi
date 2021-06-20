@@ -25,13 +25,13 @@ const editCategoryController = new EditCategoryController();
 const getCategoryController = new GetCategoryController();
 
 categoriesRouter.get(
-  '/:companyId',
+  '/company/:companyId',
   celebrate(LIST_CATEGORIES_VALIDATION),
   listCategoriesController.handle,
 );
 
 categoriesRouter.get(
-  '/category/:cId',
+  '/:categoryId',
   celebrate(GET_CATEGORY_VALIDATION),
   ensureAuthenticated,
   getCategoryController.handle,
@@ -45,14 +45,14 @@ categoriesRouter.post(
 );
 
 categoriesRouter.put(
-  '/:cId',
+  '/:categoryId',
   celebrate(UPDATE_CATEGORY_VALIDATION),
   ensureAuthenticated,
   editCategoryController.handle,
 );
 
 categoriesRouter.delete(
-  '/:cId',
+  '/:categoryId',
   celebrate(DELETE_CATEGORY_VALIDATION),
   ensureAuthenticated,
   celeteCategoryController.handle,

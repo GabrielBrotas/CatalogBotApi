@@ -20,7 +20,7 @@ class AuthenticateClientController {
       return res.status(201).json(authInfo);
     } catch (err) {
       logger.error(err.message)
-      return res.status(400).send(err.message);
+      return res.status(400).json(err);
     }
   }
 }

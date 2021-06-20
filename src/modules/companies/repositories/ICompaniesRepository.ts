@@ -1,4 +1,4 @@
-import { ICompany, WorkTime } from '../schemas/Company';
+import { CompanyPaymentMethods, ICompany, WorkTime } from '../schemas/Company';
 
 interface ICreateCompanyDTO {
   name: string;
@@ -12,6 +12,7 @@ interface IUpdateCompanyDTO {
   workTime: WorkTime[];
   shortDescription?: string;
   benefits: string[];
+  acceptedPaymentMethods: CompanyPaymentMethods;
 }
 
 interface IUpdateCompanyImageDTO {

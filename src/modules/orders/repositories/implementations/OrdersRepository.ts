@@ -1,6 +1,7 @@
 import { AppError } from '../../../../shared/errors/AppError';
-import { IOrder, Order } from '../../entities/Order';
-import { ICreateOrderDTO, IOrdersRepository } from '../IOrdersRepository';
+import { IPagination, paginateModel } from '../../../../utils/pagination';
+import { IOrder, IOrderPopulated, Order } from '../../entities/Order';
+import { ICreateOrderDTO, IListByCompanyId, IOrdersRepository } from '../IOrdersRepository';
 
 export class OrdersRepository implements IOrdersRepository {
   private repository;
@@ -9,8 +10,11 @@ export class OrdersRepository implements IOrdersRepository {
     this.repository = Order;
   }
 
-  async findById(_id: string): Promise<IOrder | null> {
-    const order = await this.repository.findOne({ _id });
+  async findById(_id: string): Promise<IOrderPopulated | null> {
+    const order = await this.repository
+      .findOne({ _id })
+      .populate(['client'])
+      .exec();
     if (!order) return null;
     return order;
   }
@@ -24,8 +28,8 @@ export class OrdersRepository implements IOrdersRepository {
     paymentMethod,
   }: ICreateOrderDTO): Promise<IOrder> {
     const order = await this.repository.create({
-      clientId,
-      companyId,
+      client: clientId,
+      company: companyId,
       deliveryAddress,
       orderProducts,
       totalPrice,
@@ -36,14 +40,25 @@ export class OrdersRepository implements IOrdersRepository {
     return order;
   }
 
-  async listByCompanyId(companyId: string): Promise<IOrder[]> {
-    const orders = await this.repository.find({ companyId: companyId }).exec();
-    return orders;
+  async listByCompanyId({_id, limit, page}: IListByCompanyId): Promise<IPagination> {
+    const startIndex = (page - 1) * limit;
+
+    const results = await paginateModel({page, limit, repository: this.repository, countField: {company: _id}})
+    console.log(results)
+    results.results = await this.repository
+      .find({ company: _id })
+      .skip(startIndex)
+      .limit(limit)
+      .sort({ created_at: -1 })
+      .populate(['client'])
+      .exec();
+
+    return results;
   }
 
   async cancelById(orderId: string): Promise<IOrder> {
     try {
-      const order = await this.repository.findOne({ _id: orderId});
+      const order = await this.repository.findOne({ _id: orderId });
 
       if (!order) throw new AppError('Order not found', 404);
 
