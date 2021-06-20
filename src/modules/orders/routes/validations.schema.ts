@@ -46,6 +46,25 @@ export const CREATE_ORDER_VALIDATION = {
   },
 };
 
+export const UPDATE_ORDER_VALIDATION = {
+  [Segments.BODY]: {
+    order: {
+      paymentMethod: Joi.string().required(),
+      deliveryAddress: Joi.object().keys({
+        state: Joi.string().required(),
+        city: Joi.string().required(),
+        street: Joi.string().required(),
+        neighborhood: Joi.string().required(),
+        number: Joi.any().optional(),
+        cep: Joi.string().required(),
+      }),
+      totalPrice: Joi.number().required(),
+      orderProducts: Joi.array().items(orderProductSchema),
+      status: Joi.string().required()
+    }
+  }
+};
+
 export const GET_ORDER_VALIDATION = {
   [Segments.PARAMS]: {
     orderId: Joi.string().required(),

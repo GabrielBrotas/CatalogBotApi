@@ -1,5 +1,5 @@
 import { IPagination } from './../../../utils/pagination';
-import { IPaymentMethods, IOrder, IOrderProduct, IOrderPopulated } from './../entities/Order';
+import { IPaymentMethods, IOrder, IOrderProduct, IOrderPopulated, IOrderStatus } from './../entities/Order';
 import { IAddress } from './../../clients/schemas/Client';
 
 export interface ICreateOrderDTO {
@@ -17,9 +17,14 @@ export interface IListByCompanyId {
   limit: number;
 }
 
+export interface IUpdateOrderDTO {
+  orderId: string;
+  data: IOrder
+}
+
 export interface IOrdersRepository {
   findById(_id: string): Promise<IOrderPopulated | null>;
   create(data: ICreateOrderDTO): Promise<IOrder>;
   listByCompanyId({_id, limit, page}: IListByCompanyId): Promise<IPagination>;
-  cancelById(orderId: string): Promise<IOrder>;
+  update({orderId, data}: IUpdateOrderDTO): Promise<IOrder>;
 }

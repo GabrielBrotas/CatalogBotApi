@@ -7,7 +7,7 @@ import { RemoveProductFromCartController } from '../useCases/removeProductFromCa
 import { UpdateProductCartController } from '../useCases/updateProductsCart/UpdateProductCartController';
 import { ListCartController } from '../useCases/getCart/ListCartController';
 import { ListCompanyOrdersController } from '../useCases/listCompanyOrders/ListCompanyOrdersController';
-import { DeleteOrderController } from '../useCases/cancelOrder/DeleteOrderController';
+import { UpdateOrderController } from '../useCases/updateOrder/UpdateOrderController';
 import { AddProductToCartController } from '../useCases/addProductToCart/AddProductToCartController';
 import { ClearCartController } from '../useCases/clearCart/clearCartController';
 import {
@@ -19,12 +19,13 @@ import {
   GET_ORDERS_VALIDATION,
   GET_ORDER_VALIDATION,
   UPDATE_CART_VALIDATION,
+  UPDATE_ORDER_VALIDATION,
 } from './validations.schema';
 import { GetOrderController } from '../useCases/getOrder/GetOrderController';
 
 const createOrderController = new CreateOrderController();
 const listCompanyOrdersController = new ListCompanyOrdersController();
-const deleteOrderController = new DeleteOrderController();
+const updateOrderController = new UpdateOrderController();
 const addProductToCartController = new AddProductToCartController();
 const removeProductFromCartController = new RemoveProductFromCartController();
 const clearCartController = new ClearCartController();
@@ -49,7 +50,7 @@ ordersRouter.post(
   ensureAuthenticated,
   createOrderController.handle,
 );
-ordersRouter.patch('/:oId', ensureAuthenticated, deleteOrderController.handle);
+ordersRouter.put('/:oId', ensureAuthenticated, celebrate(UPDATE_ORDER_VALIDATION), updateOrderController.handle);
 
 ordersRouter.get(
   '/cart/company/:companyId',
