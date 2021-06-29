@@ -17,7 +17,7 @@ type PaginationModelProps = {
   page: number,
   limit: number,
   repository: Model<any, {}, {}>
-  countField: { [key: string]: string}[]
+  countField: { [key: string]: string}
 }
 
 export async function paginateModel({page, limit,repository, countField}: PaginationModelProps) {
@@ -25,8 +25,8 @@ export async function paginateModel({page, limit,repository, countField}: Pagina
   const endIndex = page * limit;
 
   const totalDocuments = await repository
-    .countDocuments(countField )
-    .exec();
+  .countDocuments(countField)
+  .exec();
 
   const results: IPagination = {
     results: [],

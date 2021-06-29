@@ -25,7 +25,7 @@ export class ProductsRepository implements IProductsRepository {
   }: ListProps): Promise<IPagination> {
     const startIndex = (page - 1) * limit;
 
-    const results = await paginateModel({page, limit, repository: this.repository, countField: [{company: company}]})
+    const results = await paginateModel({page, limit, repository: this.repository, countField: {company: company}})
 
     results.results = await this.repository
       .find({ company, ...(productsId && { _id: { $in: productsId } }) })

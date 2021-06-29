@@ -19,6 +19,10 @@ export interface IUpdateNotificationsDTO {
   set: { [key in NOTIFICATION_TYPES]?: any };
 }
 
+export interface IDeleteNotificationsDTO {
+  notificationsId: string[];
+}
+
 export interface ListNotificationsDTO {
   Receiver: string;
   Sender?: string;
@@ -28,11 +32,13 @@ export interface ListNotificationsDTO {
 
 export interface FindNotificationsDTO {
   Receiver: string;
+  NotificationsID?:string[]
 }
 
 export interface INotificationsRepository {
   create(data: ICreateNotificationDTO): Promise<INotification>;
   updateMany(data: IUpdateNotificationsDTO): Promise<void>;
+  deleteMany(data: IDeleteNotificationsDTO): Promise<void>;
   list(data: ListNotificationsDTO): Promise<IPagination>;
   find(data: FindNotificationsDTO): Promise<INotification[]>;
 }

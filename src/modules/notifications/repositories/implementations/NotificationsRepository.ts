@@ -1,5 +1,5 @@
 import { INotification, Notification } from '../../schemas/Notification'
-import { FindNotificationsDTO, ICreateNotificationDTO, INotificationsRepository, IUpdateNotificationsDTO, ListNotificationsDTO } from './../INotificationsRepository';
+import { FindNotificationsDTO, ICreateNotificationDTO, INotificationsRepository, IUpdateNotificationsDTO, ListNotificationsDTO, IDeleteNotificationsDTO } from './../INotificationsRepository';
 import { IPagination, paginateModel } from '../../../../utils/pagination';
 
 export class NotificationsRepository implements INotificationsRepository {
@@ -22,10 +22,21 @@ export class NotificationsRepository implements INotificationsRepository {
     return
   }
 
+  async deleteMany({notificationsId}: IDeleteNotificationsDTO): Promise<void> {
+    notificationsId.map(async (notification) => {
+      await this.repository.deleteOne({_id: notification})
+    })
+    return
+  }
+
   async list({page, limit = 10, Receiver, Sender}: ListNotificationsDTO): Promise<IPagination> {
     const startIndex = (page - 1) * limit;
 
-    const results = await paginateModel({page, limit, repository: this.repository, countField: [{ Receiver, ...( Sender && {Sender}) }]})
+    const countField: any = { Receiver }
+
+    if (Sender) countField['Sender'] = Sender
+
+    const results = await paginateModel({page, limit, repository: this.repository, countField})
 
     results.results = await this.repository
     .find({ Receiver, ...( Sender && {Sender}) })
@@ -37,8 +48,8 @@ export class NotificationsRepository implements INotificationsRepository {
     return results;
   }
 
-  async find({Receiver}:FindNotificationsDTO): Promise<INotification[]> {
-    const notifications = await this.repository.find({Receiver})
+  async find({Receiver, NotificationsID}:FindNotificationsDTO): Promise<INotification[]> {
+    const notifications = await this.repository.find({Receiver, ...(NotificationsID && { _id: { $in: NotificationsID } })})
     return notifications;
   }
 }

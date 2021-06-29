@@ -43,7 +43,7 @@ export class OrdersRepository implements IOrdersRepository {
   async listByCompanyId({_id, limit, page}: IListByCompanyId): Promise<IPagination> {
     const startIndex = (page - 1) * limit;
 
-    const results = await paginateModel({page, limit, repository: this.repository, countField: [{company: _id}]})
+    const results = await paginateModel({page, limit, repository: this.repository, countField: {company: _id}})
 
     results.results = await this.repository
       .find({ company: _id })
@@ -59,7 +59,7 @@ export class OrdersRepository implements IOrdersRepository {
   async find({where, limit, page}: IFindOrdersDTO): Promise<IPagination> {
     const {clientId, companyId} = where
     const startIndex = (page - 1) * limit;
-    const results = await paginateModel({page, limit, repository: this.repository, countField: [{ client: clientId, company: companyId }]})
+    const results = await paginateModel({page, limit, repository: this.repository, countField: { client: clientId, company: companyId }})
 
     results.results = await this.repository
       .find({ client: clientId, company: companyId})

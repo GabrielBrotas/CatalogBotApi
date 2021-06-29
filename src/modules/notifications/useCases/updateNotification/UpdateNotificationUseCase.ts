@@ -17,10 +17,17 @@ class UpdateNotificationUseCase {
 
   async execute({ notificationsId, userId }: IRequest): Promise<void> {
     const notifications = await this.notificationsRepository.find({Receiver: userId});
+    const userNotificationsToUpdate = notifications.filter(notification => notificationsId.includes(String(notification._id)))
 
-    if (notifications.every(notification => String(notification.Receiver) !== String(userId))) throw new AppError('Not authorized', 404);
+    if (userNotificationsToUpdate.every(notification => String(notification.Receiver) !== String(userId))) throw new AppError('Not authorized', 404);
 
-    await this.notificationsRepository.updateMany({notificationsId, set: {Viewed: true}})
+    this.notificationsRepository.updateMany({notificationsId, set: {Viewed: true}})
+
+    if(notifications.length >= 15) {
+      const allNotificationsId = notifications.map(notification => notification._id)
+      this.notificationsRepository.deleteMany({ notificationsId: allNotificationsId })
+    }
+
     return;
   }
 }

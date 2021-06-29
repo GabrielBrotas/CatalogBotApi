@@ -9,7 +9,6 @@ class ListNotificationsController {
   async handle(req: Request, res: Response): Promise<Response> {
     const { page, limit, Sender } = req.query;
     const { _id } = req.user;
-
     try {
       const listNotificationsUseCase = container.resolve(
         ListNotificationsUseCase,
