@@ -12,6 +12,8 @@ import { ICategoriesRepository } from '../../modules/categories/repositories/ICa
 import { CategoriesRepository } from '../../modules/categories/repositories/implementations/CategoriesRepository';
 import { ICartsRepository } from '../../modules/orders/repositories/ICartRepository';
 import { CartsRepository } from '../../modules/orders/repositories/implementations/CartsRepository';
+import { INotificationsRepository } from '../../modules/notifications/repositories/INotificationsRepository';
+import { NotificationsRepository } from './../../modules/notifications/repositories/implementations/NotificationsRepository';
 
 container.registerSingleton<ICompaniesRepository>(
   'CompaniesRepository',
@@ -41,4 +43,8 @@ container.registerSingleton<IOrdersRepository>(
 container.registerSingleton<ICartsRepository>(
   'CartsRepository',
   CartsRepository,
+);
+container.registerSingleton<INotificationsRepository>(
+  'NotificationsRepository',
+  NotificationsRepository,
 );

@@ -38,11 +38,12 @@ export const CREATE_ORDER_VALIDATION = {
       city: Joi.string().required(),
       street: Joi.string().required(),
       neighborhood: Joi.string().required(),
-      number: Joi.string().required(),
+      number: Joi.any().required(),
       cep: Joi.string().required(),
     }),
     totalPrice: Joi.number().required(),
     orderProducts: Joi.array().items(orderProductSchema),
+    saveAddressAsDefault: Joi.boolean().allow(null, '').optional(),
   },
 };
 
@@ -68,6 +69,12 @@ export const UPDATE_ORDER_VALIDATION = {
 export const GET_ORDER_VALIDATION = {
   [Segments.PARAMS]: {
     orderId: Joi.string().required(),
+  },
+};
+
+export const GET_CLIENT_ORDERS_VALIDATION = {
+  [Segments.PARAMS]: {
+    companyId: Joi.string().required(),
   },
 };
 

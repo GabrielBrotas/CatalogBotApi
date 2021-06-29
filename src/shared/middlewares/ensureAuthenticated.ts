@@ -24,7 +24,7 @@ export default function ensureAuthenticated(
     logger.error('JWT token is missing');
     throw new AppError('JWT token is missing', 401);
   }
-  
+
   // Bearer asdhksau, pegar apenas o token e ignorar o Bearer
   const [, token] = authHeader.split(' ');
 
@@ -38,7 +38,6 @@ export default function ensureAuthenticated(
     request.user = {
       _id: sub,
     };
-
     return next();
   } catch (err) {
     logger.error('Invalid JWT token', err);

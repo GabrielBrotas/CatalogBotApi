@@ -4,6 +4,7 @@ import {
   IClientsRepository,
   ICreateClientDTO,
   IFindClientByEmailOrCellphoneDTO,
+  IUpdateClientDTO,
 } from '../IClientsRepository';
 
 export class ClientsRepository implements IClientsRepository {
@@ -26,6 +27,17 @@ export class ClientsRepository implements IClientsRepository {
       cellphone,
       roles: ['client'],
     });
+  }
+
+  async update({userId, set}: IUpdateClientDTO): Promise<void> {
+    const client = await this.repository.findOne({ _id: userId });
+    if (!client) throw new AppError('User not found', 404);
+
+    if(set.defaultAddress){
+      client.defaultAddress = set.defaultAddress
+    }
+    
+    await client.save()
   }
 
   async findById(_id: string): Promise<IClient> {

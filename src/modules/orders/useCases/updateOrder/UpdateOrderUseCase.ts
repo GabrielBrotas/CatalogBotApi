@@ -20,6 +20,7 @@ class UpdateOrderUseCase {
   async execute({ orderId, userId, orderUpdated }: IRequest): Promise<IOrder> {
     try {
       const order = await this.ordersRepository.findById(orderId);
+      console.log({order})
       if (!order) throw new AppError('Order not found', 404);
       if (String(order.client._id) !== String(userId) && String(order.company) !== String(userId))
         throw new AppError('Not authorized', 404);

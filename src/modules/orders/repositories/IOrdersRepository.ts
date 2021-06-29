@@ -9,10 +9,20 @@ export interface ICreateOrderDTO {
   totalPrice: number;
   deliveryAddress: IAddress;
   paymentMethod: IPaymentMethods;
+  saveAddressAsDefault?: boolean
 }
 
 export interface IListByCompanyId {
   _id: string;
+  page: number;
+  limit: number;
+}
+
+export interface IFindOrdersDTO {
+  where: {
+    clientId: string;
+    companyId: string
+  }
   page: number;
   limit: number;
 }
@@ -23,8 +33,10 @@ export interface IUpdateOrderDTO {
 }
 
 export interface IOrdersRepository {
+  find({where, limit, page}: IFindOrdersDTO): Promise<IPagination>;
   findById(_id: string): Promise<IOrderPopulated | null>;
   create(data: ICreateOrderDTO): Promise<IOrder>;
   listByCompanyId({_id, limit, page}: IListByCompanyId): Promise<IPagination>;
   update({orderId, data}: IUpdateOrderDTO): Promise<IOrder>;
+  // companyOrdersDate(companyId: string): Promise<string[]>;
 }

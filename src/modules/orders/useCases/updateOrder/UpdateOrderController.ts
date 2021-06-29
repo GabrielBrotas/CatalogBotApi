@@ -9,15 +9,14 @@ class UpdateOrderController {
       const { oId } = req.params;
       const { order } = req.body;
       const { _id } = req.user;
-
+      
       const updateOrderUseCase = container.resolve(UpdateOrderUseCase);
-      console.log('here')
+
       const updatedOrder = await updateOrderUseCase.execute({
         orderId: oId,
         userId: _id,
         orderUpdated: order
       });
-
       return res.status(200).json(updatedOrder);
     } catch (err) {
       throw new AppError(err, 500);

@@ -1,3 +1,4 @@
+import { IClientsRepository } from './../../../clients/repositories/IClientsRepository';
 import { IOrder } from './../../entities/Order';
 import { injectable, inject } from 'tsyringe';
 import { AppError } from '../../../../shared/errors/AppError';
@@ -20,6 +21,9 @@ class CreateOrderUseCase {
 
     @inject('ProductsRepository')
     private productsRepository: IProductsRepository,
+
+    @inject('ClientsRepository')
+    private clientsRepository: IClientsRepository,
   ) {}
 
   async execute({
@@ -29,11 +33,13 @@ class CreateOrderUseCase {
     orderProducts,
     totalPrice,
     paymentMethod,
+    saveAddressAsDefault = false
   }: ICreateOrderDTO): Promise<IOrder> {
     try {
       const company = await this.companiesRepository.findById(companyId);
 
       if (!company) throw new AppError('company not found', 404);
+
       const productsId = orderProducts.map(
         orderProduct => orderProduct.product._id,
       );
@@ -55,6 +61,10 @@ class CreateOrderUseCase {
         totalPrice,
         paymentMethod,
       });
+
+      if(saveAddressAsDefault) {
+        this.clientsRepository.update({userId: clientId, set: {defaultAddress: deliveryAddress}})
+      }
 
       return newOrder;
     } catch (err) {

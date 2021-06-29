@@ -6,25 +6,28 @@ import { CreateOrderController } from '../useCases/createOrder/CreateOrderContro
 import { RemoveProductFromCartController } from '../useCases/removeProductFromCart/RemoveProductFromCartController';
 import { UpdateProductCartController } from '../useCases/updateProductsCart/UpdateProductCartController';
 import { ListCartController } from '../useCases/getCart/ListCartController';
-import { ListCompanyOrdersController } from '../useCases/listCompanyOrders/ListCompanyOrdersController';
+import { ListClientOrdersController } from '../useCases/listClientOrders/ListClientOrdersController';
 import { UpdateOrderController } from '../useCases/updateOrder/UpdateOrderController';
 import { AddProductToCartController } from '../useCases/addProductToCart/AddProductToCartController';
 import { ClearCartController } from '../useCases/clearCart/clearCartController';
+import { GetOrderController } from '../useCases/getOrder/GetOrderController';
+import { ListCompanyOrdersController } from '../useCases/listCompanyOrders/ListCompanyOrdersController';
 import {
   ADD_PRODUCT_TO_CART_VALIDATION,
   CREATE_ORDER_VALIDATION,
   DELETE_CART_VALIDATION,
   DELETE_PRODUCT_FROM_CART_VALIDATION,
   GET_CART_VALIDATION,
+  GET_CLIENT_ORDERS_VALIDATION,
   GET_ORDERS_VALIDATION,
   GET_ORDER_VALIDATION,
   UPDATE_CART_VALIDATION,
   UPDATE_ORDER_VALIDATION,
 } from './validations.schema';
-import { GetOrderController } from '../useCases/getOrder/GetOrderController';
 
 const createOrderController = new CreateOrderController();
 const listCompanyOrdersController = new ListCompanyOrdersController();
+const listClientOrdersController = new ListClientOrdersController();
 const updateOrderController = new UpdateOrderController();
 const addProductToCartController = new AddProductToCartController();
 const removeProductFromCartController = new RemoveProductFromCartController();
@@ -36,6 +39,7 @@ const getOrderController = new GetOrderController();
 const ordersRouter = Router();
 
 ordersRouter.get('/', ensureAuthenticated, celebrate(GET_ORDERS_VALIDATION), listCompanyOrdersController.handle);
+ordersRouter.get('/client/company/:companyId', ensureAuthenticated, celebrate(GET_CLIENT_ORDERS_VALIDATION), listClientOrdersController.handle);
 
 ordersRouter.get(
   '/:orderId',

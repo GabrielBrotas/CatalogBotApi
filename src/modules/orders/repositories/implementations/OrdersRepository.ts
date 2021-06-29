@@ -1,7 +1,7 @@
 import { AppError } from '../../../../shared/errors/AppError';
 import { IPagination, paginateModel } from '../../../../utils/pagination';
 import { IOrder, IOrderPopulated, Order } from '../../entities/Order';
-import { ICreateOrderDTO, IListByCompanyId, IOrdersRepository, IUpdateOrderDTO } from '../IOrdersRepository';
+import { ICreateOrderDTO, IFindOrdersDTO, IListByCompanyId, IOrdersRepository, IUpdateOrderDTO } from '../IOrdersRepository';
 
 export class OrdersRepository implements IOrdersRepository {
   private repository;
@@ -11,7 +11,7 @@ export class OrdersRepository implements IOrdersRepository {
   }
 
   async findById(_id: string): Promise<IOrderPopulated | null> {
-    const order = await this.repository
+    const order: IOrderPopulated = await this.repository
       .findOne({ _id })
       .populate(['client'])
       .exec();
@@ -43,7 +43,7 @@ export class OrdersRepository implements IOrdersRepository {
   async listByCompanyId({_id, limit, page}: IListByCompanyId): Promise<IPagination> {
     const startIndex = (page - 1) * limit;
 
-    const results = await paginateModel({page, limit, repository: this.repository, countField: {company: _id}})
+    const results = await paginateModel({page, limit, repository: this.repository, countField: [{company: _id}]})
 
     results.results = await this.repository
       .find({ company: _id })
@@ -51,6 +51,22 @@ export class OrdersRepository implements IOrdersRepository {
       .limit(limit)
       .sort({ created_at: -1  })
       .populate(['client'])
+      .exec();
+
+    return results;
+  }
+
+  async find({where, limit, page}: IFindOrdersDTO): Promise<IPagination> {
+    const {clientId, companyId} = where
+    const startIndex = (page - 1) * limit;
+    const results = await paginateModel({page, limit, repository: this.repository, countField: [{ client: clientId, company: companyId }]})
+
+    results.results = await this.repository
+      .find({ client: clientId, company: companyId})
+      .skip(startIndex)
+      .limit(limit)
+      .sort({ created_at: -1  })
+      // .populate(['client'])
       .exec();
 
     return results;

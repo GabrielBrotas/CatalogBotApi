@@ -16,10 +16,20 @@ import { clientsRouter } from './modules/clients/routes';
 import { ordersRouter } from './modules/orders/routes';
 import { Logger } from './shared/middlewares/logger';
 import { categoriesRouter } from './modules/categories/routes';
+import { Socket } from 'socket.io';
+import { notificationsRouter } from './modules/notifications/routes';
+import { SocketEventsHandler } from './modules/socket/EventsHandlers';
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+
+const server = require('http').createServer(app);
+const io = require('socket.io')(server, {
+  cors: {
+    origin: "*",
+  }
+});
 
 const serverLogger = new Logger('REQUEST');
 
@@ -39,6 +49,7 @@ app.use('/clients', clientsRouter);
 app.use('/products', productsRouter);
 app.use('/categories', categoriesRouter);
 app.use('/orders', ordersRouter);
+app.use('/notifications', notificationsRouter);
 app.use(errors());
 
 app.use(
@@ -56,8 +67,24 @@ app.use(
   },
 );
 
+let connections: Array<{userID: string, socketID: string}> = []
+
+const socketEventsHandler = new SocketEventsHandler()
+
+io.on("connection", (socket: Socket) => {
+  console.log("New client connected " + socket.id);
+
+  socket.on('updateOrderStatus', (data) => socketEventsHandler.updateOrderStatus(data, socket))
+
+  socket.on('loggedUser', (data) => socketEventsHandler.loggedUser(data, socket))
+
+  socket.on("disconnect", (data) => socketEventsHandler.disconnect(data,socket));
+
+  socket.on("sendNotification", (data) => socketEventsHandler.sendNotification(data,socket));
+});
+
 const PORT = 4000;
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`app running in port ${PORT}`);
 });

@@ -4,7 +4,7 @@ import { CreateOrderUseCase } from './CreateOrderUseCase';
 
 class CreateOrderController {
   async handle(req: Request, res: Response): Promise<Response> {
-    const { deliveryAddress, orderProducts, totalPrice, paymentMethod } = req.body;
+    const { deliveryAddress, orderProducts, totalPrice, paymentMethod, saveAddressAsDefault } = req.body;
     const { cId } = req.params;
     const { _id } = req.user;
 
@@ -17,7 +17,8 @@ class CreateOrderController {
         deliveryAddress,
         orderProducts,
         totalPrice,
-        paymentMethod
+        paymentMethod,
+        saveAddressAsDefault
       });
 
       return res.status(201).json(newOrder);
