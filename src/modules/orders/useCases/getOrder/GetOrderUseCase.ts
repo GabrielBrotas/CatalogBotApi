@@ -1,4 +1,4 @@
-import { IOrder, IOrderPopulated } from './../../entities/Order';
+import { IOrder, IOrderPopulated } from '../../schemas/Order';
 import { injectable, inject } from 'tsyringe';
 import { AppError } from '../../../../shared/errors/AppError';
 import { IOrdersRepository } from '../../repositories/IOrdersRepository';

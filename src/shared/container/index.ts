@@ -14,6 +14,8 @@ import { ICartsRepository } from '../../modules/orders/repositories/ICartReposit
 import { CartsRepository } from '../../modules/orders/repositories/implementations/CartsRepository';
 import { INotificationsRepository } from '../../modules/notifications/repositories/INotificationsRepository';
 import { NotificationsRepository } from './../../modules/notifications/repositories/implementations/NotificationsRepository';
+import { DataAnalysisRepository } from '../../modules/companies/repositories/implementations/DataAnalysisRepository';
+import { IDataAnalysisRepository } from '../../modules/companies/repositories/IDataAnalysisRepository';
 
 container.registerSingleton<ICompaniesRepository>(
   'CompaniesRepository',
@@ -44,7 +46,13 @@ container.registerSingleton<ICartsRepository>(
   'CartsRepository',
   CartsRepository,
 );
+
 container.registerSingleton<INotificationsRepository>(
   'NotificationsRepository',
   NotificationsRepository,
+);
+
+container.registerSingleton<IDataAnalysisRepository>(
+  'DataAnalysisRepository',
+  DataAnalysisRepository,
 );

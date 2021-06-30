@@ -1,6 +1,6 @@
 import { injectable, inject } from 'tsyringe';
 import { AppError } from '../../../../shared/errors/AppError';
-import { IOrder } from '../../entities/Order';
+import { IOrder } from '../../schemas/Order';
 import { IOrdersRepository } from '../../repositories/IOrdersRepository';
 
 interface IRequest {

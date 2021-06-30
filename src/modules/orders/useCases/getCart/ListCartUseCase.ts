@@ -1,7 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 import { AppError } from '../../../../shared/errors/AppError';
-import { ICart } from '../../entities/Cart';
-import { IOrderProduct } from '../../entities/Order';
+import { ICart } from '../../schemas/Cart';
+import { IOrderProduct } from '../../schemas/Order';
 import { ICartsRepository } from '../../repositories/ICartRepository';
 
 interface IRequest {

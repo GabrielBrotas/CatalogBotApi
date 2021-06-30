@@ -1,6 +1,6 @@
 import { injectable, inject } from 'tsyringe';
 import { AppError } from '../../../../shared/errors/AppError';
-import { ICart } from '../../entities/Cart';
+import { ICart } from '../../schemas/Cart';
 import {
   InsertOneDTO,
   ICartsRepository,

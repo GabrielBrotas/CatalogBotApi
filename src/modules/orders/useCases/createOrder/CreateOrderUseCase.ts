@@ -1,5 +1,5 @@
 import { IClientsRepository } from './../../../clients/repositories/IClientsRepository';
-import { IOrder } from './../../entities/Order';
+import { IOrder } from '../../schemas/Order';
 import { injectable, inject } from 'tsyringe';
 import { AppError } from '../../../../shared/errors/AppError';
 import { ICompaniesRepository } from '../../../companies/repositories/ICompaniesRepository';

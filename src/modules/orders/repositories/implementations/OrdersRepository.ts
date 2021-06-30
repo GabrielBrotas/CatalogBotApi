@@ -1,6 +1,6 @@
 import { AppError } from '../../../../shared/errors/AppError';
 import { IPagination, paginateModel } from '../../../../utils/pagination';
-import { IOrder, IOrderPopulated, Order } from '../../entities/Order';
+import { IOrder, IOrderPopulated, Order } from '../../schemas/Order';
 import { ICreateOrderDTO, IFindOrdersDTO, IListByCompanyId, IOrdersRepository, IUpdateOrderDTO } from '../IOrdersRepository';
 
 export class OrdersRepository implements IOrdersRepository {

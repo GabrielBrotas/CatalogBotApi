@@ -1,5 +1,5 @@
 import { IPagination } from './../../../utils/pagination';
-import { IPaymentMethods, IOrder, IOrderProduct, IOrderPopulated, IOrderStatus } from './../entities/Order';
+import { IPaymentMethods, IOrder, IOrderProduct, IOrderPopulated, IOrderStatus } from '../schemas/Order';
 import { IAddress } from './../../clients/schemas/Client';
 
 export interface ICreateOrderDTO {

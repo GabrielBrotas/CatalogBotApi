@@ -1,7 +1,7 @@
-import { IOrderPopulated } from '../../entities/Order';
+import { IOrderPopulated } from '../../schemas/Order';
 import { inject, injectable } from 'tsyringe';
 import { AppError } from '../../../../shared/errors/AppError';
-import { IOrder } from '../../entities/Order';
+import { IOrder } from '../../schemas/Order';
 import { IOrdersRepository } from '../../repositories/IOrdersRepository';
 import { IPagination } from '../../../../utils/pagination';
 

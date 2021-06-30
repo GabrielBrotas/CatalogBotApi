@@ -22,6 +22,7 @@ export class CompaniesRepository implements ICompaniesRepository {
       name,
       roles: ['company'],
       acceptedPaymentMethods: ['Dinheiro'],
+      Views: []
     });
   }
 

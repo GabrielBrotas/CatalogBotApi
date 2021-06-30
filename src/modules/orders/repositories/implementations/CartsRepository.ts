@@ -8,7 +8,7 @@ import {
   UpdateDTO,
   FindByIdDTO,
 } from '../ICartRepository';
-import { Cart, ICart } from '../../entities/Cart';
+import { Cart, ICart } from '../../schemas/Cart';
 
 export class CartsRepository implements ICartsRepository {
   private repository;

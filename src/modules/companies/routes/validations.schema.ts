@@ -21,6 +21,17 @@ export const GET_COMPANY_VALIDATION = {
   },
 };
 
+export const ADD_COMPANY_DATA_VALIDATION = {
+  [Segments.PARAMS]: {
+    id: Joi.string().required(),
+  },
+  [Segments.BODY]: {
+    type: Joi.string().required(),
+    clientId: Joi.string().optional(),
+    orderId: Joi.string().optional(),
+  },
+};
+
 export const UPDATE_COMPANY_VALIDATION = {
   [Segments.BODY]: Joi.object().keys({
     benefits: Joi.array().items(Joi.string().optional()).optional(),

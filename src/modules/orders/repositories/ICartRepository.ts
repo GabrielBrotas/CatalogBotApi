@@ -1,5 +1,5 @@
-import { ICart, ICartProduct } from '../entities/Cart';
-import { IOrderProduct } from '../entities/Order';
+import { ICart, ICartProduct } from '../schemas/Cart';
+import { IOrderProduct } from '../schemas/Order';
 
 export interface FindOneDTO {
   clientId: string;
