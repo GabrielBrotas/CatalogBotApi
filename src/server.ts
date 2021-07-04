@@ -67,8 +67,6 @@ app.use(
   },
 );
 
-let connections: Array<{userID: string, socketID: string}> = []
-
 const socketEventsHandler = new SocketEventsHandler()
 
 io.on("connection", (socket: Socket) => {
@@ -81,6 +79,12 @@ io.on("connection", (socket: Socket) => {
   socket.on("disconnect", (data) => socketEventsHandler.disconnect(data,socket));
 
   socket.on("sendNotification", (data) => socketEventsHandler.sendNotification(data,socket));
+
+  socket.on('updateOrderStatus', (data) => socketEventsHandler.updateOrderStatus(data, socket))
+
+  socket.on('connectWhatsapp', (data) => socketEventsHandler.connectWhatsapp(data, socket))
+
+  socket.on('disconnectWhatsapp', (data) => socketEventsHandler.disconnectWhatsapp(data, socket))
 });
 
 const PORT = 4000;

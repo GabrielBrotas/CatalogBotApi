@@ -33,18 +33,6 @@ const updateImageController = new UpdateImageController();
 const addCompanyDataController = new AddCompanyDataController();
 const listMyCompanyDataAnalysisController = new ListMyCompanyDataAnalysisController();
 
-companiesRouter.post(
-  '/',
-  celebrate(CREATE_COMPANY_VALIDATION),
-  createCompanyController.handle,
-);
-
-companiesRouter.post(
-  '/auth',
-  celebrate(AUTHENTICATE_COMPANY_VALIDATION),
-  authenticateController.handle,
-);
-
 companiesRouter.get(
   '/:id',
   celebrate(GET_COMPANY_VALIDATION),
@@ -55,6 +43,18 @@ companiesRouter.get(
   '/:id/data',
   ensureAuthenticated,
   listMyCompanyDataAnalysisController.handle,
+);
+
+companiesRouter.post(
+  '/',
+  celebrate(CREATE_COMPANY_VALIDATION),
+  createCompanyController.handle,
+);
+
+companiesRouter.post(
+  '/auth',
+  celebrate(AUTHENTICATE_COMPANY_VALIDATION),
+  authenticateController.handle,
 );
 
 companiesRouter.post(

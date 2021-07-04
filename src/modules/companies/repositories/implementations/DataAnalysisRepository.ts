@@ -15,7 +15,6 @@ export class DataAnalysisRepository implements IDataAnalysisRepository {
       type,
       ...(clientId && {client: clientId}),
       ...(orderId && {order: orderId}),
-      created_at: '2021-09-15T16:30:04.643+00:00'
     });
   }
 

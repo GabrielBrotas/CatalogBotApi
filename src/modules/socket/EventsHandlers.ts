@@ -1,6 +1,7 @@
 import { Socket } from 'socket.io';
 import { api } from '../../shared/services/api';
-
+import { connectToWhatsApp } from './whatsapp/services/connectWhatsapp.service';
+import { disconnectWhatsappService } from './whatsapp/services/disconnect.service';
 
 export class SocketEventsHandler {
   private connections: Array<{userID: string, socketID: string}> = []
@@ -52,6 +53,17 @@ export class SocketEventsHandler {
         socket.broadcast.to(userToSendConnection.socketID).emit('newNotification', res.data);
       }
     })
+  }
+
+  connectWhatsapp(data: any, socket: Socket): void {
+    console.log('trying connect')
+    connectToWhatsApp(socket, data)
+  }
+
+  async disconnectWhatsapp(data: any, socket: Socket): Promise<void> {
+    console.log('disconnecting..')
+    await disconnectWhatsappService()
+    console.log('disconnected')
   }
 
 
