@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { AppError } from '../../../../shared/errors/AppError';
 import { GetOrderUseCase } from './GetOrderUseCase';
 
 class GetOrderController {
@@ -17,7 +18,7 @@ class GetOrderController {
 
       return res.status(201).json(order);
     } catch (err) {
-      return res.status(400).send(err.message);
+      throw new AppError(err.message)
     }
   }
 }

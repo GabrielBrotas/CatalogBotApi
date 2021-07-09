@@ -37,4 +37,6 @@ export interface ICartsRepository {
   update(data: UpdateDTO): Promise<ICart>;
   deleteAll({ cartId }: DeleteManyDTO): Promise<void>;
   deleteOne({ cartId, orderProductId }: DeleteOneDTO): Promise<ICart | void>;
+  deleteProductFromCarts(productId: string): Promise<void>;
+
 }

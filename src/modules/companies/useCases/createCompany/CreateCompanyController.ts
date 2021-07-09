@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { AppError } from '../../../../shared/errors/AppError';
 import { Logger } from '../../../../shared/middlewares/logger';
 
 import { CreateCompanyUseCase } from './CreateCompanyUseCase';
@@ -20,7 +21,8 @@ class CreateCompanyController {
       return res.status(201).send();
     } catch (err) {
       logger.error(err.message);
-      return res.status(400).send(err);
+      throw new AppError(err.message, 400)
+
     }
   }
 }

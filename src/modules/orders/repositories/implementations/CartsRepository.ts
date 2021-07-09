@@ -110,4 +110,21 @@ export class CartsRepository implements ICartsRepository {
 
     return cart;
   }
+
+  async deleteProductFromCarts(productId: string): Promise<void> {
+    const carts = await this.repository.find({'orderProducts.product': productId})
+
+    carts.map(async (cart) => {
+      const orderProducts = cart.orderProducts.filter(product => String(product.product) !== String(productId))
+
+      if(orderProducts.length > 0) {
+        cart.orderProducts =orderProducts
+        await cart.save()
+      } else {
+        await this.repository.deleteOne({ _id: cart._id });
+      }
+    })
+
+    return
+  }
 }

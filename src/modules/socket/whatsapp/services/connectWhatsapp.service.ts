@@ -1,45 +1,54 @@
-import { WAConnection } from '@adiwajshing/baileys'
-import { Response } from 'express'
+import { MessageType, ProxyAgent, WAConnection } from '@adiwajshing/baileys'
 import fs from 'fs'
 import qr from 'qr-image'
 import { Socket } from 'socket.io'
-import { conn } from './connection'
 import { sendMessage } from './sendMessage.service'
 
-let storedQR: Buffer
+const storedQRS: Array<{companyId: string, data: Buffer}> = []
+// const connectionsClients: Array<{companyId: string, connId: string}> = []
+
 export async function connectToWhatsApp (socket: Socket, companyId: string): Promise<any> {
-  conn.companyId = companyId
-
-  conn.on('chats-received', async ({ hasNewChats }) => {
-      console.log(`you have ${conn.chats.length} chats, new chats available: ${hasNewChats}`)
-      const unread = await conn.loadAllUnreadMessages()
-      console.log ("you have " + unread.length + " unread messages")
-  })
-
-  conn.on('contacts-received', () => {
-      console.log('you have ' + Object.keys(conn.contacts).length + ' contacts')
-  })
+  const conn = new WAConnection()
 
   conn.on('qr', (QR) => {
+    console.log('send qr')
     const qrImage = qr.imageSync(QR)
-    storedQR = qrImage
+    storedQRS.push({ companyId, data: qrImage })
     socket.emit('qr', qrImage);
   })
 
-  conn.on('open', (openResult) => {
-    console.log (`credentials updated!`)
+  conn.on('open', async (openResult) => {
     console.log({openResult})
+    // if(connectionsClients.some(client => String(client.companyId) === String(companyId))) {
+    //   connectionsClients.filter(client => String(client.companyId) !== String(companyId))
+    // }
+    // connectionsClients.push({ connId: openResult.auth.clientID, companyId })
+
+    // remove old auth file
+    try {
+      const authFileExists = await checkIfFileConnectionExists(companyId)
+      if(authFileExists) await removeFileConnection(companyId)
+      console.log({authFileExists})
+    } catch (err) { console.log(err)}
+
+    // new auth file
     const authInfo = conn.base64EncodedAuthInfo() // get all the auth info we need to restore this session
-    fs.writeFileSync('./auth_info.json', JSON.stringify(authInfo, null, '\t')) // save this info to a file
+    fs.writeFileSync(`./src/modules/socket/whatsapp/bot/auth/auth_info-${companyId}.json`, JSON.stringify(authInfo, null, '\t')) // save this info to a file
     socket.emit('open', {...openResult, phoneConnected: conn.phoneConnected});
   })
 
-  conn.on('connecting', () => {
+  conn.on('connecting', async () => {
+    try {
+      const authFileExists = await checkIfFileConnectionExists(companyId)
+      if(authFileExists) await removeFileConnection(companyId)
+      console.log({authFileExists})
+    } catch (err) { console.log(err)}
     console.log('connecting')
   })
 
   conn.on('close', (closeResult) => {
     console.log({closeResult})
+    // if(closeResult.reason === 'replaced') conn.connect()
     socket.emit('close', closeResult)
   })
 
@@ -48,53 +57,37 @@ export async function connectToWhatsApp (socket: Socket, companyId: string): Pro
     socket.emit('ws-close', wscloseResult)
   })
 
-  conn.on('chat-update', async ({hasNewMessage, messages}) => {
-    /*
-      {
-        "jid": "557581989817@s.whatsapp.net",
-        "count": 3,
-        "t": 1625399471,
-        "hasNewMessage": true,
-        "messages": [
-          {
-            "key": {
-              "remoteJid": "557581989817@s.whatsapp.net",
-              "fromMe": false,
-              "id": "3AF8632A3869D9E4F226"
-            },
-            "message": {
-              "conversation": "Gg"
-            },
-            "messageTimestamp": "1625399471"
-          }
-        ]
+  conn.on('chat-update',(chatUpdate) => {
+   console.log('chat update')
+    if (chatUpdate.hasNewMessage && chatUpdate.messages) {
+        const message = chatUpdate.messages.all()[0]
+        if(message.key.remoteJid && !message.key.fromMe) sendMessage({conn, messageData: message, companyId})
       }
-    */
-    if (hasNewMessage && messages) {
-      const message = messages.all()[0]
-
-      if(message.key.remoteJid && !message.key.fromMe) await sendMessage(conn, message)
     }
-    // else console.log ({chatUpdate: JSON.stringify(chatUpdate, null, 2)})
-  })
+  )
 
   try {
-    await fs.promises.stat('./auth_info.json')
-    conn.loadAuthInfo('./auth_info.json')
+    await fs.promises.stat(`./src/modules/socket/whatsapp/bot/auth/auth_info-${companyId}.json`)
+    conn.loadAuthInfo(`./src/modules/socket/whatsapp/bot/auth/auth_info-${companyId}.json`)
   } catch(err) {
     console.log('auth file does not exist')
+    conn.close()
+    conn.logout()
   }
 
   try {
-    console.log('try connect')
     if(conn.phoneConnected) {
       console.log('phone connected')
       socket.emit('open', {user: {...conn.user}, phoneConnected: conn.phoneConnected});
     } else {
       if(conn.state !== 'open' && conn.state !== 'connecting') {
+        console.log('call connect')
         await conn.connect()
+        console.log('connected')
       } else {
-        socket.emit('qr', storedQR);
+        console.log('emit stored qr')
+        const storedQR = storedQRS.find(qr => qr.companyId === companyId)
+        socket.emit('qr', storedQR?.data);
       }
     }
   } catch(err) {
@@ -102,4 +95,29 @@ export async function connectToWhatsApp (socket: Socket, companyId: string): Pro
     console.log({err})
   }
 
+}
+
+async function removeFileConnection(companyId: string) {
+  try {
+    // verificar se o arquivo existe
+    await fs.promises.stat(`./src/modules/socket/whatsapp/bot/auth/auth_info-${companyId}.json`)
+  } catch {
+    // se nao existir sai da funcao
+    return;
+  }
+
+  await fs.promises.unlink(`./src/modules/socket/whatsapp/bot/auth/auth_info-${companyId}.json`)
+  return
+}
+
+async function checkIfFileConnectionExists(companyId: string): Promise<boolean> {
+  try {
+    // verificar se o arquivo existe
+    await fs.promises.stat(`./src/modules/socket/whatsapp/bot/auth/auth_info-${companyId}.json`)
+
+    return true
+  } catch {
+    // se nao existir sai da funcao
+    return false;
+  }
 }

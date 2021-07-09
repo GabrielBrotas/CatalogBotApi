@@ -16,6 +16,7 @@ export async function execute(userResponse: string, companyId: string) {
       return {
         answer: 'http://localhost:3000/catalog/{{companyId}}',
         nextStage: 1,
+        sendAnotherInfoMessage: 'No nosso catalogo você vai poder ver todos os meus produtos e realizar um pedido. \nAgora qualquer coisa basta me chamar :).',
       };
 
     // sobre entrega
@@ -23,6 +24,7 @@ export async function execute(userResponse: string, companyId: string) {
       return {
         answer: 'sobre entrega...',
         nextStage: 1,
+        sendAnotherInfoMessage: 'Qualquer coisa basta me chamar :).',
       };
 
     // sobre pagamento
@@ -30,6 +32,7 @@ export async function execute(userResponse: string, companyId: string) {
       return {
         answer: 'sobre pagamento...',
         nextStage: 1,
+        sendAnotherInfoMessage: 'Qualquer coisa basta me chamar :).',
       };
 
     // finalizar sessao

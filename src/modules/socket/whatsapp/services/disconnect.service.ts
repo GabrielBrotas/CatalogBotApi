@@ -1,18 +1,15 @@
 import fs from 'fs'
-import { conn } from './connection'
 
-export async function disconnectWhatsappService(): Promise<any> {
-    try {
+export async function disconnectWhatsappService(companyId: string): Promise<any> {
+  try {
     // verificar se o arquivo existe
-    await fs.promises.stat('./auth_info.json')
+    await fs.promises.stat(`./src/modules/socket/whatsapp/bot/auth/auth_info-${companyId}.json`)
   } catch {
     // se nao existir sai da funcao
     return;
   }
 
-  await fs.promises.unlink('./auth_info.json')
-  conn.close()
-  conn.logout()
+  await fs.promises.unlink(`./src/modules/socket/whatsapp/bot/auth/auth_info-${companyId}.json`)
+  return
 
-  console.log('disconnected wpp')
 }

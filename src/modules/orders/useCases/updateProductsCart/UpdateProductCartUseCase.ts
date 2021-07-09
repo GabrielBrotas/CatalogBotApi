@@ -1,13 +1,12 @@
 import { injectable, inject } from 'tsyringe';
 import { AppError } from '../../../../shared/errors/AppError';
-import { ICart } from '../../schemas/Cart';
-import { IOrderProduct } from '../../schemas/Order';
+import { ICart, ICartProduct } from '../../schemas/Cart';
 import { ICartsRepository } from '../../repositories/ICartRepository';
 
 interface IRequest {
   clientId: string;
   cartId: string;
-  orderProducts: IOrderProduct[];
+  orderProducts: ICartProduct[];
 }
 
 @injectable()

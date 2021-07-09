@@ -7,6 +7,7 @@ type IStageDTO = {
       answer: string;
       nextStage: number;
       answerNextStageAutomatically?: boolean
+      sendAnotherInfoMessage?: string
     }>;
   };
   intent: {

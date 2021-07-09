@@ -27,7 +27,7 @@ export type IOrderProduct = {
 
 export type IOrderStatus =
   | 'pending'
-  | 'confimed'
+  | 'confirmed'
   | 'sent'
   | 'received'
   | 'canceled';

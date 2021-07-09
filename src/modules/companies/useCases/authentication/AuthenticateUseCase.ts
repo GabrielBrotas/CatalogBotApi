@@ -38,7 +38,7 @@ class AuthenticateUseCase {
     if (!passwordMatch) {
       throw new AppError('Invalid Email/Password combination.', 401);
     }
-    const token = sign({ roles: company.roles }, SECRET_KEY, {
+    const token = sign({ roles: company.roles }, SECRET_KEY as string, {
       subject: String(company._id), // id do usuario
       expiresIn: EXPIRES_IN_TOKEN, // tempo de duração do token
     });

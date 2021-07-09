@@ -15,6 +15,13 @@ interface GetKeyFromIntentProps {
   valueToMatch: string;
 }
 
+interface GetBotResponse {
+  response: string;
+  newStage?: number
+  answerNextStageAutomatically: boolean;
+  sendAnotherInfoMessage?: string | null
+}
+
 function getKeyFromIntent({
   intent,
   valueToMatch,
@@ -34,11 +41,7 @@ export async function getBotResponse({
   userData,
   userResponse,
   nextStageAnswer = false,
-}: IGetBotResponseDTO): Promise<{
-  response: string;
-  newStage?: number
-  answerNextStageAutomatically: boolean;
-}> {
+}: IGetBotResponseDTO): Promise<GetBotResponse> {
   const { company, stage, whatsapp } = userData;
 
   let userResponseFormated = removeSpeciaCaracteresAndLetters(
@@ -70,6 +73,7 @@ export async function getBotResponse({
     answer,
     nextStage,
     answerNextStageAutomatically = false,
+    sendAnotherInfoMessage = null
   } = await currentStage.fulfilment.execute(userResponseFormated);
 
   let response = answer;
@@ -82,5 +86,5 @@ export async function getBotResponse({
     response = response.replace('http://localhost:3000/catalog/{{companyId}}', `http://localhost:3000/catalog/${company._id}`);
   }
 
-  return { response, newStage: nextStage, answerNextStageAutomatically }
+  return { response, newStage: nextStage, answerNextStageAutomatically, sendAnotherInfoMessage }
 }

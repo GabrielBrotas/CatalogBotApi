@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { AppError } from '../../../../shared/errors/AppError';
 
 import { EditProductUseCase } from './EditProductUseCase';
 
@@ -24,7 +25,8 @@ class EditProductController {
 
       return res.status(201).json(newProduct);
     } catch (err) {
-      return res.status(400).send(err.message);
+      throw new AppError(err.message)
+
     }
   }
 }

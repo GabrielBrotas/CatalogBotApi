@@ -41,7 +41,7 @@ class AuthenticateClientUseCase {
       throw new AppError('Invalid Email/Password combination.', 401);
     }
 
-    const token = sign({}, SECRET_KEY, {
+    const token = sign({}, SECRET_KEY as string, {
       subject: String(client._id), // id do usuario
       expiresIn: EXPIRES_IN_TOKEN, // tempo de duração do token
     });

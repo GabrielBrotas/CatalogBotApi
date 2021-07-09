@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { AppError } from '../../../../shared/errors/AppError';
 import { Logger } from '../../../../shared/middlewares/logger';
 
 import { GetCategoryUseCase } from './GetCategoryUseCase';
@@ -15,8 +16,7 @@ class GetCategoryController {
 
       return res.status(201).json(category);
     } catch (err) {
-      logger.error(err.message)
-      return res.status(400).send(err.message);
+      throw new AppError(err.message);
     }
   }
 }

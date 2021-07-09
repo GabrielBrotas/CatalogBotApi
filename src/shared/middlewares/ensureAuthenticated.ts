@@ -30,7 +30,7 @@ export default function ensureAuthenticated(
 
   try {
     // verificar se o token do usuario é um token valido
-    const decoded = verify(token, SECRET_KEY);
+    const decoded = verify(token, SECRET_KEY as string);
 
     const { sub } = decoded as ITokenPayload;
 

@@ -3,6 +3,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
 import { errors } from 'celebrate';
 import cors from 'cors';
+import 'dotenv/config'
 
 import uploadConfig from './config/upload';
 
@@ -19,10 +20,12 @@ import { categoriesRouter } from './modules/categories/routes';
 import { Socket } from 'socket.io';
 import { notificationsRouter } from './modules/notifications/routes';
 import { SocketEventsHandler } from './modules/socket/EventsHandlers';
+import rateLimiter from './shared/middlewares/RateLimiter';
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(rateLimiter);
 
 const server = require('http').createServer(app);
 const io = require('socket.io')(server, {
@@ -57,6 +60,7 @@ app.use(
     if (err instanceof AppError) {
       return response.status(err.statusCode).json({
         message: err.message,
+        status: err.statusCode
       });
     }
 
