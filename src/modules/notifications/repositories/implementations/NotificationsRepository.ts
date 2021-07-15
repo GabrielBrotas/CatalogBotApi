@@ -9,8 +9,8 @@ export class NotificationsRepository implements INotificationsRepository {
     this.repository = Notification;
   }
 
-  async create({Text, Type, Receiver, Sender, Order}: ICreateNotificationDTO): Promise<INotification> {
-    const notification = await this.repository.create({Text, Type, Receiver, Sender, Order, Viewed: false})
+  async create({Text, Type, Receiver, Sender, Order, Status}: ICreateNotificationDTO): Promise<INotification> {
+    const notification = await this.repository.create({Text, Type, Receiver, Sender, Order, Viewed: false, Status})
 
     return notification
   }

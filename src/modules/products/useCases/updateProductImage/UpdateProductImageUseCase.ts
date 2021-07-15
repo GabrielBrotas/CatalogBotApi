@@ -1,6 +1,9 @@
 import { inject, injectable } from 'tsyringe';
+import { APP_API_URL } from '../../../../config/constants';
+import { IStorageProvider } from '../../../../shared/container/Providers/StorageProvider/IStorageProvider';
 import { AppError } from '../../../../shared/errors/AppError';
 import { deleteFile } from '../../../../utils/file';
+import { ProductMap } from '../../mapper/ProductMap';
 import { IProductsRepository } from '../../repositories/IProductsRepository';
 
 interface IRequest {
@@ -14,6 +17,9 @@ class UpdateProductImageUseCase {
   constructor(
     @inject('ProductsRepository')
     private productsRepository: IProductsRepository,
+
+    @inject('StorageProvider')
+    private storageProvider: IStorageProvider
   ) {}
 
   async execute({ imageUrl, _id, companyId }: IRequest) {
@@ -24,8 +30,10 @@ class UpdateProductImageUseCase {
       throw new AppError('not authorized', 403);
 
     if (product && product.imageUrl) {
-      await deleteFile(`./tmp/${product.imageUrl}`);
+      await this.storageProvider.delete(product.imageUrl, 'products')
     }
+
+    await this.storageProvider.save(imageUrl, "products");
 
     product.imageUrl = imageUrl;
 
@@ -34,7 +42,7 @@ class UpdateProductImageUseCase {
       imageUrl,
     });
 
-    return product;
+    return ProductMap.toDTO(product);
   }
 }
 

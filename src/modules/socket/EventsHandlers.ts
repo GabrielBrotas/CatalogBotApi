@@ -17,6 +17,7 @@ export class SocketEventsHandler {
     const userToSendConnection = this.connections.find(user => user.userID === userID)
 
     if(userToSendConnection) {
+      console.log('send to ', userToSendConnection.socketID)
       socket.broadcast.to(userToSendConnection.socketID).emit('updatedOrderStatus', {userID, status});
     }
   }
@@ -45,7 +46,8 @@ export class SocketEventsHandler {
       Type: data.Type,
       Receiver: data.Receiver,
       Order: data.Order,
-      Sender: data.Sender
+      Sender: data.Sender,
+      Status: data.Status
     })
     .then((res: any) => {
       const userToSendConnection = this.connections.find(user => user.userID === res.data.Receiver)

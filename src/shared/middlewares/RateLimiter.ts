@@ -17,7 +17,7 @@ const redisClient = redis.createClient({
 const limiter = new RateLimiterRedis({
   storeClient: redisClient,
   keyPrefix: 'rateLimit',
-  points: 5, // no máximo 5 requisições
+  points: 8, // no máximo 5 requisições
   duration: 1, // dentro de 1 segundo
 });
 // neste caso só estamos limitando a quantidade de 5 requisições dentro de 1 s, porém, o ideal é verificar que se a tentativa for continua bloquear o usuario por 24h ou mais.

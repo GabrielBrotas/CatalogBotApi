@@ -59,5 +59,5 @@ export const UPDATE_PRODUCT_VALIDATION = {
   [Segments.PARAMS]: {
     pId: Joi.string().required(),
   },
-  [Segments.BODY]: PRODUCT_VALIDATION,
+  [Segments.BODY]: {...PRODUCT_VALIDATION, removeImage: Joi.boolean().optional()},
 };

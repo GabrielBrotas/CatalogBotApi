@@ -8,7 +8,7 @@ import { CreateNotificationUseCase } from './CreateNotificationUseCase';
 const logger = new Logger('CREATE NOTIFICATION');
 class CreateNotificationController {
   async handle(req: Request, res: Response): Promise<Response> {
-    const { Order, Text, Type, Receiver, Sender } = req.body;
+    const { Order, Text, Type, Receiver, Sender, Status } = req.body;
     try {
       const createNotificationUseCase = container.resolve(CreateNotificationUseCase);
 
@@ -18,6 +18,7 @@ class CreateNotificationController {
         Sender,
         Order,
         Receiver,
+        Status
       });
 
       return res.status(201).json(notification);

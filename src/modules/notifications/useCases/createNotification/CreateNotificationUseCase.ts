@@ -7,8 +7,9 @@ interface IRequest {
   Sender: string
   Receiver: string
   Order?: string;
-  Text: string
-  Type: 'order'
+  Text: string;
+  Type: 'order';
+  Status: string;
 }
 
 @injectable()
@@ -24,22 +25,20 @@ class CreateNotificationUseCase {
     Receiver,
     Order,
     Text,
-    Type
+    Type,
+    Status
   }: IRequest): Promise<INotification> {
-    try {
       const notification = await this.notificationsRepository.create({
         Sender,
         Receiver,
         Order,
         Text,
-        Type
+        Type,
+        Status
       });
 
       return notification
-    } catch (err) {
-      throw new AppError(err, 500)
     }
-  }
 }
 
 export { CreateNotificationUseCase };

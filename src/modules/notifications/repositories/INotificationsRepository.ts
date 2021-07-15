@@ -2,11 +2,12 @@ import { IPagination } from '../../../utils/pagination';
 import { INotification } from '../schemas/Notification';
 
 export interface ICreateNotificationDTO {
-  Receiver: string
-  Sender: string
+  Receiver: string;
+  Sender: string;
   Order?: string;
-  Text: string
-  Type: 'order'
+  Text: string;
+  Type: 'order';
+  Status: string
 }
 
 export const NOTIFICATION_TYPES_ARRAY = [

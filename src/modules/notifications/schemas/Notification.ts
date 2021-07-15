@@ -1,15 +1,16 @@
 import mongoose, { Schema } from 'mongoose';
 
 export interface INotification {
-  _id: string
-  Viewed: boolean
-  Receiver: string
-  Sender: string
+  _id: string;
+  Viewed: boolean;
+  Receiver: string;
+  Sender: string;
   Order?: string;
-  Text: string
-  Type: 'order'
-  CreatedAt: string
-  UpdatedAt: string
+  Text: string;
+  Type: 'order';
+  Status: string;
+  CreatedAt: string;
+  UpdatedAt: string;
 }
 
 const NotificationSchema = new Schema({
@@ -36,6 +37,10 @@ const NotificationSchema = new Schema({
   Type: {
     type: String,
     required: true,
+  },
+  Status: {
+    type: String,
+    required: false,
   },
   created_at: {
     type: Date,

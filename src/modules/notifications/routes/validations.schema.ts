@@ -15,6 +15,7 @@ export const CREATE_NOTIFICATION_VALIDATION = {
     Order: Joi.string().optional(),
     Text: Joi.string().required(),
     Type: Joi.string().required(),
+    Status: Joi.string().optional(),
   }
 };
 

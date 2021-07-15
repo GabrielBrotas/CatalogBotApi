@@ -21,7 +21,7 @@ export interface IUpdateProductDTO {
 
 export interface IUpdateProductImageDTO {
   _id: string;
-  imageUrl: string;
+  imageUrl: string | undefined;
 }
 
 export interface ListProps {

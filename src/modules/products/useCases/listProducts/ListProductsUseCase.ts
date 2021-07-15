@@ -1,7 +1,8 @@
+import { IPagination } from './../../../../utils/pagination';
 import { inject, injectable } from 'tsyringe';
+import { ProductMap } from '../../mapper/ProductMap';
 import {
   IProductsRepository,
-  ListProductsResultProps,
 } from '../../repositories/IProductsRepository';
 
 interface ListProductsProps {
@@ -20,14 +21,20 @@ class ListProductsUseCase {
     page,
     limit,
     companyId,
-  }: ListProductsProps): Promise<ListProductsResultProps> {
+  }: ListProductsProps): Promise<IPagination> {
     const products = await this.productsRepository.list({
       page,
       limit,
       company: companyId,
     });
 
-    return products;
+    return {
+      next: products.next,
+      previous: products.previous,
+      total: products.total,
+      results: products.results.map(p => ProductMap.toDTO(p)),
+    };
+
   }
 }
 

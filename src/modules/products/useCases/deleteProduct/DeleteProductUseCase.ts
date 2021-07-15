@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe';
+import { IStorageProvider } from '../../../../shared/container/Providers/StorageProvider/IStorageProvider';
 import { AppError } from '../../../../shared/errors/AppError';
-import { deleteFile } from '../../../../utils/file';
 import { ICartsRepository } from '../../../orders/repositories/ICartRepository';
 import { IProductsRepository } from '../../repositories/IProductsRepository';
 
@@ -17,6 +17,9 @@ class DeleteProductUseCase {
 
     @inject('CartsRepository')
     private cartsRepository: ICartsRepository,
+
+    @inject('StorageProvider')
+    private storageProvider: IStorageProvider
   ) {}
 
   async execute({ productId, companyId }: IRequest): Promise<void> {
@@ -27,7 +30,7 @@ class DeleteProductUseCase {
       throw new AppError('not authorized', 403);
 
     if (product && product.imageUrl) {
-      await deleteFile(`./tmp/${product.imageUrl}`);
+      await this.storageProvider.delete(product.imageUrl, 'products')
     }
 
     await this.productsRepository.delete(product._id);

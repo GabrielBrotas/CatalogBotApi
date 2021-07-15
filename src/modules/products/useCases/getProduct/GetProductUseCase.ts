@@ -1,5 +1,6 @@
 import { injectable, inject } from 'tsyringe';
 import { AppError } from '../../../../shared/errors/AppError';
+import { ProductMap } from '../../mapper/ProductMap';
 import { IProductsRepository } from '../../repositories/IProductsRepository';
 import { IProduct } from '../../schemas/Product';
 
@@ -15,7 +16,8 @@ class GetProductUseCase {
 
     if (!product) throw new AppError('product not found', 404);
 
-    return product;
+    return ProductMap.toDTO(product);
+
   }
 }
 

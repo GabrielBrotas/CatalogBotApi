@@ -16,7 +16,7 @@ class UpdateImageController {
       if(!imageUrl) throw 'image error'
 
       const company = await updateImageUseCase.execute({ _id, imageUrl });
-      delete company.password;
+      
       return response.status(200).json(company);
     } catch (err) {
       logger.error(err.message);

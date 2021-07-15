@@ -107,8 +107,13 @@ export class ProductsRepository implements IProductsRepository {
     const product = await this.repository.findOne({ _id });
 
     if (!product) throw new AppError('Product not found', 404);
+    if(!imageUrl) {
+      product.imageUrl = undefined
+      await product.save();
+      return product
+    }
 
-    product.imageUrl = `${APP_API_URL}/files/${imageUrl}`;
+    product.imageUrl = imageUrl;
 
     await product.save();
 

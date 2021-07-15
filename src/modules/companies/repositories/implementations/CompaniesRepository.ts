@@ -72,7 +72,7 @@ export class CompaniesRepository implements ICompaniesRepository {
 
     if (!company) throw new AppError('Company not found', 404);
 
-    company.mainImageUrl = `${APP_API_URL}/files/${imageUrl}`;
+    company.mainImageUrl = imageUrl
 
     await company.save();
 

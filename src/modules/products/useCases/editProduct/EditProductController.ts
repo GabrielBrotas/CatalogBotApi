@@ -6,7 +6,7 @@ import { EditProductUseCase } from './EditProductUseCase';
 
 class EditProductController {
   async handle(req: Request, res: Response): Promise<Response> {
-    const { description, name, options, price, categoryId } = req.body;
+    const { description, name, options, price, categoryId, removeImage = false } = req.body;
     const { pId } = req.params;
     const { _id } = req.user;
 
@@ -20,7 +20,8 @@ class EditProductController {
         name,
         options,
         price,
-        categoryId
+        categoryId,
+        removeImage,
       });
 
       return res.status(201).json(newProduct);

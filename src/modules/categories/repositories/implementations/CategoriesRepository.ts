@@ -26,7 +26,7 @@ export class CategoriesRepository implements ICategoriesRepository {
   async update({ name, categoryId }: IEditCategoryDTO): Promise<ICategory> {
     const category = await this.repository.findOne({ _id: categoryId });
 
-    if (!category) throw new AppError('Category not found', 404);
+    if (!category) throw new AppError('Category not found', 400);
     if (name === '' || name === null)
       throw new AppError('Name should not be null', 400);
 

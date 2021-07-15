@@ -2,6 +2,7 @@ import { injectable, inject } from 'tsyringe';
 import { ICompaniesRepository } from '../../repositories/ICompaniesRepository';
 import { AppError } from '../../../../shared/errors/AppError';
 import { ICompany } from '../../schemas/Company';
+import { CompanyMap } from '../../mapper/CompanyMap';
 
 @injectable()
 class GetMyCompanyUseCase {
@@ -15,7 +16,7 @@ class GetMyCompanyUseCase {
 
     if (!company) throw new AppError('company not found', 404);
 
-    return company;
+    return CompanyMap.toDTO(company);
   }
 }
 

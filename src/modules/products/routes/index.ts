@@ -20,7 +20,7 @@ import {
 } from './validations.schema';
 
 const productsRouter = Router();
-const upload = multer(uploadConfig.upload(''));
+const upload = multer(uploadConfig);
 
 const listProductsController = new ListProductsController();
 const createProductController = new CreateProductController();
