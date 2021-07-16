@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const uri = "mongodb://127.0.0.1:27017/catalogbot";
+const uri = process.env.MONGO_URI;
 
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
