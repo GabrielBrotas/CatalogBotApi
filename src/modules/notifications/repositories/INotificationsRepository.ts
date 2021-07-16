@@ -40,6 +40,6 @@ export interface INotificationsRepository {
   create(data: ICreateNotificationDTO): Promise<INotification>;
   updateMany(data: IUpdateNotificationsDTO): Promise<void>;
   deleteMany(data: IDeleteNotificationsDTO): Promise<void>;
-  list(data: ListNotificationsDTO): Promise<IPagination>;
+  list(data: ListNotificationsDTO): Promise<IPagination<INotification>>;
   find(data: FindNotificationsDTO): Promise<INotification[]>;
 }

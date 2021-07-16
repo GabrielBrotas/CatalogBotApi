@@ -33,10 +33,10 @@ export interface IUpdateOrderDTO {
 }
 
 export interface IOrdersRepository {
-  find({where, limit, page}: IFindOrdersDTO): Promise<IPagination>;
+  find({where, limit, page}: IFindOrdersDTO): Promise<IPagination<IOrder>>;
   findById(_id: string): Promise<IOrderPopulated | null>;
   create(data: ICreateOrderDTO): Promise<IOrder>;
-  listByCompanyId({_id, limit, page}: IListByCompanyId): Promise<IPagination>;
+  listByCompanyId({_id, limit, page}: IListByCompanyId): Promise<IPagination<IOrderPopulated>>;
   update({orderId, data}: IUpdateOrderDTO): Promise<IOrder>;
   // companyOrdersDate(companyId: string): Promise<string[]>;
 }

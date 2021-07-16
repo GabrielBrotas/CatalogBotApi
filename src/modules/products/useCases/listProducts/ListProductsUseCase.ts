@@ -1,3 +1,4 @@
+import { IProduct } from './../../schemas/Product';
 import { IPagination } from './../../../../utils/pagination';
 import { inject, injectable } from 'tsyringe';
 import { ProductMap } from '../../mapper/ProductMap';
@@ -21,7 +22,7 @@ class ListProductsUseCase {
     page,
     limit,
     companyId,
-  }: ListProductsProps): Promise<IPagination> {
+  }: ListProductsProps): Promise<IPagination<IProduct>> {
     const products = await this.productsRepository.list({
       page,
       limit,

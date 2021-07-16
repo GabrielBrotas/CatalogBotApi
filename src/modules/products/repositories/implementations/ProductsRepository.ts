@@ -22,13 +22,13 @@ export class ProductsRepository implements IProductsRepository {
     limit,
     company,
     productsId,
-  }: ListProps): Promise<IPagination> {
+  }: ListProps): Promise<IPagination<IProduct>> {
     const startIndex = (page - 1) * limit;
 
-    const results = await paginateModel({page, limit, repository: this.repository, countField: {company: company}})
+    const results = await paginateModel<IProduct>({page, limit, repository: this.repository, countField: {company: company}})
 
     results.results = await this.repository
-      .find({ company, ...(productsId && { _id: { $in: productsId } }) })
+      .find({ company: company as any, ...(productsId && { _id: { $in: productsId } }) })
       .populate(['category', 'company'])
       .skip(startIndex)
       .limit(limit)

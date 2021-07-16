@@ -1,3 +1,4 @@
+import { IPagination } from './../../../../utils/pagination';
 import { inject, injectable } from 'tsyringe';
 import { ICategory } from '../../schemas/Category';
 import { ICategoriesRepository } from '../../repositories/ICategoriesRepository';
@@ -19,7 +20,7 @@ class ListCategoriesUseCase {
     _id,
     limit,
     page,
-  }: ListCategorieProps): Promise<ICategory[]> {
+  }: ListCategorieProps): Promise<IPagination<ICategory>> {
     const myCategories = await this.categoriesRepository.listMy({
       _id,
       limit,

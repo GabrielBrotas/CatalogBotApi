@@ -1,1 +1,3 @@
-export = ['retornar', 'voltar', 0, '0']
+const retornarIntent = ['retornar', 'voltar', 0, '0']
+
+export default retornarIntent

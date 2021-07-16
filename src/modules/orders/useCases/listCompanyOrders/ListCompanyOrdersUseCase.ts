@@ -1,7 +1,6 @@
 import { IOrderPopulated } from '../../schemas/Order';
 import { inject, injectable } from 'tsyringe';
 import { AppError } from '../../../../shared/errors/AppError';
-import { IOrder } from '../../schemas/Order';
 import { IOrdersRepository } from '../../repositories/IOrdersRepository';
 import { IPagination } from '../../../../utils/pagination';
 
@@ -18,7 +17,7 @@ class ListCompanyOrdersUseCase {
     private ordersRepository: IOrdersRepository,
   ) {}
 
-  async execute({companyId, limit, page}: IRequest): Promise<IPagination> {
+  async execute({companyId, limit, page}: IRequest): Promise<IPagination<IOrderPopulated>> {
     try {
 
       const orders = await this.ordersRepository.listByCompanyId({_id: companyId, limit, page});

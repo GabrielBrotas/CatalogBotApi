@@ -1,6 +1,6 @@
 import { Model } from "mongoose";
 
-export type IPagination = {
+export interface IPagination<T> {
   next?: {
     page: number;
     limit: number;
@@ -10,7 +10,7 @@ export type IPagination = {
     limit: number;
   };
   total: number;
-  results: any[];
+  results: T[];
 };
 
 type PaginationModelProps = {
@@ -20,7 +20,7 @@ type PaginationModelProps = {
   countField: { [key: string]: string}
 }
 
-export async function paginateModel({page, limit,repository, countField}: PaginationModelProps) {
+export async function paginateModel<T>({page, limit,repository, countField}: PaginationModelProps) {
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
 
@@ -28,7 +28,7 @@ export async function paginateModel({page, limit,repository, countField}: Pagina
   .countDocuments(countField)
   .exec();
 
-  const results: IPagination = {
+  const results: IPagination<T> = {
     results: [],
     total: totalDocuments,
   };

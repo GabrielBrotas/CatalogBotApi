@@ -32,7 +32,7 @@ export interface ListProps {
 }
 
 export interface IProductsRepository {
-  list({ page, limit }: ListProps): Promise<IPagination>;
+  list({ page, limit }: ListProps): Promise<IPagination<IProduct>>;
   create(data: ICreateProductDTO): Promise<IProduct>;
   delete(pid: string): Promise<void>;
   findById(_id: string): Promise<IProduct>;

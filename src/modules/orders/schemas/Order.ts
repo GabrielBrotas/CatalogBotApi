@@ -51,7 +51,7 @@ export interface IOrder {
   created_at: Date;
 }
 
-export type IOrderPopulated = {
+export interface IOrderPopulated {
   _id: string;
   client: IClient;
   company: string;

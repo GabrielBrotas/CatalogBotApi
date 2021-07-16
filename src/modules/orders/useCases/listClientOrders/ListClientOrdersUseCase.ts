@@ -2,6 +2,7 @@ import { inject, injectable } from 'tsyringe';
 import { AppError } from '../../../../shared/errors/AppError';
 import { IOrdersRepository } from '../../repositories/IOrdersRepository';
 import { IPagination } from '../../../../utils/pagination';
+import { IOrder } from '../../schemas/Order';
 
 type IRequest = {
   clientId: string
@@ -17,7 +18,7 @@ class ListClientOrdersUseCase {
     private ordersRepository: IOrdersRepository,
   ) {}
 
-  async execute({clientId, companyId, limit, page}: IRequest): Promise<IPagination> {
+  async execute({clientId, companyId, limit, page}: IRequest): Promise<IPagination<IOrder>> {
     try {
 
       const orders = await this.ordersRepository.find({ where: {clientId, companyId}, limit, page});
