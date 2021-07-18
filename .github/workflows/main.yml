@@ -26,7 +26,7 @@ jobs:
       - name: Run build
         run: npm run-script build
         
-      # copiar pasta dist para dentro da digital ocean
+      # copiar código para dentro da digital ocean
       - name: copy dist to digital ocean
         uses: appleboy/scp-action@master
         with:
@@ -34,8 +34,8 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
-          source: "dist"
-          target: "test"
-      # substituir o codigo existente na pasta dist pelo novo codigo
+          source: ".,!node_modules"
+          target: "~app/CatalogBotApi"
+        
       # executar npm install na digital ocean
       # restart no servidor node.js
