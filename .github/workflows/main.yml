@@ -38,7 +38,7 @@ jobs:
           target: "~/app/CatalogBotApi"
         
       # executar npm install na digital ocean e reiniciar o servidor
-      - name: Install dependencies on digital ocean
+      - name: Install dependencies on digital ocean and restart server
         uses: appleboy/ssh-action@master
         with:
             host: ${{ secrets.SSH_HOST }}
