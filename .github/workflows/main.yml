@@ -35,7 +35,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
           source: ".,!node_modules"
-          target: "~app/CatalogBotApi"
+          target: "~/app/CatalogBotApi"
         
       # executar npm install na digital ocean
       # restart no servidor node.js
