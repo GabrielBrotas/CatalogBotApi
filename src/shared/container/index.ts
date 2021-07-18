@@ -1,7 +1,11 @@
 import { container } from 'tsyringe';
 
+import './Providers'
+
 import { ICompaniesRepository } from '../../modules/companies/repositories/ICompaniesRepository';
 import { CompaniesRepository } from '../../modules/companies/repositories/implementations/CompaniesRepository';
+import { IRefreshTokenRepository } from '../../modules/companies/repositories/IRefreshTokenRepository';
+import { RefreshTokenRepository } from '../../modules/companies/repositories/implementations/RefreshTokenRepository';
 import { IProductsRepository } from '../../modules/products/repositories/IProductsRepository';
 import { ProductsRepository } from '../../modules/products/repositories/implementations/ProductsRepository';
 import { ClientsRepository } from '../../modules/clients/repositories/implementations/ClientsRepository';
@@ -20,6 +24,11 @@ import { IDataAnalysisRepository } from '../../modules/companies/repositories/ID
 container.registerSingleton<ICompaniesRepository>(
   'CompaniesRepository',
   CompaniesRepository,
+);
+
+container.registerSingleton<IRefreshTokenRepository>(
+  'RefreshTokenRepository',
+  RefreshTokenRepository,
 );
 
 container.registerSingleton<ICategoriesRepository>(

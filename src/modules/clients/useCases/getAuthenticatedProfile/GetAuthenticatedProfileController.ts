@@ -1,3 +1,4 @@
+import { AppError } from './../../../../shared/errors/AppError';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import { Logger } from '../../../../shared/middlewares/logger';
@@ -17,7 +18,8 @@ class GetAuthenticatedProfileController {
 
       return res.status(201).json(client);
     } catch (err) {
-      return res.status(400).send(err.message);
+      throw new AppError(err.message);
+
     }
   }
 }

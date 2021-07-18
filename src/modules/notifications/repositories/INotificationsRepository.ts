@@ -2,11 +2,12 @@ import { IPagination } from '../../../utils/pagination';
 import { INotification } from '../schemas/Notification';
 
 export interface ICreateNotificationDTO {
-  Receiver: string
-  Sender: string
+  Receiver: string;
+  Sender: string;
   Order?: string;
-  Text: string
-  Type: 'order'
+  Text: string;
+  Type: 'order';
+  Status: string
 }
 
 export const NOTIFICATION_TYPES_ARRAY = [
@@ -39,6 +40,6 @@ export interface INotificationsRepository {
   create(data: ICreateNotificationDTO): Promise<INotification>;
   updateMany(data: IUpdateNotificationsDTO): Promise<void>;
   deleteMany(data: IDeleteNotificationsDTO): Promise<void>;
-  list(data: ListNotificationsDTO): Promise<IPagination>;
+  list(data: ListNotificationsDTO): Promise<IPagination<INotification>>;
   find(data: FindNotificationsDTO): Promise<INotification[]>;
 }

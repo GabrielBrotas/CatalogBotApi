@@ -1,3 +1,4 @@
+import { AppError } from './../../../../shared/errors/AppError';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
@@ -18,7 +19,7 @@ class DeleteProductController {
 
       return res.status(200).send();
     } catch (err) {
-      return res.status(400).send(err.message);
+      throw new AppError(err.message)
     }
   }
 }

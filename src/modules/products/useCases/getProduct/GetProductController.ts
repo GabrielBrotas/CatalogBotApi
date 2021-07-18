@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { AppError } from '../../../../shared/errors/AppError';
 import { Logger } from '../../../../shared/middlewares/logger';
 
 import { GetProductUseCase } from './GetProductUseCase';
@@ -16,7 +17,7 @@ class GetProductController {
       return res.status(201).json(product);
     } catch (err) {
       logger.error(err.message)
-      return res.status(400).send(err.message);
+      throw new AppError(err.message)
     }
   }
 }

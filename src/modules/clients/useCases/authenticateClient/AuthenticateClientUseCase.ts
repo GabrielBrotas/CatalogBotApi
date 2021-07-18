@@ -6,6 +6,7 @@ import { EXPIRES_IN_TOKEN, SECRET_KEY } from '../../../../config/constants';
 import { AppError } from '../../../../shared/errors/AppError';
 import { IClientsRepository } from '../../repositories/IClientsRepository';
 import { IClient } from '../../schemas/Client';
+import { ClientMap } from '../../mapper/ClientMap';
 
 interface IRequest {
   user: string;
@@ -41,14 +42,13 @@ class AuthenticateClientUseCase {
       throw new AppError('Invalid Email/Password combination.', 401);
     }
 
-    const token = sign({}, SECRET_KEY, {
+    const token = sign({}, SECRET_KEY as string, {
       subject: String(client._id), // id do usuario
-      expiresIn: EXPIRES_IN_TOKEN, // tempo de duração do token
+      // expiresIn: EXPIRES_IN_TOKEN, // todo, refresh token
+      expiresIn: '10d', // tempo de duração do token
     });
 
-    delete client.password;
-
-    return { client, token };
+    return { client: ClientMap.toDTO(client), token };
   }
 }
 

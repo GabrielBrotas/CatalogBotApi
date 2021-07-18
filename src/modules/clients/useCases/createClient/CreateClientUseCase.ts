@@ -21,9 +21,11 @@ class CreateClientUseCase {
     name,
     cellphone,
   }: ICreateClientDTO): Promise<void> {
-    const emailAlreadyExists = await this.clientsRepository.findByEmail(email);
-
+    let emailAlreadyExists = await this.clientsRepository.findByEmail(email);
     if (emailAlreadyExists) throw new AppError('Email already in use');
+
+    emailAlreadyExists = await this.clientsRepository.findByEmailOrCellphone({user: cellphone})
+    if (emailAlreadyExists) throw new AppError('Cellphone already in use');
 
     const passwordHash = await hash(password, 8);
 

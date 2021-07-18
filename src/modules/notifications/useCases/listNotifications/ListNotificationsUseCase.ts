@@ -3,6 +3,7 @@ import { inject, injectable } from 'tsyringe';
 import { AppError } from '../../../../shared/errors/AppError';
 import { IPagination } from '../../../../utils/pagination';
 import { INotificationsRepository } from '../../repositories/INotificationsRepository';
+import { INotification } from '../../schemas/Notification';
 
 interface IRequest {
   Receiver: string;
@@ -18,7 +19,7 @@ class ListNotificationsUseCase {
     private notificationsRepository: INotificationsRepository,
   ) {}
 
-  async execute({ Receiver, Sender, page = 1, limit = 10 }: IRequest): Promise<IPagination> {
+  async execute({ Receiver, Sender, page = 1, limit = 10 }: IRequest): Promise<IPagination<INotification>> {
     try {
       const result = await this.notificationsRepository.list({ Receiver, Sender, page, limit})
 

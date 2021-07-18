@@ -1,4 +1,5 @@
 import { injectable, inject } from 'tsyringe';
+import { CompanyMap } from '../../mapper/CompanyMap';
 import {
   ICompaniesRepository,
   IUpdateCompanyDTO,
@@ -29,8 +30,7 @@ class UpdateCompanyUseCase {
       acceptedPaymentMethods,
     });
 
-    delete company.password;
-    return company;
+    return CompanyMap.toDTO(company)
   }
 }
 

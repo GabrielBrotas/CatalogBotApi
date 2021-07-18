@@ -21,6 +21,12 @@ export const GET_COMPANY_VALIDATION = {
   },
 };
 
+export const REFRESH_COMPANY_VALIDATION = {
+  [Segments.BODY]: {
+    refresh_token: Joi.string().required(),
+  },
+};
+
 export const ADD_COMPANY_DATA_VALIDATION = {
   [Segments.PARAMS]: {
     id: Joi.string().required(),

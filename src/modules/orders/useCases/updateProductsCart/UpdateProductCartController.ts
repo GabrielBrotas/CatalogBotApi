@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { AppError } from '../../../../shared/errors/AppError';
 import { UpdateProductCartUseCase } from './UpdateProductCartUseCase';
 
 class UpdateProductCartController {
@@ -18,7 +19,7 @@ class UpdateProductCartController {
 
       return res.status(200).json(cartUpdated);
     } catch (err) {
-      return res.status(400).send(err.message);
+      throw new AppError(err.message)
     }
   }
 }

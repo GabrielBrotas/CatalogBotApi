@@ -11,10 +11,10 @@ export class OrdersRepository implements IOrdersRepository {
   }
 
   async findById(_id: string): Promise<IOrderPopulated | null> {
-    const order: IOrderPopulated = await this.repository
+    const order = await this.repository
       .findOne({ _id })
       .populate(['client'])
-      .exec();
+      .exec() as any;
     if (!order) return null;
     return order;
   }
@@ -40,10 +40,10 @@ export class OrdersRepository implements IOrdersRepository {
     return order;
   }
 
-  async listByCompanyId({_id, limit, page}: IListByCompanyId): Promise<IPagination> {
+  async listByCompanyId({_id, limit, page}: IListByCompanyId): Promise<IPagination<IOrderPopulated>> {
     const startIndex = (page - 1) * limit;
 
-    const results = await paginateModel({page, limit, repository: this.repository, countField: {company: _id}})
+    const results = await paginateModel<any>({page, limit, repository: this.repository, countField: {company: _id}})
 
     results.results = await this.repository
       .find({ company: _id })
@@ -56,10 +56,10 @@ export class OrdersRepository implements IOrdersRepository {
     return results;
   }
 
-  async find({where, limit, page}: IFindOrdersDTO): Promise<IPagination> {
+  async find({where, limit, page}: IFindOrdersDTO): Promise<IPagination<IOrder>> {
     const {clientId, companyId} = where
     const startIndex = (page - 1) * limit;
-    const results = await paginateModel({page, limit, repository: this.repository, countField: { client: clientId, company: companyId }})
+    const results = await paginateModel<IOrder>({page, limit, repository: this.repository, countField: { client: clientId, company: companyId }})
 
     results.results = await this.repository
       .find({ client: clientId, company: companyId})

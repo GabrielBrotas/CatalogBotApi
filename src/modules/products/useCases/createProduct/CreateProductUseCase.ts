@@ -1,6 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 import { IProduct, IProductOption } from '../../schemas/Product';
 import { IProductsRepository } from '../../repositories/IProductsRepository';
+import { ProductMap } from '../../mapper/ProductMap';
 
 interface IRequest {
   companyId: string;
@@ -35,7 +36,7 @@ class CreateProductUseCase {
       categoryId
     });
 
-    return newProduct;
+    return ProductMap.toDTO(newProduct);
   }
 }
 

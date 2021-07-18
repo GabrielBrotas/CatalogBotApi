@@ -1,3 +1,4 @@
+import { IPagination } from '../../../utils/pagination';
 import { ICategory } from '../schemas/Category';
 
 export interface ICreateCategoryDTO {
@@ -30,7 +31,7 @@ export type ListCategoriesResultProps = {
 };
 
 export interface ICategoriesRepository {
-  listMy({ _id, limit, page }: ListMyProps): Promise<ICategory[]>;
+  listMy({ _id, limit, page }: ListMyProps): Promise<IPagination<ICategory>>;
   findById(_id: string): Promise<ICategory | null>;
   deleteOne(_id: string): Promise<void>;
   create({ name, companyId }: ICreateCategoryDTO): Promise<void>;

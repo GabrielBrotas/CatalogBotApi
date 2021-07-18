@@ -35,7 +35,6 @@ class AddProductToCartUseCase {
       const product = await this.productsRepository.findById(
         orderProduct.product,
       );
-
       if (!product) throw new AppError('Invalid product', 500);
 
       const storagedProduct = await this.cartsRepository.insert({

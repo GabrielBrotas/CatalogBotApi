@@ -1,8 +1,12 @@
 import 'reflect-metadata';
 import express, { Request, Response, NextFunction } from 'express';
-import 'express-async-errors';
 import { errors } from 'celebrate';
 import cors from 'cors';
+import * as Sentry from "@sentry/node";
+import * as Tracing from "@sentry/tracing";
+
+import 'express-async-errors';
+import 'dotenv/config'
 
 import uploadConfig from './config/upload';
 
@@ -19,8 +23,24 @@ import { categoriesRouter } from './modules/categories/routes';
 import { Socket } from 'socket.io';
 import { notificationsRouter } from './modules/notifications/routes';
 import { SocketEventsHandler } from './modules/socket/EventsHandlers';
+import rateLimiter from './shared/middlewares/RateLimiter';
 
 const app = express();
+
+app.use(rateLimiter);
+
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  integrations: [
+    new Sentry.Integrations.Http({ tracing: true }),
+    new Tracing.Integrations.Express({ app }),
+  ],
+  tracesSampleRate: 1.0,
+});
+
+app.use(Sentry.Handlers.requestHandler());
+app.use(Sentry.Handlers.tracingHandler());
+
 app.use(express.json());
 app.use(cors());
 
@@ -42,7 +62,10 @@ export const middlewareLogger = (
   next();
 };
 
-app.use('/files', express.static(uploadConfig.uploadsFolder));
+app.use('/avatars', express.static(`${uploadConfig.tmpFolder}/avatars`));
+app.use('/products', express.static(`${uploadConfig.tmpFolder}/products`));
+app.use('/sounds', express.static(`${uploadConfig.tmpFolder}/sounds`));
+
 app.use(middlewareLogger);
 app.use('/companies', companiesRouter);
 app.use('/clients', clientsRouter);
@@ -50,6 +73,9 @@ app.use('/products', productsRouter);
 app.use('/categories', categoriesRouter);
 app.use('/orders', ordersRouter);
 app.use('/notifications', notificationsRouter);
+
+app.use(Sentry.Handlers.errorHandler());
+
 app.use(errors());
 
 app.use(
@@ -57,6 +83,7 @@ app.use(
     if (err instanceof AppError) {
       return response.status(err.statusCode).json({
         message: err.message,
+        status: err.statusCode
       });
     }
 

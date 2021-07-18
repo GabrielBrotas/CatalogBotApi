@@ -3,6 +3,7 @@ import { injectable, inject } from 'tsyringe';
 import { AppError } from '../../../../shared/errors/AppError';
 import { IClient } from '../../schemas/Client';
 import { IClientsRepository } from '../../repositories/IClientsRepository';
+import { ClientMap } from '../../mapper/ClientMap';
 
 @injectable()
 class GetAuthenticatedProfileUseCase {
@@ -16,8 +17,7 @@ class GetAuthenticatedProfileUseCase {
 
     if (!client) throw new AppError('client not found', 404);
 
-    delete client.password;
-    return client;
+    return ClientMap.toDTO(client);
   }
 }
 

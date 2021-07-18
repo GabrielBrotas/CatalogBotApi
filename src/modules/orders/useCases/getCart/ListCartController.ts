@@ -1,3 +1,4 @@
+import { AppError } from './../../../../shared/errors/AppError';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import { ListCartUseCase } from './ListCartUseCase';
@@ -16,7 +17,7 @@ class ListCartController {
 
       return res.status(200).json(cart);
     } catch (err) {
-      return res.status(400).send(err.message);
+      throw new AppError(err.message)
     }
   }
 }

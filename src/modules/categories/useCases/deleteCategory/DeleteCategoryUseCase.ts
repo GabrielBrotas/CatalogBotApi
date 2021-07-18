@@ -17,9 +17,9 @@ class DeleteCategoryUseCase {
   async execute({ categoryId, companyId }: IRequest): Promise<void> {
     const category = await this.categoriesRepository.findById(categoryId);
 
-    if (!category) throw new AppError('category not found', 404);
+    if (!category) throw new AppError('category not found', 400);
     if (String(category.company) !== String(companyId))
-      throw new AppError('not authorized', 403);
+      throw new AppError('not authorized', 429);
 
     await this.categoriesRepository.deleteOne(category._id);
     return;

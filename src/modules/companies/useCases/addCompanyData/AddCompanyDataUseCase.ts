@@ -29,7 +29,7 @@ class AddCompanyDataUseCase {
       await this.dataAnalysisRepository.create({ companyId, clientId, orderId, type })
       return;
     } catch(err) {
-      throw new AppError(err, 500)
+      throw new AppError(err)
     }
   }
 }

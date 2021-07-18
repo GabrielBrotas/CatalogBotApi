@@ -27,7 +27,7 @@ export type IOrderProduct = {
 
 export type IOrderStatus =
   | 'pending'
-  | 'confimed'
+  | 'confirmed'
   | 'sent'
   | 'received'
   | 'canceled';
@@ -51,7 +51,7 @@ export interface IOrder {
   created_at: Date;
 }
 
-export type IOrderPopulated = {
+export interface IOrderPopulated {
   _id: string;
   client: IClient;
   company: string;

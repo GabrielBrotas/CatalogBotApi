@@ -1,5 +1,5 @@
 import { AppError } from '../../../../shared/errors/AppError';
-import { paginateModel } from '../../../../utils/pagination';
+import { IPagination, paginateModel } from '../../../../utils/pagination';
 import { Category, ICategory } from '../../schemas/Category';
 import {
   ICategoriesRepository,
@@ -26,7 +26,7 @@ export class CategoriesRepository implements ICategoriesRepository {
   async update({ name, categoryId }: IEditCategoryDTO): Promise<ICategory> {
     const category = await this.repository.findOne({ _id: categoryId });
 
-    if (!category) throw new AppError('Category not found', 404);
+    if (!category) throw new AppError('Category not found', 400);
     if (name === '' || name === null)
       throw new AppError('Name should not be null', 400);
 
@@ -37,10 +37,10 @@ export class CategoriesRepository implements ICategoriesRepository {
     return category;
   }
 
-  async listMy({ _id, limit, page }: ListMyProps): Promise<ICategory[]> {
+  async listMy({ _id, limit, page }: ListMyProps): Promise<IPagination<ICategory>> {
     const startIndex = (page - 1) * limit;
 
-    const results = await paginateModel({page, limit, repository: this.repository, countField: {company: _id}})
+    const results = await paginateModel<ICategory>({page, limit, repository: this.repository, countField: {company: _id}})
 
     results.results = await this.repository
       .find({ company: _id })

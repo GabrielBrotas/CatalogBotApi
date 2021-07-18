@@ -17,12 +17,14 @@ import {
   AUTHENTICATE_COMPANY_VALIDATION,
   CREATE_COMPANY_VALIDATION,
   GET_COMPANY_VALIDATION,
+  REFRESH_COMPANY_VALIDATION,
   UPDATE_COMPANY_VALIDATION,
 } from './validations.schema';
 import { ListMyCompanyDataAnalysisController } from '../useCases/listMyCompanyDataAnalysis/ListMyCompanyDataAnalysisController';
+import { RefreshTokenController } from '../useCases/refreshToken/RefreshTokenController';
 
 const companiesRouter = Router();
-const upload = multer(uploadConfig.upload(''));
+const upload = multer(uploadConfig);
 
 const createCompanyController = new CreateCompanyController();
 const authenticateController = new AuthenticateController();
@@ -32,6 +34,9 @@ const updateCompanyController = new UpdateCompanyController();
 const updateImageController = new UpdateImageController();
 const addCompanyDataController = new AddCompanyDataController();
 const listMyCompanyDataAnalysisController = new ListMyCompanyDataAnalysisController();
+const refreshTokenController = new RefreshTokenController();
+
+companiesRouter.get('/', ensureAuthenticated, getMyCompanyController.handle);
 
 companiesRouter.get(
   '/:id',
@@ -52,6 +57,12 @@ companiesRouter.post(
 );
 
 companiesRouter.post(
+  '/refresh-token',
+  celebrate(REFRESH_COMPANY_VALIDATION),
+  refreshTokenController.handle,
+);
+
+companiesRouter.post(
   '/auth',
   celebrate(AUTHENTICATE_COMPANY_VALIDATION),
   authenticateController.handle,
@@ -63,7 +74,6 @@ companiesRouter.post(
   addCompanyDataController.handle,
 );
 
-companiesRouter.get('/', ensureAuthenticated, getMyCompanyController.handle);
 
 companiesRouter.put(
   '/',

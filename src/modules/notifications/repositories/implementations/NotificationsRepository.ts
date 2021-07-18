@@ -9,8 +9,8 @@ export class NotificationsRepository implements INotificationsRepository {
     this.repository = Notification;
   }
 
-  async create({Text, Type, Receiver, Sender, Order}: ICreateNotificationDTO): Promise<INotification> {
-    const notification = await this.repository.create({Text, Type, Receiver, Sender, Order, Viewed: false})
+  async create({Text, Type, Receiver, Sender, Order, Status}: ICreateNotificationDTO): Promise<INotification> {
+    const notification = await this.repository.create({Text, Type, Receiver, Sender, Order, Viewed: false, Status})
 
     return notification
   }
@@ -29,14 +29,14 @@ export class NotificationsRepository implements INotificationsRepository {
     return
   }
 
-  async list({page, limit = 10, Receiver, Sender}: ListNotificationsDTO): Promise<IPagination> {
+  async list({page, limit = 10, Receiver, Sender}: ListNotificationsDTO): Promise<IPagination<INotification>> {
     const startIndex = (page - 1) * limit;
 
     const countField: any = { Receiver }
 
     if (Sender) countField['Sender'] = Sender
 
-    const results = await paginateModel({page, limit, repository: this.repository, countField})
+    const results = await paginateModel<INotification>({page, limit, repository: this.repository, countField})
 
     results.results = await this.repository
     .find({ Receiver, ...( Sender && {Sender}) })

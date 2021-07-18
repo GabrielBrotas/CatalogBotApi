@@ -3,6 +3,7 @@ import { container } from 'tsyringe';
 import { UpdateCompanyUseCase } from './UpdateCompanyUseCase';
 
 import { Logger } from '../../../../shared/middlewares/logger';
+import { AppError } from '../../../../shared/errors/AppError';
 
 const logger = new Logger('UPDATE COMPANY');
 class UpdateCompanyController {
@@ -24,7 +25,8 @@ class UpdateCompanyController {
       return res.status(201).json(company);
     } catch (err) {
       logger.error(err.message)
-      return res.status(400).send(err.message);
+      throw new AppError(err.message, 400)
+
     }
   }
 }

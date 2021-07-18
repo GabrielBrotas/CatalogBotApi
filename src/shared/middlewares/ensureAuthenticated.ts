@@ -22,7 +22,7 @@ export default function ensureAuthenticated(
 
   if (!authHeader) {
     logger.error('JWT token is missing');
-    throw new AppError('JWT token is missing', 401);
+    throw new AppError('JWT token is missing', 429);
   }
 
   // Bearer asdhksau, pegar apenas o token e ignorar o Bearer
@@ -30,7 +30,7 @@ export default function ensureAuthenticated(
 
   try {
     // verificar se o token do usuario é um token valido
-    const decoded = verify(token, SECRET_KEY);
+    const decoded = verify(token, SECRET_KEY as string);
 
     const { sub } = decoded as ITokenPayload;
 
@@ -41,6 +41,6 @@ export default function ensureAuthenticated(
     return next();
   } catch (err) {
     logger.error('Invalid JWT token', err);
-    throw new AppError('Invalid JWT token', 401);
+    throw new AppError('token.expired', 429);
   }
 }
