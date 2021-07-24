@@ -21,7 +21,13 @@ export class CompaniesRepository implements ICompaniesRepository {
       password,
       name,
       roles: ['company'],
-      acceptedPaymentMethods: ['Dinheiro'],
+      acceptedPaymentMethods: {
+        money: true,
+        pix: false,
+        debit: false,
+        creditCard: false,
+        boleto: false,
+      },
       Views: []
     });
   }

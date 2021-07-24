@@ -32,7 +32,7 @@ export class ProductsRepository implements IProductsRepository {
       .populate(['category', 'company'])
       .skip(startIndex)
       .limit(limit)
-      .sort({ created_at: -1 })
+      .sort({ created_at: -1, category: -1, name: 1 })
       .exec();
 
     return results;

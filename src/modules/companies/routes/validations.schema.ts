@@ -42,7 +42,7 @@ export const UPDATE_COMPANY_VALIDATION = {
   [Segments.BODY]: Joi.object().keys({
     benefits: Joi.array().items(Joi.string().optional()).optional(),
     name: Joi.string().optional(),
-    shortDescription: Joi.string().optional().allow(null),
+    shortDescription: Joi.string().optional().allow(null, ''),
     acceptedPaymentMethods: Joi.object().keys({
       boleto: Joi.boolean().optional(),
       creditCard: Joi.boolean().optional(),

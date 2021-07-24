@@ -34,7 +34,7 @@ class AuthenticateClientUseCase {
       throw new AppError('Invalid Email/Password combination.', 401);
     }
 
-    if (!client.password) throw new AppError('Invalid Password', 400);
+    if (!client.password) throw new AppError('Invalid Email/Password combination.', 400);
 
     const passwordMatch = await compare(password, client.password);
 
