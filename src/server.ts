@@ -43,6 +43,16 @@ app.use(Sentry.Handlers.tracingHandler());
 
 app.use(express.json());
 app.use(cors());
+// app.use(cors({
+//   origin: '*',
+//   allowedHeaders: [
+//     'Content-Type', 'Authorization',
+//     'Access-Control-Allow-Credentials', 'true',
+//     'Access-Control-Allow-Origin', '*',
+//     'Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT',
+//     'Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+//   ]
+// }));
 
 const server = require('http').createServer(app);
 const io = require('socket.io')(server, {
@@ -98,8 +108,6 @@ const socketEventsHandler = new SocketEventsHandler()
 
 io.on("connection", (socket: Socket) => {
   console.log("New client connected " + socket.id);
-
-  socket.on('updateOrderStatus', (data) => socketEventsHandler.updateOrderStatus(data, socket))
 
   socket.on('loggedUser', (data) => socketEventsHandler.loggedUser(data, socket))
 

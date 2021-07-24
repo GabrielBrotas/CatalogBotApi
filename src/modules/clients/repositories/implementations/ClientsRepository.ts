@@ -36,7 +36,7 @@ export class ClientsRepository implements IClientsRepository {
     if(set.defaultAddress){
       client.defaultAddress = set.defaultAddress
     }
-    
+
     await client.save()
   }
 
@@ -58,7 +58,9 @@ export class ClientsRepository implements IClientsRepository {
   }: IFindClientByEmailOrCellphoneDTO): Promise<IClient | null> {
     let client = null;
 
+    console.log({user})
     client = await this.repository.findOne({ email: user });
+
     if (client) return client;
 
     client = await this.repository.findOne({ cellphone: user });
