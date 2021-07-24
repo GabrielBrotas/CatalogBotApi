@@ -18,6 +18,10 @@ jobs:
         with:
           node-version: 14.x
 
+      # Fix dependencies          
+      - name: Install dependencies
+        run: npm audit fix
+   
       # instalar as dependencias          
       - name: Install dependencies
         run: npm install
