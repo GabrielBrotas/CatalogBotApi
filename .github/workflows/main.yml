@@ -23,8 +23,8 @@ jobs:
         run: npm install
       
       # executar a build
-      - name: Run build
-        run: npm run-script build
+#       - name: Run build
+#         run: npm run-script build
         
       # copiar código para dentro da digital ocean
       - name: copy dist to digital ocean
