@@ -19,12 +19,12 @@ jobs:
           node-version: 14.x
    
       # instalar/atualizas as dependencias          
-      - name: Install dependencies
-        run: npm install
+#       - name: Install dependencies
+#         run: npm install
       
       # executar a build
-#       - name: Run build
-#         run: npm run-script build
+      - name: Run build
+        run: npm run-script build
         
       # copiar código para dentro da digital ocean
       - name: copy dist to digital ocean
