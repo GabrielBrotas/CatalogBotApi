@@ -18,10 +18,12 @@ import {
   CREATE_COMPANY_VALIDATION,
   GET_COMPANY_VALIDATION,
   REFRESH_COMPANY_VALIDATION,
+  UPDATE_COMPANY_FLOW_VALIDATION,
   UPDATE_COMPANY_VALIDATION,
 } from './validations.schema';
 import { ListMyCompanyDataAnalysisController } from '../useCases/listMyCompanyDataAnalysis/ListMyCompanyDataAnalysisController';
 import { RefreshTokenController } from '../useCases/refreshToken/RefreshTokenController';
+import { UpdateCompanyFlowController } from '../useCases/updateCompanyFlow/UpdateCompanyFlowController';
 
 const companiesRouter = Router();
 const upload = multer(uploadConfig);
@@ -31,6 +33,7 @@ const authenticateController = new AuthenticateController();
 const getMyCompanyController = new GetMyCompanyController();
 const getCompanyController = new GetCompanyController();
 const updateCompanyController = new UpdateCompanyController();
+const updateCompanyFlowController = new UpdateCompanyFlowController();
 const updateImageController = new UpdateImageController();
 const addCompanyDataController = new AddCompanyDataController();
 const listMyCompanyDataAnalysisController = new ListMyCompanyDataAnalysisController();
@@ -74,12 +77,18 @@ companiesRouter.post(
   addCompanyDataController.handle,
 );
 
-
 companiesRouter.put(
   '/',
   ensureAuthenticated,
   celebrate(UPDATE_COMPANY_VALIDATION),
   updateCompanyController.handle,
+);
+
+companiesRouter.put(
+  '/flow',
+  ensureAuthenticated,
+  celebrate(UPDATE_COMPANY_FLOW_VALIDATION),
+  updateCompanyFlowController.handle,
 );
 
 companiesRouter.patch(

@@ -15,6 +15,7 @@ class CompanyMap {
     shortDescription,
     workTime,
     created_at,
+    flow
   }: ICompany): ICompanyResponse {
     const company = {
       _id,
@@ -31,6 +32,7 @@ class CompanyMap {
       shortDescription,
       workTime,
       created_at,
+      flow
     };
     return company;
   }

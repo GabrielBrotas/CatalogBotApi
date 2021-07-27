@@ -1,3 +1,4 @@
+import { APP_API_URL } from './../../../../config/constants';
 import { removeSpeciaCaracteresAndLetters } from "../../../../utils/removeSpecialCaracteresAndLetters";
 import { stages } from "../bot";
 import { IWhatsAppConversation } from "../schemas/WhatsAppConversation";
@@ -74,16 +75,16 @@ export async function getBotResponse({
     nextStage,
     answerNextStageAutomatically = false,
     sendAnotherInfoMessage = null
-  } = await currentStage.fulfilment.execute(userResponseFormated);
+  } = await currentStage.fulfilment.execute(userResponseFormated, company.flow);
 
   let response = answer;
 
   if (answer.includes('{{name}}')) {
     response = response.replace('{{name}}', company.name);
   }
-  console.log({answer})
-  if (answer.includes('http://localhost:3000/catalog/{{companyId}}')) {
-    response = response.replace('http://localhost:3000/catalog/{{companyId}}', `http://localhost:3000/catalog/${company._id}`);
+
+  if (answer.includes(`${APP_API_URL}/catalog/{{companyId}}`)) {
+    response = response.replace(`${APP_API_URL}/catalog/{{companyId}}`, `${APP_API_URL}/catalog/${company._id}`);
   }
 
   return { response, newStage: nextStage, answerNextStageAutomatically, sendAnotherInfoMessage }

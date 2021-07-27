@@ -29,6 +29,7 @@ class CreateCompanyUseCase {
       email,
       password: passwordHash,
     });
+
   }
 }
 

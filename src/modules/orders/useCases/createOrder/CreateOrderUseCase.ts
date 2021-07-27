@@ -36,7 +36,6 @@ class CreateOrderUseCase {
     saveAddressAsDefault = false
   }: ICreateOrderDTO): Promise<IOrder> {
     try {
-      console.log({paymentMethod})
       const company = await this.companiesRepository.findById(companyId);
 
       if (!company) throw new AppError('company not found', 404);
