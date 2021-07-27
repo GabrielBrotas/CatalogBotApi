@@ -1,3 +1,4 @@
+import { WAConnection } from '@adiwajshing/baileys';
 import { Socket } from 'socket.io';
 import { api } from '../../shared/services/api';
 import { connectToWhatsApp } from './whatsapp/services/connectWhatsapp.service';
@@ -6,6 +7,7 @@ import { disconnectWhatsappService } from './whatsapp/services/disconnect.servic
 
 export class SocketEventsHandler {
   private connections: Array<{userID: string, socketID: string}> = []
+  private waConnections: Array<{userID: string, conn: WAConnection}> = []
 
   constructor() {
     this.connections = []
@@ -59,15 +61,25 @@ export class SocketEventsHandler {
   }
 
   async connectWhatsapp(data: any, socket: Socket): Promise<void> {
-    console.log('trying connect')
-    await connectToWhatsApp(socket, data).catch (err => console.log("unexpected error: " + err) )
+    const conn = new WAConnection()
+
+    this.waConnections.filter( c => c.userID !== data.userId)
+    this.waConnections.push({userID: data.userId, conn})
+
+    await connectToWhatsApp(socket, conn, data.userId).catch (err => console.log("unexpected error: " + err) )
   }
 
   async disconnectWhatsapp(data: any, socket: Socket): Promise<void> {
-    console.log('disconnecting..')
-
-    await disconnectWhatsappService(data)
-    console.log('disconnected')
+    try{
+      for (const waconn of this.waConnections) {
+        if(waconn.userID === data.userId) {
+          await waconn.conn.logout()
+          waconn.conn.close()
+        }
+      }
+    } catch(err) {
+      console.log('disconnect wpp err => ', err)
+    }
   }
 
 

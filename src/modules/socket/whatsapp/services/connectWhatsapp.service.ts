@@ -5,30 +5,25 @@ import { Socket } from 'socket.io'
 import { sendMessage } from './sendMessage.service'
 
 const storedQRS: Array<{companyId: string, data: Buffer}> = []
-// const connectionsClients: Array<{companyId: string, connId: string}> = []
 
-export async function connectToWhatsApp (socket: Socket, companyId: string): Promise<any> {
-  const conn = new WAConnection()
+export async function connectToWhatsApp (socket: Socket, conn: WAConnection, companyId: string): Promise<any> {
+  // const conn = new WAConnection()
 
   conn.on('qr', (QR) => {
     console.log('send qr')
     const qrImage = qr.imageSync(QR)
     storedQRS.push({ companyId, data: qrImage })
+    conn.removeAllListeners("qr");
     socket.emit('qr', qrImage);
   })
 
   conn.on('open', async (openResult) => {
-    console.log({openResult})
-    // if(connectionsClients.some(client => String(client.companyId) === String(companyId))) {
-    //   connectionsClients.filter(client => String(client.companyId) !== String(companyId))
-    // }
-    // connectionsClients.push({ connId: openResult.auth.clientID, companyId })
+    // console.log({openResult})
 
     // remove old auth file
     try {
       const authFileExists = await checkIfFileConnectionExists(companyId)
       if(authFileExists) await removeFileConnection(companyId)
-      console.log({authFileExists})
     } catch (err) { console.log(err)}
 
     // new auth file
@@ -41,27 +36,24 @@ export async function connectToWhatsApp (socket: Socket, companyId: string): Pro
     try {
       const authFileExists = await checkIfFileConnectionExists(companyId)
       if(authFileExists) await removeFileConnection(companyId)
-      console.log({authFileExists})
     } catch (err) { console.log(err)}
     console.log('connecting')
   })
 
   conn.on('close', (closeResult) => {
-    console.log({closeResult})
-    // if(closeResult.reason === 'replaced') conn.connect()
+    // console.log({closeResult})
     socket.emit('close', closeResult)
   })
 
   conn.on('ws-close', (wscloseResult) => {
-    console.log({wscloseResult})
     socket.emit('ws-close', wscloseResult)
   })
 
   conn.on('chat-update',(chatUpdate) => {
-   console.log('chat update')
+  //  console.log('chat update')
     if (chatUpdate.hasNewMessage && chatUpdate.messages) {
         const message = chatUpdate.messages.all()[0]
-        if(message.key.remoteJid && !message.key.fromMe) sendMessage({conn, messageData: message, companyId})
+        if(message.key.remoteJid) sendMessage({conn, messageData: message, companyId})
       }
     }
   )
@@ -72,7 +64,7 @@ export async function connectToWhatsApp (socket: Socket, companyId: string): Pro
   } catch(err) {
     console.log('auth file does not exist')
     conn.close()
-    conn.logout()
+    await conn.logout()
   }
 
   try {

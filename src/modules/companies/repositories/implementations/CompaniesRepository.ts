@@ -5,6 +5,7 @@ import {
   ICompaniesRepository,
   ICreateCompanyDTO,
   IUpdateCompanyDTO,
+  IUpdateCompanyFlowDTO,
   IUpdateCompanyImageDTO,
 } from '../ICompaniesRepository';
 
@@ -15,8 +16,8 @@ export class CompaniesRepository implements ICompaniesRepository {
     this.repository = Company;
   }
 
-  async create({ email, password, name }: ICreateCompanyDTO): Promise<void> {
-    await this.repository.create({
+  async create({ email, password, name }: ICreateCompanyDTO): Promise<ICompany> {
+    const company = await this.repository.create({
       email,
       password,
       name,
@@ -30,6 +31,8 @@ export class CompaniesRepository implements ICompaniesRepository {
       },
       Views: []
     });
+
+    return company
   }
 
   async findByEmail(email: string): Promise<ICompany | null> {
@@ -83,5 +86,17 @@ export class CompaniesRepository implements ICompaniesRepository {
     await company.save();
 
     return company;
+  }
+
+  async updateFlow({companyId, set}: IUpdateCompanyFlowDTO): Promise<ICompany> {
+    const company = await this.repository.findOne({ _id: companyId }).exec()
+
+    if(!company) throw "company not found"
+
+    company.flow = {...set}
+
+    await company.save()
+
+    return company
   }
 }

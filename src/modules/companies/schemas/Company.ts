@@ -14,6 +14,17 @@ export type CompanyPaymentMethods = {
   debit: boolean;
 };
 
+export type ICompanyFlow = {
+  '1': string,
+  '2': string,
+  '2-1-1': string,
+  '2-1-2': string,
+  '2-2-1': string,
+  '2-2-2': string,
+  '2-3-1': string,
+  '2-3-2': string,
+  '2-4': string,
+}
 export interface ICompany {
   _id: string;
   email: string;
@@ -25,6 +36,7 @@ export interface ICompany {
   benefits: string[];
   acceptedPaymentMethods: CompanyPaymentMethods;
   roles: string[];
+  flow: ICompanyFlow
   created_at: Date;
 }
 
@@ -67,6 +79,58 @@ const CompanySchema = new Schema({
     debit: Boolean,
   },
   roles: [String],
+  flow: {
+    '1': {
+      type: String,
+      required: true,
+      default: `Olá, seja bem vindo a {{name}} eu sou um bot`
+    },
+    '2': {
+      type: String,
+      required: true,
+      default: `Como eu posso te ajudar?
+      1️⃣ Ver nosso catalogo e fazer um pedido.
+      2️⃣ Para falar sobre entrega.
+      3️⃣ Para falar sobre pagamento.
+      4️⃣ Para finalizar sessão.
+      `
+    },
+    '2-1-1': {
+      type: String,
+      required: true,
+      default: `{{Link do Catalogo}}`
+    },
+    '2-1-2': {
+      type: String,
+      required: true,
+      default: `No nosso catalogo você vai poder ver todos os meus produtos e realizar um pedido. Agora qualquer coisa basta me chamar :).`
+    },
+    '2-2-1': {
+      type: String,
+      required: true,
+      default: `sobre entrega...t`
+    },
+    '2-2-2': {
+      type: String,
+      required: true,
+      default: `Qualquer coisa basta me chamar :).`
+    },
+    '2-3-1': {
+      type: String,
+      required: true,
+      default: `sobre pagamento...`
+    },
+    '2-3-2': {
+      type: String,
+      required: true,
+      default: `Qualquer coisa basta me chamar :).`
+    },
+    '2-4': {
+      type: String,
+      required: true,
+      default: `encerrando...`
+    },
+  },
   created_at: {
     type: Date,
     default: Date.now(),

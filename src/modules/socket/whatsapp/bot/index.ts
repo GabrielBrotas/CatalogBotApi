@@ -1,8 +1,11 @@
+import { ICompanyFlow } from './../../../companies/schemas/Company';
+
 type IStageDTO = {
   description: string;
   fulfilment: {
     execute(
-      res: string,
+      UserResponse: string,
+      CompanyFlow: ICompanyFlow
     ): Promise<{
       answer: string;
       nextStage: number;
@@ -14,6 +17,7 @@ type IStageDTO = {
     [key: string]: string[];
   }[];
 }[];
+
 
 export const stages: IStageDTO = [
   {
@@ -29,6 +33,6 @@ export const stages: IStageDTO = [
   {
     description: 'Lidar com escolha do menu',
     fulfilment: require('./stages/2'),
-    intent: require('./intents/menu'),
+    intent: require('./intents/menu').default,
   },
 ];

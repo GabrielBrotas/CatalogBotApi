@@ -13,9 +13,22 @@ interface SendMessageProps {
 }
 
 let isSendingMessage = false
+let isTalkingWithOwner = false
 
 export async function sendMessage({ conn, messageData, companyId }: SendMessageProps) {
-  if(isSendingMessage) return
+
+  if(messageData.key.fromMe) {
+    if(String(messageData.message.conversation).toLowerCase() === 'start') {
+      isTalkingWithOwner = false
+      return
+    }
+
+    if(String(messageData.message.conversation).toLowerCase() === 'stop') {
+      isTalkingWithOwner = true
+      return
+    }
+  }
+  if(isSendingMessage || isTalkingWithOwner) return
   if(!companyId || !conn) return
 
   isSendingMessage = true
@@ -25,12 +38,14 @@ export async function sendMessage({ conn, messageData, companyId }: SendMessageP
   const senderPhone = getWhatsappFromSender(String(sender))
 
   if(!senderPhone && !message) return
+
   try {
     await conn.updatePresence(String(sender), Presence.composing)
     await sleep(3000)
 
     // se nao for mensagem de texto
     if(!message?.conversation) {
+      await conn.sendMessage(sender, 'Desculpe, mas no momento só consigo enteder a mensagens de texto', MessageType.text)
       await conn.updatePresence(String(sender), Presence.available)
       return
     }
@@ -72,7 +87,7 @@ async function answerUser({conn, conversation, userResponse, sender}: AnswerUser
 
     if(answerNextStageAutomatically) {
       await sleep(1500)
-      const { response } = await getBotResponseAndUpdateStage({conversation: {...conversation, stage: conversation.stage +1 }, userResponse})
+      const { response } = await getBotResponseAndUpdateStage({conversation: {...conversation._doc, stage: conversation.stage +1 }, userResponse})
       await conn.sendMessage (String(sender), response, MessageType.text)
     }
   } catch (err) {
@@ -90,6 +105,7 @@ async function getBotResponseAndUpdateStage({conversation, userResponse}: GetBot
     const { response, newStage, answerNextStageAutomatically, sendAnotherInfoMessage } = await getBotResponse({ userData: conversation, userResponse });
 
     if(newStage) {
+      console.log({conversationId: conversation._id, stage: newStage})
       await whatsAppConversationRepository.updateOne({conversationId: conversation._id, stage: newStage})
     }
 

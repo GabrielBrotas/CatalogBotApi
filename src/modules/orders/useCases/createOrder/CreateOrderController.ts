@@ -22,6 +22,8 @@ class CreateOrderController {
         saveAddressAsDefault
       });
 
+      console.log(newOrder)
+
       return res.status(201).json(newOrder);
     } catch (err) {
       throw new AppError(err.message)
