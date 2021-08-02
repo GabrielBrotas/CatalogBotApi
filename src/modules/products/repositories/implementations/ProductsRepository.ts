@@ -1,4 +1,3 @@
-import { APP_API_URL } from '../../../../config/constants';
 import { AppError } from '../../../../shared/errors/AppError';
 import { IPagination, paginateModel } from '../../../../utils/pagination';
 import { Product, IProduct } from '../../schemas/Product';

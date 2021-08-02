@@ -1,8 +1,6 @@
 import { inject, injectable } from 'tsyringe';
-import { APP_API_URL } from '../../../../config/constants';
 import { IStorageProvider } from '../../../../shared/container/Providers/StorageProvider/IStorageProvider';
 import { AppError } from '../../../../shared/errors/AppError';
-import { deleteFile } from '../../../../utils/file';
 import { ProductMap } from '../../mapper/ProductMap';
 import { IProductsRepository } from '../../repositories/IProductsRepository';
 

@@ -41,7 +41,6 @@ export async function connectToWhatsApp (socket: Socket, conn: WAConnection, com
   })
 
   conn.on('close', (closeResult) => {
-    // console.log({closeResult})
     socket.emit('close', closeResult)
   })
 
@@ -50,7 +49,6 @@ export async function connectToWhatsApp (socket: Socket, conn: WAConnection, com
   })
 
   conn.on('chat-update',(chatUpdate) => {
-  //  console.log('chat update')
     if (chatUpdate.hasNewMessage && chatUpdate.messages) {
         const message = chatUpdate.messages.all()[0]
         if(message.key.remoteJid) sendMessage({conn, messageData: message, companyId})

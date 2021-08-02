@@ -1,5 +1,4 @@
-import { APP_API_URL } from './../../../../../config/constants';
-import { ICompanyFlow } from "modules/companies/schemas/Company"
+import { APP_WEB_URL } from './../../../../../config/constants';
 import retornarIntent from '../intents/retornar';
 
 // ? Lidar com escolha do menu
@@ -24,7 +23,7 @@ export async function execute(userResponse: string, CompanyFlow: string) {
     // catalogo
     case 1:
       return {
-        answer: `${APP_API_URL}/catalog/{{companyId}}`,
+        answer: `${APP_WEB_URL}/catalog/{{companyId}}`,
         nextStage: 1,
         // sendAnotherInfoMessage: 'No nosso catalogo você vai poder ver todos os meus produtos e realizar um pedido. \nAgora qualquer coisa basta me chamar :).',
         sendAnotherInfoMessage: CompanyFlow['2-1-2']
