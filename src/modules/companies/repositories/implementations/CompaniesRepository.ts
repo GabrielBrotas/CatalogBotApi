@@ -1,4 +1,3 @@
-import { APP_API_URL } from '../../../../config/constants';
 import { AppError } from '../../../../shared/errors/AppError';
 import { Company, ICompany } from '../../schemas/Company';
 import {

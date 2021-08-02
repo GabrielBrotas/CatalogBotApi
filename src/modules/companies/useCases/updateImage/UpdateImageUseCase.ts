@@ -1,4 +1,3 @@
-import { APP_API_URL } from './../../../../config/constants';
 import { inject, injectable } from 'tsyringe';
 import { IStorageProvider } from '../../../../shared/container/Providers/StorageProvider/IStorageProvider';
 import { AppError } from '../../../../shared/errors/AppError';

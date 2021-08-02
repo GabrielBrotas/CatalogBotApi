@@ -1,11 +1,3 @@
-// export function execute() {
-//   return {
-//     answer: `Olá, seja bem vindo a {{name}} eu sou um bot`,
-//     nextStage: 1,
-//     answerNextStageAutomatically: true
-//   }
-// }
-
 import { ICompanyFlow } from "modules/companies/schemas/Company"
 
 export async function execute(UserResponse: string, CompanyFlow: ICompanyFlow) {
