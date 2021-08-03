@@ -1,9 +1,27 @@
+
+# exclude everything
+# tmp/*
+tmp/avatars/*
+tmp/products/*
+tmp/sounds/*
+tmp/*
+src/modules/socket/whatsapp/bot/auth/*
+
+# exception to the rule
+!tmp/.gitkeep
+!tmp/avatars
+!tmp/avatars/.gitkeep
+!tmp/products
+!tmp/products/.gitkeep
+!tmp/sounds
+!tmp/sounds/.gitkeep
+!src/modules/socket/whatsapp/bot/auth/.gitkeep
+
+
 node_modules
 .vscode
-tmp/*
 coverage
 .env
-!tmp/.gitkeep
 dist
 ormconfig.json
 package-lock.json
@@ -15,7 +33,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
-tmp/*
+# tmp/*
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
