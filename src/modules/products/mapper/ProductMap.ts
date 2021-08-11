@@ -24,7 +24,7 @@ class ProductMap {
       imageUrl: imageUrl
         ? process.env.disk === 'local'
           ? `${process.env.APP_API_URL}/products/${imageUrl}`
-          : `${process.env.AWS_BUCKET_URL}/products/${imageUrl}`
+          : `${process.env.WASABI_BUCKET_URL}/products/${imageUrl}`
         : undefined,
       created_at
     };

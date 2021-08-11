@@ -27,7 +27,7 @@ class CompanyMap {
       mainImageUrl: mainImageUrl
         ? process.env.disk === 'local'
           ? `${process.env.APP_API_URL}/avatars/${mainImageUrl}`
-          : `${process.env.AWS_BUCKET_URL}/avatars/${mainImageUrl}`
+          : `${process.env.WASABI_BUCKET_URL}/avatars/${mainImageUrl}`
         : undefined,
       shortDescription,
       workTime,
