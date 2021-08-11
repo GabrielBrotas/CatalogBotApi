@@ -27,6 +27,10 @@ export async function sendMessage({ conn, messageData, companyId }: SendMessageP
       isTalkingWithOwner = true
       return
     }
+
+    if(!isTalkingWithOwner) {
+      return
+    }
   }
   if(isSendingMessage || isTalkingWithOwner) return
   if(!companyId || !conn) return

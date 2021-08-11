@@ -23,7 +23,7 @@ export async function execute(userResponse: string, CompanyFlow: string) {
     // catalogo
     case 1:
       return {
-        answer: `${APP_WEB_URL}/catalog/{{companyId}}`,
+        answer: CompanyFlow['2-1-1'],
         nextStage: 1,
         // sendAnotherInfoMessage: 'No nosso catalogo você vai poder ver todos os meus produtos e realizar um pedido. \nAgora qualquer coisa basta me chamar :).',
         sendAnotherInfoMessage: CompanyFlow['2-1-2']

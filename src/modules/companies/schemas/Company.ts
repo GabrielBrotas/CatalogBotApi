@@ -24,6 +24,10 @@ export type ICompanyFlow = {
   '2-3-1': string,
   '2-3-2': string,
   '2-4': string,
+  '3-1': string,
+  '3-2': string,
+  '3-3': string,
+  '3-4': string,
 }
 export interface ICompany {
   _id: string;
@@ -129,6 +133,26 @@ const CompanySchema = new Schema({
       type: String,
       required: true,
       default: `encerrando...`
+    },
+    '3-1': {
+      type: String,
+      required: true,
+      default: `Acabamos de confirmar seu pedido e logo mais te informaremos quando enviarmos ao destino`
+    },
+    '3-2': {
+      type: String,
+      required: true,
+      default: `Seu pedido está a caminho`
+    },
+    '3-3': {
+      type: String,
+      required: true,
+      default: `Aproveito nosso produto, qualquer coisa que precisar basta olhar no nosso catálogo ou nos chamar aqui`
+    },
+    '3-4': {
+      type: String,
+      required: true,
+      default: `Seu pedido foi cancelado`
     },
   },
   created_at: {
