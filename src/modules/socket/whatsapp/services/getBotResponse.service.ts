@@ -1,4 +1,4 @@
-import { APP_API_URL } from './../../../../config/constants';
+import { APP_API_URL, APP_WEB_URL } from './../../../../config/constants';
 import { removeSpeciaCaracteresAndLetters } from "../../../../utils/removeSpecialCaracteresAndLetters";
 import { stages } from "../bot";
 import { IWhatsAppConversation } from "../schemas/WhatsAppConversation";
@@ -97,7 +97,7 @@ function replaceIncludeMessage({answer, CompanyName, CompanyID}: ReplaceIncludeM
   }
 
   if (answer.includes('{{link}}')) {
-    response = response.replace(`{{link}}`, `${APP_API_URL}/catalog/${CompanyID}`);
+    response = response.replace(`{{link}}`, `${APP_WEB_URL}/catalog/${CompanyID}`);
   }
 
   return response
