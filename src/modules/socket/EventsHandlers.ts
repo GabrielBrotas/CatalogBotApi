@@ -1,4 +1,4 @@
-import { APP_API_URL } from './../../config/constants';
+import { APP_WEB_URL } from './../../config/constants';
 import { MessageType, WAConnection } from '@adiwajshing/baileys';
 import { Socket } from 'socket.io';
 import { api } from '../../shared/services/api';
@@ -201,7 +201,7 @@ function replaceIncludeMessage({answer, DeliveryTime, CompanyID, OrderID}: Repla
   }
 
   if (response.includes('{{OrderUrl}}') && CompanyID && OrderID) {
-    response = response.replace(`{{OrderUrl}}`, `${APP_API_URL}/catalog/${CompanyID}?o=${OrderID}`);
+    response = response.replace(`{{OrderUrl}}`, `${APP_WEB_URL}/catalog/${CompanyID}?o=${OrderID}`);
   }
 
   return response
