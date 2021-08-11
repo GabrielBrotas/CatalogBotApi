@@ -73,6 +73,10 @@ export const UPDATE_COMPANY_FLOW_VALIDATION = {
       '2-3-1': Joi.string().required(),
       '2-3-2': Joi.string().required(),
       '2-4': Joi.string().required(),
+      '3-1': Joi.string().required(),
+      '3-2': Joi.string().required(),
+      '3-3': Joi.string().required(),
+      '3-4': Joi.string().required(),
     })
   }),
 };
