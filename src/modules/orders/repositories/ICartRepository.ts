@@ -1,4 +1,4 @@
-import { ICart, ICartProduct } from '../schemas/Cart';
+import { ICart, ICartPopulated, ICartProduct } from '../schemas/Cart';
 import { IOrderProduct } from '../schemas/Order';
 
 export interface FindOneDTO {
@@ -31,9 +31,9 @@ export interface DeleteOneDTO {
 }
 
 export interface ICartsRepository {
-  insert(data: InsertOneDTO): Promise<ICart>;
-  findById({ cartId }: FindByIdDTO): Promise<ICart | null>;
-  findOne({ clientId, companyId }: FindOneDTO): Promise<ICart | null>;
+  insert(data: InsertOneDTO): Promise<ICartPopulated>;
+  findById({ cartId }: FindByIdDTO): Promise<ICartPopulated | null>;
+  findOne({ clientId, companyId }: FindOneDTO): Promise<ICartPopulated | null>;
   update(data: UpdateDTO): Promise<ICart>;
   deleteAll({ cartId }: DeleteManyDTO): Promise<void>;
   deleteOne({ cartId, orderProductId }: DeleteOneDTO): Promise<ICart | void>;

@@ -1,8 +1,8 @@
 import { injectable, inject } from 'tsyringe';
 import { AppError } from '../../../../shared/errors/AppError';
-import { ICart } from '../../schemas/Cart';
-import { IOrderProduct } from '../../schemas/Order';
+import { ICartPopulated } from '../../schemas/Cart';
 import { ICartsRepository } from '../../repositories/ICartRepository';
+import { CartMap } from '../../../../modules/orders/mapper/CartMap';
 
 interface IRequest {
   clientId: string;
@@ -16,13 +16,13 @@ class ListCartUseCase {
     private cartsRepository: ICartsRepository,
   ) {}
 
-  async execute({ clientId, companyId }: IRequest): Promise<ICart | null> {
+  async execute({ clientId, companyId }: IRequest): Promise<ICartPopulated | null> {
     try {
       const cart = await this.cartsRepository.findOne({ clientId, companyId });
 
       if (!cart) return null;
 
-      return cart;
+      return CartMap.toDTO(cart);
     } catch (err) {
       throw new AppError(err, 500);
     }

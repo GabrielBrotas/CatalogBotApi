@@ -8,7 +8,7 @@ import {
   UpdateDTO,
   FindByIdDTO,
 } from '../ICartRepository';
-import { Cart, ICart } from '../../schemas/Cart';
+import { Cart, ICart, ICartPopulated } from '../../schemas/Cart';
 
 export class CartsRepository implements ICartsRepository {
   private repository;
@@ -17,7 +17,7 @@ export class CartsRepository implements ICartsRepository {
     this.repository = Cart;
   }
 
-  async findById({ cartId }: FindByIdDTO): Promise<ICart | null> {
+  async findById({ cartId }: FindByIdDTO): Promise<ICartPopulated | null> {
     const cart = await this.repository
       .findOne({
         _id: cartId,
@@ -28,7 +28,7 @@ export class CartsRepository implements ICartsRepository {
     return cart;
   }
 
-  async findOne({ clientId, companyId }: FindOneDTO): Promise<ICart | null> {
+  async findOne({ clientId, companyId }: FindOneDTO): Promise<ICartPopulated | null> {
     const cart = await this.repository
       .findOne({
         clientId,
@@ -45,7 +45,7 @@ export class CartsRepository implements ICartsRepository {
     clientId,
     companyId,
     orderProduct,
-  }: InsertOneDTO): Promise<ICart> {
+  }: InsertOneDTO): Promise<ICartPopulated> {
     const cart = await this.repository.findOne({
       clientId,
       companyId,
@@ -60,15 +60,15 @@ export class CartsRepository implements ICartsRepository {
 
       const userCart = await this.findOne({ clientId, companyId });
       if (!userCart) throw new AppError('Something went wrong', 500);
-      return userCart;
+      return userCart as any;
     }
 
     cart.orderProducts = cart.orderProducts.concat(orderProduct);
     await cart.save();
 
-    const userCart = await this.findOne({ clientId, companyId });
+    const userCart = await this.findOne({ clientId, companyId })
     if (!userCart) throw new AppError('Something went wrong', 500);
-    return userCart;
+    return userCart
   }
 
   async update({ cartId, orderProducts }: UpdateDTO): Promise<ICart> {
