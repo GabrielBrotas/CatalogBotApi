@@ -98,12 +98,12 @@ export class SocketEventsHandler {
       const {flow} = await companiesRepository.findById(SenderID)
 
       if (status === 'confirmed') {
-          await conn.sendMessage(clientWpp.with9, replaceIncludeMessage({
-            answer: flow['3-1'],
-            CompanyID: SenderID,
-            DeliveryTime: deliveryTime,
-            OrderID: OrderID,
-          }), MessageType.text)
+          // await conn.sendMessage(clientWpp.with9, replaceIncludeMessage({
+          //   answer: flow['3-1'],
+          //   CompanyID: SenderID,
+          //   DeliveryTime: deliveryTime,
+          //   OrderID: OrderID,
+          // }), MessageType.text)
 
           await conn.sendMessage(clientWpp.without9, replaceIncludeMessage({
             answer: flow['3-1'],
@@ -115,12 +115,12 @@ export class SocketEventsHandler {
       }
 
       if (status === 'sent') {
-        await conn.sendMessage(clientWpp.with9, replaceIncludeMessage({
-          answer: flow['3-2'],
-          CompanyID: SenderID,
-          DeliveryTime: deliveryTime,
-          OrderID: OrderID,
-        }), MessageType.text)
+        // await conn.sendMessage(clientWpp.with9, replaceIncludeMessage({
+        //   answer: flow['3-2'],
+        //   CompanyID: SenderID,
+        //   DeliveryTime: deliveryTime,
+        //   OrderID: OrderID,
+        // }), MessageType.text)
 
         await conn.sendMessage(clientWpp.without9, replaceIncludeMessage({
           answer: flow['3-2'],
@@ -132,12 +132,12 @@ export class SocketEventsHandler {
       }
 
       if (status === 'received') {
-        await conn.sendMessage(clientWpp.with9, replaceIncludeMessage({
-          answer: flow['3-3'],
-          CompanyID: SenderID,
-          DeliveryTime: deliveryTime,
-          OrderID: OrderID,
-        }), MessageType.text)
+        // await conn.sendMessage(clientWpp.with9, replaceIncludeMessage({
+        //   answer: flow['3-3'],
+        //   CompanyID: SenderID,
+        //   DeliveryTime: deliveryTime,
+        //   OrderID: OrderID,
+        // }), MessageType.text)
 
         await conn.sendMessage(clientWpp.without9, replaceIncludeMessage({
           answer: flow['3-3'],
@@ -149,12 +149,12 @@ export class SocketEventsHandler {
       }
 
       if (status === 'canceled') {
-        await conn.sendMessage(clientWpp.with9, replaceIncludeMessage({
-          answer: flow['3-4'],
-          CompanyID: SenderID,
-          DeliveryTime: deliveryTime,
-          OrderID: OrderID,
-        }), MessageType.text)
+        // await conn.sendMessage(clientWpp.with9, replaceIncludeMessage({
+        //   answer: flow['3-4'],
+        //   CompanyID: SenderID,
+        //   DeliveryTime: deliveryTime,
+        //   OrderID: OrderID,
+        // }), MessageType.text)
 
         await conn.sendMessage(clientWpp.without9, replaceIncludeMessage({
           answer: flow['3-4'],

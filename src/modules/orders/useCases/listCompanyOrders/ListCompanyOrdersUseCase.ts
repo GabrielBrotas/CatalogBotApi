@@ -3,6 +3,7 @@ import { inject, injectable } from 'tsyringe';
 import { AppError } from '../../../../shared/errors/AppError';
 import { IOrdersRepository } from '../../repositories/IOrdersRepository';
 import { IPagination } from '../../../../utils/pagination';
+import { OrderMap } from '../../../../modules/orders/mapper/OrderMap';
 
 type IRequest = {
   companyId: string
@@ -20,8 +21,12 @@ class ListCompanyOrdersUseCase {
   async execute({companyId, limit, page}: IRequest): Promise<IPagination<IOrderPopulated>> {
     try {
 
-      const orders = await this.ordersRepository.listByCompanyId({_id: companyId, limit, page});
-      return orders;
+      const response = await this.ordersRepository.listByCompanyId({_id: companyId, limit, page});
+
+      return {
+        ...response,
+        results: response.results.map(o => OrderMap.toDTO(o)) as IOrderPopulated[]
+      }
     } catch (err) {
       throw new AppError(err, 500);
     }

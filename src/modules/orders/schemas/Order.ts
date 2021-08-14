@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import mongoose, { Schema } from 'mongoose';
 import { IAddress, IClient } from '../../clients/schemas/Client';
 
@@ -41,7 +42,7 @@ export type IPaymentMethods =
 
 export interface IOrder {
   _id: string;
-  client: string;
+  client: string | ObjectId;
   company: string;
   orderProducts: IOrderProduct[];
   totalPrice: string;

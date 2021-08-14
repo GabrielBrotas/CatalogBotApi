@@ -1,11 +1,12 @@
+import { ICartPopulated } from './../../schemas/Cart';
 import { injectable, inject } from 'tsyringe';
 import { AppError } from '../../../../shared/errors/AppError';
-import { ICart } from '../../schemas/Cart';
 import {
   InsertOneDTO,
   ICartsRepository,
 } from '../../repositories/ICartRepository';
 
+import { CartMap } from '../../../../modules/orders/mapper/CartMap';
 import { IProductsRepository } from '../../../products/repositories/IProductsRepository';
 import { ICompaniesRepository } from '../../../companies/repositories/ICompaniesRepository';
 
@@ -26,7 +27,7 @@ class AddProductToCartUseCase {
     clientId,
     companyId,
     orderProduct,
-  }: InsertOneDTO): Promise<ICart> {
+  }: InsertOneDTO): Promise<ICartPopulated> {
     try {
       const company = await this.companiesRepository.findById(companyId);
 
@@ -37,13 +38,13 @@ class AddProductToCartUseCase {
       );
       if (!product) throw new AppError('Invalid product', 500);
 
-      const storagedProduct = await this.cartsRepository.insert({
+      const cart = await this.cartsRepository.insert({
         clientId,
         companyId,
         orderProduct,
       });
 
-      return storagedProduct;
+      return CartMap.toDTO(cart);
     } catch (err) {
       throw new AppError(err, 500);
     }

@@ -2,6 +2,7 @@ import { IOrder, IOrderPopulated } from '../../schemas/Order';
 import { injectable, inject } from 'tsyringe';
 import { AppError } from '../../../../shared/errors/AppError';
 import { IOrdersRepository } from '../../repositories/IOrdersRepository';
+import { OrderMap } from '../../../../modules/orders/mapper/OrderMap';
 
 interface IRequest {
   orderId: string;
@@ -29,7 +30,7 @@ class GetOrderUseCase {
         throw new AppError('unauthorized', 403);
       }
 
-      return order;
+      return OrderMap.toDTO(order) as IOrderPopulated;
     } catch (err) {
       throw new AppError(err, 500);
     }

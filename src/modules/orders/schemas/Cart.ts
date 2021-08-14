@@ -1,5 +1,6 @@
+import { IProduct } from '../../../modules/products/schemas/Product';
 import mongoose, { Schema } from 'mongoose';
-import { IOrderProduct, PickedOptions } from './Order';
+import { PickedOptions } from './Order';
 
 export type ICartProduct = {
   _id?: string;
@@ -14,6 +15,20 @@ export interface ICart {
   clientId: string;
   companyId: string;
   orderProducts: ICartProduct[];
+  created_at: Date;
+}
+
+export interface ICartPopulated {
+  _id: string;
+  clientId: string;
+  companyId: string;
+  orderProducts: Array<{
+    _id?: string;
+    product: IProduct;
+    amount: string;
+    pickedOptions: PickedOptions[];
+    comment?: string;
+  }>;
   created_at: Date;
 }
 
