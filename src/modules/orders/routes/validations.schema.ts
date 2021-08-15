@@ -22,8 +22,10 @@ const orderProductSchema = Joi.object().keys({
               name: Joi.string().required(),
               price: Joi.number().required(),
               amount: Joi.number().required(),
+              TotalPrice: Joi.number().allow(null, '').optional(),
+              TotalPriceFormated: Joi.string().allow(null, '').optional(),
             })
-            .required(),
+            .optional(),
         ),
       })
       .optional(),
@@ -103,7 +105,7 @@ const cartProductSchema = Joi.object().keys({
               price: Joi.number().required(),
               amount: Joi.number().required(),
             })
-            .required(),
+            .optional(),
         ),
       })
       .optional(),

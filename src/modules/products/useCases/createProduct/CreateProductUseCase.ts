@@ -36,6 +36,7 @@ class CreateProductUseCase {
       categoryId
     });
 
+
     return ProductMap.toDTO(newProduct);
   }
 }

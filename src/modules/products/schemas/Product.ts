@@ -55,7 +55,7 @@ const ProductSchema = new Schema({
         required: true,
       },
       isRequired: {
-        type: String,
+        type: Boolean,
         required: true,
       },
       maxQuantity: {
